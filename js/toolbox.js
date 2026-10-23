@@ -135,7 +135,7 @@ const PaperKit = {
   toFabric(item, style = {}) {
     if (!item) return null;
     const d = item.pathData;
-    if (!d || !/[LCQAZlcqaz]/.test(d)) return null;
+    if (!d || !/[LHVCSQTAZlhvcsqtaz]/.test(d)) return null;
     return new fabric.Path(d, { strokeUniform: true, ...style });
   },
 };

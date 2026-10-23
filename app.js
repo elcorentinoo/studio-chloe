@@ -154,6 +154,8 @@ const state = {
  *   Hooks.on('sync', info)  — le panneau de propriétés se met à jour
  *   Hooks.on('change', json)— une nouvelle étape d'historique (→ sauvegarde)
  *   Hooks.on('docLoaded')   — un document vient d'être chargé
+ *   Hooks.on('tool', name)  — un outil vient d'être activé
+ *   Hooks.on('snapTargets', { xs, ys }) — cibles d'aimantation supplémentaires
  */
 const Hooks = {
   map: {},
@@ -756,6 +758,7 @@ function setTool(name) {
   });
 
   canvas.requestRenderAll();
+  Hooks.emit('tool', name); // menus d'outils du rail, options de l'outil (js/toolbox.js)
   Properties.sync();
   updateStatus();
 }

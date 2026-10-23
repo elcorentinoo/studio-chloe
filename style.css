@@ -974,3 +974,11 @@ body.is-locked .app { visibility: hidden; }
 .rail-btn-arrow-white.is-active svg path { fill: #ffffff; stroke: var(--primary-ink); }
 :root[data-theme="dark"] .rail-btn-arrow-white svg path { fill: transparent; stroke: var(--ink); }
 :root[data-theme="dark"] .rail-btn-arrow-white.is-active svg path { fill: #ffffff; stroke: var(--olive); }
+
+/* ==========================================================================
+   Boîte à outils : options de l'outil actif (js/toolbox.js)
+   ========================================================================== */
+.tile-tool { border-color: rgba(124, 148, 37, .35); background: linear-gradient(150deg, rgba(212, 240, 76, .22), transparent 70%), var(--tile); }
+.tool-options, .tool-options-body { display: flex; flex-direction: column; gap: 12px; }
+.check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
+.flyout-item svg { width: 18px; height: 18px; }

@@ -19,6 +19,7 @@
 - Graphiques vectoriels (J) : barres, barres horizontales / empilées, lignes, aires, secteurs, anneau — données collées depuis un tableur, double-clic pour modifier
 - Outil Tranches : zones d'export nommées, déplaçables, découpe en grille, export PNG / JPG 1× à 3× en ZIP
 - Pathfinder complet (paper.js) : unir (⌘⇧U), soustraire (⌘⇧-), intersecter, exclure, diviser, soustraire l'arrière-plan, rogner
+- Édition avancée des points : ajouter (+), supprimer (−), convertir angle ↔ lisse (clic ou glisser), ciseaux (C) — sur tracés et formes
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

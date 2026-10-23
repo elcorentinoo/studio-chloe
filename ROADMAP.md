@@ -30,6 +30,7 @@
 - Import / export avancés : ouverture des PDF et .ai compatibles PDF (pdf.js, une page = un plan de travail, vecteurs ou image), import SVG par glisser-déposer, export SVG optimisé
 - Typographie pro : catalogue complet des Google Fonts (recherche, catégories, aperçu, polices récentes), graisse, alignements, interlettrage, interlignage, casse
 - Panneau Aspect : plusieurs fonds et contours empilés sur un même objet (couleur, épaisseur, opacité, ordre), exportés en SVG
+- Effets de distorsion : déformation par enveloppe (arc, arche, renflement, drapeau, vague, poisson, montée, gonflement, torsion) avec aperçu, et transformation répétée (copies avec décalage, rotation, échelle, fondu)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

@@ -1051,3 +1051,8 @@ body.is-locked .app { visibility: hidden; }
 .ap-item .layer-btn { width: 24px; height: 24px; flex-shrink: 0; }
 .ap-item .ab-size { width: 42px; flex-shrink: 0; }
 .ap-item .ap-kind { min-width: 44px; }
+
+/* Fenêtres latérales avec aperçu en direct (js/distort.js) */
+.sheet.sheet-side { width: min(380px, calc(100vw - 32px)); margin: auto 24px auto auto; }
+.sheet.sheet-side::backdrop { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.effects-more { margin-top: 4px; }

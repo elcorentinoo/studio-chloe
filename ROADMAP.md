@@ -9,6 +9,7 @@
 - Rognage rapide (Maj + C) : tracez un cadre, les éléments touchés (ou la sélection) sont rognés — vrai rognage pour les images droites, masque pour le reste, « Retirer le rognage »
 - Baguette magique (Y : sélection par couleur, contour, épaisseur, opacité + tolérance) et Lasso (Q : sélection à main levée) ; menus d'outils et options d'outil dans le panneau
 - Nouvelles formes : arc, spirale, grille rectangulaire, grille polaire (réglages dans le panneau)
+- Outil Courbure (Maj + P) : la courbe passe par chaque clic et se lisse toute seule ; points d'angle (Alt), déplacement des points, fermeture
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

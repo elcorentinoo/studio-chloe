@@ -394,3 +394,32 @@ Hooks.on('init', () => {
   // La vue bouge (zoom, déplacement) : l'aperçu de la plume suit
   canvas.on('after:render', () => { if (state.tool === 'pen' && Tools.pen.points.length) Tools.pen.render(); });
 });
+
+/* ============================================================================
+   ⌘Z PENDANT UN TRACÉ
+   - Plume en cours : ⌘Z retire le dernier point posé (comme dans Illustrator)
+   - Édition des points : ⌘Z annule le dernier déplacement de point
+   ========================================================================== */
+{
+  const baseUndo = History.undo.bind(History);
+  History.undo = () => {
+    if (state.tool === 'pen' && Tools.pen.points.length) {
+      Tools.pen.removeLast();
+      return;
+    }
+    if (PathEditor.obj) {
+      const obj = PathEditor.obj;
+      PathEditor.stop();
+      History.flush();
+      baseUndo();
+      // On reste en édition des points sur le tracé restauré
+      setTimeout(() => {
+        const restored = canvas.getObjects().find((o) => o.type === 'path' && o.left === obj.left && o.top === obj.top)
+          || canvas.getObjects().filter((o) => o.type === 'path').pop();
+        if (restored) PathEditor.start(restored);
+      }, 60);
+      return;
+    }
+    baseUndo();
+  };
+}

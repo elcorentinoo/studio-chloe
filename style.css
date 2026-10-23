@@ -982,3 +982,5 @@ body.is-locked .app { visibility: hidden; }
 .tool-options, .tool-options-body { display: flex; flex-direction: column; gap: 12px; }
 .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 10px; }
 .flyout-item svg { width: 18px; height: 18px; }
+.spray-source { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.spray-source strong { font: 500 13px var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

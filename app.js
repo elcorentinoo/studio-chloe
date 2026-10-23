@@ -123,6 +123,7 @@ const TYPE_LABELS = {
   group: 'Groupe',
   rect: 'Rectangle',
   ellipse: 'Ellipse',
+  circle: 'Cercle',
   path: 'Tracé',
   'i-text': 'Texte',
   textbox: 'Texte',

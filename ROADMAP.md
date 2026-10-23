@@ -13,6 +13,7 @@
 - Crayon (N, courbes propres, fermeture auto), Lissage (frotter un tracé) et Gomme (Maj + E : découpe vectorielle des formes et traits, pixels des images ; [ ] pour la taille)
 - Outils de transformation : Rotation (Maj + R), Miroir (O), Mise à l'échelle (S), Inclinaison — point d'origine déplaçable, Maj pour contraindre, Alt pour copier, saisie numérique (Entrée)
 - Outil Largeur (Maj + W) : épaisseur de contour variable point par point, profils (fuseau, pointe, goutte, vague), export SVG vectorisé
+- Outils de fluidité : Déformer, Tordre, Gonfler / contracter (rayon, intensité, [ ] pour le rayon)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

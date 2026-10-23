@@ -994,3 +994,9 @@ body.is-locked .app { visibility: hidden; }
 .slice-name { flex: 1; min-width: 0; height: 28px; padding: 0 6px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink); font: inherit; font-size: 12px; }
 .slice-name:focus { border-color: var(--moss); outline: none; background: var(--glass-strong); }
 .slice-item small { color: var(--ink-muted); font-size: 10px; white-space: nowrap; }
+
+/* Pathfinder (js/pathfinder.js) */
+.pf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.pf-btn { display: flex; flex-direction: column; gap: 3px; height: auto; padding: 7px 2px 5px; }
+.pf-btn svg { width: 20px; height: 20px; }
+.pf-btn span { font-size: 9.5px; line-height: 1.1; color: var(--ink-muted); text-align: center; }

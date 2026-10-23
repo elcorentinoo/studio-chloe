@@ -513,9 +513,10 @@ const Layers = {
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-selected', String(on));
     });
-    $('#tab-props').hidden = name !== 'props';
-    this.tab.hidden = name !== 'layers';
+    // Onglets ajoutés par les modules : <div class="panel-tab" id="tab-…">
+    $$('.panel > .panel-tab').forEach((t) => { t.hidden = t.id !== `tab-${name}`; });
     if (name === 'layers') this.render();
+    Hooks.emit('panelTab', name);
   },
 
   schedule() {

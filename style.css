@@ -1070,3 +1070,7 @@ body.is-locked .app { visibility: hidden; }
 .cmyk-field { display: grid; grid-template-columns: 16px 1fr 40px; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; }
 .cmyk-field output { text-align: right; color: var(--ink-muted); font-weight: 400; font-variant-numeric: tabular-nums; }
 .print-row { display: flex; flex-direction: column; gap: 8px; }
+
+/* Dégradés avancés (js/gradient-pro.js) */
+.gradient-pro { display: flex; flex-direction: column; gap: 6px; }
+.stop-pos { min-width: 34px; color: var(--ink-muted); font-size: 11px; text-align: right; }

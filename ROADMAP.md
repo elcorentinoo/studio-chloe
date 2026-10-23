@@ -34,6 +34,7 @@
 - Motifs : remplissage « Motif » (pois, rayures, damier, vagues ou motif créé depuis la sélection), échelle, espacement, angle
 - Couleurs d'impression : sélecteur CMJN (remplissage et contour) et export PDF avec fonds perdus 3 mm + traits de coupe
 - Pinceaux artistiques (Maj + B) : calligraphique (angle et rondeur de plume), à la vitesse, à motif (la sélection répétée le long du trait)
+- Dégradés avancés : linéaires ou radiaux à plusieurs arrêts, et dégradé de formes entre deux objets en N étapes (contour, couleurs, épaisseur, opacité)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

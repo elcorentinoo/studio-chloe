@@ -3,6 +3,7 @@
 ## ✅ Publié
 **Octobre 2026 — vague 3**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)
+- Repères : glisser depuis les règles, déplacer, supprimer sur la règle, aimantation, afficher (⌘;) / verrouiller (⌘⌥;), enregistrés avec le document
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

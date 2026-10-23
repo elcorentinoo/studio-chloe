@@ -1702,10 +1702,21 @@ const History = {
    ========================================================================== */
 
 const Doc = {
+  /**
+   * Données de document ajoutées par les modules (repères, plans de travail…) :
+   *   Doc.extras.cle = { save: () => valeur JSON, load: (valeur | undefined) => void }
+   * Enregistrées à côté des objets, donc dans l'historique et les projets.
+   */
+  extras: {},
+
   serialize() {
     const json = canvas.toJSON(SERIAL_PROPS);
     delete json.background; // la page est dessinée par drawPage()
     json.page = { ...state.page };
+    Object.entries(this.extras).forEach(([key, ext]) => {
+      const value = ext.save();
+      if (value !== undefined) json[key] = value;
+    });
     return JSON.stringify(json);
   },
 
@@ -1718,6 +1729,8 @@ const Doc = {
       state.page = data.page
         ? { width: data.page.width, height: data.page.height }
         : { width: Math.round(canvas.getWidth()), height: Math.round(canvas.getHeight()) };
+      if (data.page?.dpi) state.page.dpi = data.page.dpi; // format d'impression (300 dpi) conservé
+      Object.entries(this.extras).forEach(([key, ext]) => ext.load(data[key]));
       refreshFonts();
       canvas.requestRenderAll();
       updateStatus();
@@ -1739,7 +1752,14 @@ const Doc = {
       done?.();
     };
     if (json) this.load(json, finish);
-    else { canvas.clear(); state.page = { ...DEFAULT_PAGE }; updateStatus(); finish(); }
+    else {
+      canvas.clear();
+      state.page = { ...DEFAULT_PAGE };
+      Object.values(this.extras).forEach((ext) => ext.load(undefined));
+      updateStatus();
+      Hooks.emit('docLoaded');
+      finish();
+    }
   },
 };
 

@@ -956,3 +956,12 @@ body.is-locked .app { visibility: hidden; }
 .security-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .recovery-code { padding: 18px; border: 2px dashed var(--moss); border-radius: var(--r-lg); font: 600 22px var(--mono); letter-spacing: .06em; text-align: center; user-select: all; word-break: break-all; }
 @media (max-width: 720px) { .project-chip { display: none; } .gallery-title h1 { font-size: 22px; } .masonry { columns: 2 140px; column-gap: 10px; } }
+
+/* ==========================================================================
+   Repères (js/guides.js)
+   ========================================================================== */
+.flyout-item.is-checked::before { content: "✓"; width: 14px; color: var(--moss); font-weight: 700; }
+:root[data-theme="dark"] .flyout-item.is-checked::before { color: var(--lime); }
+.flyout-item:not(.is-checked)[role="menuitemcheckbox"]::before { content: ""; width: 14px; }
+.flyout-item:disabled { opacity: .4; cursor: not-allowed; }
+.flyout-note { max-width: 250px; margin: 4px 10px 6px; color: var(--ink-muted); font-size: 11px; line-height: 1.4; }

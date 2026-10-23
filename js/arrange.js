@@ -262,6 +262,7 @@ const Guides = {
         ys.push(b.top, b.top + b.height / 2, b.top + b.height);
       });
     }
+    Hooks.emit('snapTargets', { xs, ys }); // repères (js/guides.js)…
 
     const best = (edges, cands) => {
       let hit = null;

@@ -8,6 +8,7 @@
 - Flèche noire (V : objets et groupes) et flèche blanche (A : sélection directe des points et poignées, conversion des formes en tracés) ; double-clic sur toute forme pour éditer ses points
 - Rognage rapide (Maj + C) : tracez un cadre, les éléments touchés (ou la sélection) sont rognés — vrai rognage pour les images droites, masque pour le reste, « Retirer le rognage »
 - Baguette magique (Y : sélection par couleur, contour, épaisseur, opacité + tolérance) et Lasso (Q : sélection à main levée) ; menus d'outils et options d'outil dans le panneau
+- Nouvelles formes : arc, spirale, grille rectangulaire, grille polaire (réglages dans le panneau)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

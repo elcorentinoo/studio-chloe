@@ -470,7 +470,7 @@ const Viewport = {
    ========================================================================== */
 
 const ShapeFactory = {
-  // update(obj, box, drag) — drag = { origin, pointer, constrain } pour les formes « linéaires »
+  // update(obj, box, drag) — drag = { origin, pointer, constrain (Maj), alt, click (simple clic) }
   rect: {
     create: (p) => new fabric.Rect({ left: p.x, top: p.y, width: 0, height: 0, ...shapeStyle() }),
     update: (obj, b) => obj.set({ left: b.left, top: b.top, width: b.width, height: b.height }),
@@ -685,7 +685,7 @@ function createDragShapeTool(kind) {
     onMouseMove(p, e) {
       if (!state.drawing) return;
       const { obj, origin } = state.drawing;
-      shape.update(obj, getDragBox(origin, p, e.shiftKey), { origin, pointer: p, constrain: e.shiftKey });
+      shape.update(obj, getDragBox(origin, p, e.shiftKey), { origin, pointer: p, constrain: e.shiftKey, alt: e.altKey });
       canvas.requestRenderAll();
     },
 
@@ -708,7 +708,7 @@ function createDragShapeTool(kind) {
         pointer = { x: origin.x + CLICK_SHAPE_SIZE * 1.4, y: origin.y }; // ligne / flèche horizontale
       }
 
-      shape.update(obj, box, { origin, pointer, constrain: e.shiftKey });
+      shape.update(obj, box, { origin, pointer, constrain: e.shiftKey, alt: e.altKey, click: pointer !== p });
       obj.set({ selectable: true, evented: true });
       obj.setCoords();               // recalcule les poignées de transformation
       canvas.setActiveObject(obj);   // sélectionne la forme pour l'éditer dans le panneau

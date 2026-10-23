@@ -14,6 +14,7 @@
 - Outils de transformation : Rotation (Maj + R), Miroir (O), Mise à l'échelle (S), Inclinaison — point d'origine déplaçable, Maj pour contraindre, Alt pour copier, saisie numérique (Entrée)
 - Outil Largeur (Maj + W) : épaisseur de contour variable point par point, profils (fuseau, pointe, goutte, vague), export SVG vectorisé
 - Outils de fluidité : Déformer, Tordre, Gonfler / contracter (rayon, intensité, [ ] pour le rayon)
+- Pot de peinture dynamique (Maj + K) : remplit la zone formée par les formes qui se chevauchent (survol surligné, recoloriage d'un nouveau clic)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

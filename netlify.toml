@@ -1,0 +1,7 @@
+# Site statique : aucun build, on publie le dossier tel quel.
+[build]
+  publish = "."
+
+# Fonctions serveur (proxy Remove.bg) — la clé est dans les variables d'environnement Netlify
+[functions]
+  directory = "netlify/functions"

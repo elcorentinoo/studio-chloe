@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Studio Chloé">
+  <title>Studio Chloé</title>
+  <defs>
+    <clipPath id="top"><rect x="0" y="0" width="100" height="46"/></clipPath>
+    <clipPath id="bot"><rect x="0" y="54" width="100" height="46"/></clipPath>
+    <mask id="cutC" maskUnits="userSpaceOnUse"><rect width="100" height="100" fill="#fff"/>
+      <path d="M 62 9 C 49 20 36 34 46 48 C 54 59 61 70 44 95" stroke="#000" stroke-width="13.9" fill="none" clip-path="url(#top)"/></mask>
+    <mask id="cutS" maskUnits="userSpaceOnUse"><rect width="100" height="100" fill="#fff"/>
+      <path d="M 64.4 36.6 A 24 24 0 1 0 64.4 67.4" stroke="#000" stroke-width="13.9" fill="none" clip-path="url(#bot)"/></mask>
+  </defs>
+  <rect width="100" height="100" rx="24" fill="#1e250d"/>
+  <g transform="translate(50 52) scale(.86) translate(-46 -52)" fill="none" stroke="#d4f04c" stroke-width="7.5" stroke-linecap="butt">
+    <path d="M 64.4 36.6 A 24 24 0 1 0 64.4 67.4" mask="url(#cutC)"/>
+    <path d="M 62 9 C 49 20 36 34 46 48 C 54 59 61 70 44 95" mask="url(#cutS)"/>
+  </g>
+</svg>

@@ -17,13 +17,22 @@
  *    7c. Presse-papiers : copier / coller / dupliquer (Clipboard)
  *    8.  Détourage via l'API Remove.bg
  *    8b. Historique : annuler / rétablir (History)
- *    8c. Sauvegarde automatique dans le navigateur (Autosave)
+ *    8c. Document : sérialisation & chargement (Doc)
  *    9.  Utilitaires : suppression, effacement, export PNG / SVG
  *    10. Thème clair / sombre & barre d'état
  *    10b. Styles de texte (TextStyle) & aide des raccourcis (Help)
  *    11. Raccourcis clavier
  *    12. Helpers génériques
  *    13. Démarrage
+ *
+ *  Modules complémentaires (dossier js/, chargés après ce fichier, même portée
+ *  globale) : ils s'branchent via Hooks / Keys / Tools / ShapeFactory.
+ *    js/arrange.js   — alignement, groupes, guides magnétiques, grille, règles, calques
+ *    js/style-fx.js  — pipette, nuanciers, dégradés, ombres, arrondis, filtres photo
+ *    js/formats.js   — formats de page, redimensionnement magique, exports
+ *    js/pen.js       — outil Plume (Bézier) et édition des points
+ *    js/library.js   — modèles, icônes, stickers, vectorisation
+ *    js/projects.js  — galerie de projets (tableaux), stockage, verrouillage par empreinte
  * ============================================================================
  */
 'use strict';
@@ -80,9 +89,15 @@ const TEXT_DEFAULTS = Object.freeze({
 });
 
 const CANVAS_BG = '#ffffff';
+const DEFAULT_PAGE = Object.freeze({ width: 1080, height: 1080 }); // post Instagram carré
+const FIT_MARGIN = 48;         // px — marge autour de la page quand on l'ajuste à l'écran
+
+/** Propriétés personnalisées enregistrées avec chaque objet (historique, projets) */
+const SERIAL_PROPS = ['name', 'locked', 'selectable', 'evented', 'shapeKind'];
 const MIN_DRAG_SIZE = 4;       // px — en dessous, un simple clic crée une forme de taille par défaut
 const CLICK_SHAPE_SIZE = 120;  // px — taille de la forme créée par simple clic
 const IMAGE_MAX_RATIO = 0.6;   // une image importée occupe au maximum 60 % du canvas
+const IMAGE_MAX_SIDE = 4096;  // px — au-delà, une image importée est réduite
 const EXPORT_MULTIPLIER = 2;   // export PNG en haute définition (@2x)
 
 const TOOL_LABELS = {
@@ -91,9 +106,21 @@ const TOOL_LABELS = {
   ellipse: 'Ellipse',
   brush: 'Pinceau',
   text: 'Texte',
+  line: 'Ligne',
+  arrow: 'Flèche',
+  triangle: 'Triangle',
+  polygon: 'Polygone',
+  star: 'Étoile',
 };
 
 const TYPE_LABELS = {
+  line: 'Ligne',
+  arrow: 'Flèche',
+  triangle: 'Triangle',
+  polygon: 'Polygone',
+  polyline: 'Ligne',
+  star: 'Étoile',
+  group: 'Groupe',
   rect: 'Rectangle',
   ellipse: 'Ellipse',
   path: 'Tracé',
@@ -116,6 +143,30 @@ const state = {
   spaceDown: null,           // Espace maintenue (mode « main ») : réglages Fabric mémorisés
   panning: null,             // déplacement de la vue en cours : { x, y }
   exporting: false,          // export en cours : la page n'est pas dessinée par drawPage()
+  page: { ...DEFAULT_PAGE }, // plan de travail (zone exportée), en px du document
+  autoFit: true,             // la vue suit la taille de la fenêtre tant qu'on n'a pas zoomé
+};
+
+/**
+ * Points d'extension pour les modules du dossier js/ :
+ *   Hooks.on('init')        — après la liaison de l'interface
+ *   Hooks.on('boot')        — chargement du document (géré par js/projects.js)
+ *   Hooks.on('sync', info)  — le panneau de propriétés se met à jour
+ *   Hooks.on('change', json)— une nouvelle étape d'historique (→ sauvegarde)
+ *   Hooks.on('docLoaded')   — un document vient d'être chargé
+ */
+const Hooks = {
+  map: {},
+  on(name, fn) { (this.map[name] ||= []).push(fn); },
+  has(name) { return Boolean(this.map[name]?.length); },
+  emit(name, ...args) { (this.map[name] || []).forEach((fn) => fn(...args)); },
+};
+
+/** Raccourcis ajoutés par les modules : fn(e, { mod, key }) renvoie true si traité */
+const Keys = {
+  handlers: [],
+  add(fn) { this.handlers.push(fn); },
+  run(e, info) { return this.handlers.some((fn) => fn(e, info)); },
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -183,6 +234,8 @@ const dom = {
   btnZoomOut: $('#btn-zoom-out'),
   btnZoomReset: $('#btn-zoom-reset'),
 
+  btnShapes: $('#btn-shapes'),
+  shapeFlyout: $('#shape-flyout'),
   btnHelp: $('#btn-help'),
   helpDialog: $('#help-dialog'),
   btnHelpClose: $('#btn-help-close'),
@@ -223,8 +276,11 @@ function drawPage({ ctx }) {
   const v = canvas.viewportTransform;
   ctx.save();
   ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+  ctx.shadowColor = 'rgba(37, 48, 11, 0.18)';
+  ctx.shadowBlur = 24;
+  ctx.shadowOffsetY = 6;
   ctx.fillStyle = CANVAS_BG;
-  ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+  ctx.fillRect(0, 0, state.page.width, state.page.height);
   ctx.restore();
 }
 canvas.on('before:render', drawPage);
@@ -235,6 +291,7 @@ function resizeCanvasToContainer() {
   if (!clientWidth || !clientHeight) return;
   canvas.setDimensions({ width: clientWidth, height: clientHeight });
   canvas.calcOffset();
+  if (state.autoFit) Viewport.fit();
   canvas.requestRenderAll();
   updateStatus();
 }
@@ -248,26 +305,50 @@ function resizeCanvasToContainer() {
      - molette seule : défilement (Maj = horizontal)
      - Espace + glisser : déplacement (« main »)
      - ⌘/Ctrl + / − / 0 et la pilule en bas à droite
-   La « page » (fond blanc, zone exportée) reste le rectangle 0,0 → largeur × hauteur
-   du canvas à 100 % : en zoom arrière on voit la table de montage autour.
+   La « page » (fond blanc, zone exportée) est le rectangle 0,0 → state.page :
+   autour, la table de montage. ⌘0 ajuste la page à l'écran, ⌘1 = 100 %.
    ========================================================================== */
 
 const Viewport = {
   /** Zoome au facteur `zoom`, en gardant fixe le point `point` (coordonnées écran du canvas) */
   setZoom(zoom, point = this.screenCenter()) {
+    state.autoFit = false;
     canvas.zoomToPoint(new fabric.Point(point.x, point.y), clamp(zoom, ZOOM_MIN, ZOOM_MAX));
     this.afterChange();
   },
 
   zoomBy(factor, point) { this.setZoom(canvas.getZoom() * factor, point); },
 
-  /** 100 %, page recadrée */
-  reset() {
-    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+  /** Centre la page à un zoom donné */
+  centerPage(zoom) {
+    const { width, height } = state.page;
+    canvas.setViewportTransform([zoom, 0, 0, zoom,
+      (canvas.getWidth() - width * zoom) / 2, (canvas.getHeight() - height * zoom) / 2]);
     this.afterChange();
   },
 
+  /** Ajuste la page entière à l'écran (⌘0) */
+  fit() {
+    const { width, height } = state.page;
+    const zoom = Math.min(
+      (canvas.getWidth() - FIT_MARGIN * 2) / width,
+      (canvas.getHeight() - FIT_MARGIN * 2) / height,
+      ZOOM_MAX,
+    );
+    state.autoFit = true;
+    this.centerPage(clamp(zoom, ZOOM_MIN, ZOOM_MAX));
+  },
+
+  /** 100 % (⌘1) */
+  actualSize() {
+    state.autoFit = false;
+    this.centerPage(1);
+  },
+
+  reset() { this.fit(); },
+
   pan(dx, dy) {
+    state.autoFit = false;
     canvas.relativePan(new fabric.Point(dx, dy));
     this.afterChange();
   },
@@ -387,6 +468,7 @@ const Viewport = {
    ========================================================================== */
 
 const ShapeFactory = {
+  // update(obj, box, drag) — drag = { origin, pointer, constrain } pour les formes « linéaires »
   rect: {
     create: (p) => new fabric.Rect({ left: p.x, top: p.y, width: 0, height: 0, ...shapeStyle() }),
     update: (obj, b) => obj.set({ left: b.left, top: b.top, width: b.width, height: b.height }),
@@ -396,7 +478,77 @@ const ShapeFactory = {
     // Une ellipse Fabric est définie par ses rayons : on les déduit du rectangle englobant
     update: (obj, b) => obj.set({ left: b.left, top: b.top, rx: b.width / 2, ry: b.height / 2 }),
   },
+  triangle: polyShape('triangle', (b) => [
+    { x: b.left + b.width / 2, y: b.top },
+    { x: b.left + b.width, y: b.top + b.height },
+    { x: b.left, y: b.top + b.height },
+  ]),
+  polygon: polyShape('polygon', (b) => radialPoints(b, 6, () => 1)),
+  star: polyShape('star', (b) => radialPoints(b, 10, (i) => (i % 2 ? 0.45 : 1))),
+  line: lineShape('line', (a, z) => [a, z]),
+  arrow: lineShape('arrow', (a, z, obj) => {
+    // Pointe ouverte, proportionnée à l'épaisseur du trait
+    const len = Math.max(14, (obj.strokeWidth || 2) * 4);
+    const ang = Math.atan2(z.y - a.y, z.x - a.x);
+    const head = (d) => ({ x: z.x - len * Math.cos(ang + d), y: z.y - len * Math.sin(ang + d) });
+    return [a, z, head(Math.PI / 6), z, head(-Math.PI / 6)];
+  }),
 };
+
+/** Forme fermée (fabric.Polygon) dont les points sont calculés à partir du rectangle tracé */
+function polyShape(kind, pointsFromBox) {
+  return {
+    create: (p) => new fabric.Polygon([{ x: p.x, y: p.y }, { x: p.x, y: p.y }, { x: p.x, y: p.y }],
+      { ...shapeStyle(), shapeKind: kind, strokeLineJoin: 'round' }),
+    update: (obj, b) => setPolyPoints(obj, pointsFromBox(b)),
+  };
+}
+
+/** Ligne ou flèche (fabric.Polyline, sans remplissage) tracée de l'origine au pointeur */
+function lineShape(kind, pointsFromEnds) {
+  return {
+    lineLike: true,
+    create: (p) => {
+      const s = shapeStyle();
+      return new fabric.Polyline([{ x: p.x, y: p.y }, { x: p.x, y: p.y }], {
+        ...s,
+        stroke: s.stroke || s.fill || '#25300b',
+        strokeWidth: Math.max(1, s.strokeWidth),
+        fill: null,
+        strokeLineCap: 'round',
+        strokeLineJoin: 'round',
+        shapeKind: kind,
+      });
+    },
+    update: (obj, b, drag) => {
+      let z = drag.pointer;
+      if (drag.constrain) { // Maj : angle multiple de 45°
+        const ang = Math.round(Math.atan2(z.y - drag.origin.y, z.x - drag.origin.x) / (Math.PI / 4)) * (Math.PI / 4);
+        const dist = Math.hypot(z.x - drag.origin.x, z.y - drag.origin.y);
+        z = { x: drag.origin.x + dist * Math.cos(ang), y: drag.origin.y + dist * Math.sin(ang) };
+      }
+      setPolyPoints(obj, pointsFromEnds(drag.origin, z, obj));
+    },
+  };
+}
+
+/** Points répartis sur l'ellipse inscrite dans le rectangle (polygone, étoile) */
+function radialPoints(b, count, radiusAt) {
+  const cx = b.left + b.width / 2;
+  const cy = b.top + b.height / 2;
+  return Array.from({ length: count }, (_, i) => {
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / count;
+    const r = radiusAt(i);
+    return { x: cx + (b.width / 2) * r * Math.cos(a), y: cy + (b.height / 2) * r * Math.sin(a) };
+  });
+}
+
+/** Remplace les points d'un Polygon / Polyline (coordonnées du document) et recalcule sa boîte */
+function setPolyPoints(obj, points) {
+  obj.points = points.map((pt) => ({ x: pt.x, y: pt.y }));
+  obj._setPositionDimensions({});
+  obj.dirty = true;
+}
 
 /** Propriétés de style communes à toutes les formes, issues du style courant */
 function shapeStyle() {
@@ -468,6 +620,11 @@ const Tools = {
 
   rect: createDragShapeTool('rect'),
   ellipse: createDragShapeTool('ellipse'),
+  triangle: createDragShapeTool('triangle'),
+  polygon: createDragShapeTool('polygon'),
+  star: createDragShapeTool('star'),
+  line: createDragShapeTool('line'),
+  arrow: createDragShapeTool('arrow'),
 
   brush: {
     cursor: 'crosshair',
@@ -525,7 +682,8 @@ function createDragShapeTool(kind) {
 
     onMouseMove(p, e) {
       if (!state.drawing) return;
-      shape.update(state.drawing.obj, getDragBox(state.drawing.origin, p, e.shiftKey));
+      const { obj, origin } = state.drawing;
+      shape.update(obj, getDragBox(origin, p, e.shiftKey), { origin, pointer: p, constrain: e.shiftKey });
       canvas.requestRenderAll();
     },
 
@@ -535,6 +693,7 @@ function createDragShapeTool(kind) {
       state.drawing = null;
 
       let box = getDragBox(origin, p, e.shiftKey);
+      let pointer = p;
 
       // Simple clic sans glisser : forme de taille par défaut centrée sur le clic
       if (box.width < MIN_DRAG_SIZE && box.height < MIN_DRAG_SIZE) {
@@ -544,9 +703,10 @@ function createDragShapeTool(kind) {
           width: CLICK_SHAPE_SIZE,
           height: CLICK_SHAPE_SIZE,
         };
+        pointer = { x: origin.x + CLICK_SHAPE_SIZE * 1.4, y: origin.y }; // ligne / flèche horizontale
       }
 
-      shape.update(obj, box);
+      shape.update(obj, box, { origin, pointer, constrain: e.shiftKey });
       obj.set({ selectable: true, evented: true });
       obj.setCoords();               // recalcule les poignées de transformation
       canvas.setActiveObject(obj);   // sélectionne la forme pour l'éditer dans le panneau
@@ -588,6 +748,7 @@ function setTool(name) {
   canvas.defaultCursor = tool.cursor || 'default';
   canvas.hoverCursor = name === 'select' ? 'move' : (tool.cursor || 'default');
 
+  ShapeMenu.reflect(name);
   dom.toolButtons.forEach((btn) => {
     const active = btn.dataset.tool === name;
     btn.classList.toggle('is-active', active);
@@ -598,6 +759,48 @@ function setTool(name) {
   Properties.sync();
   updateStatus();
 }
+
+/**
+ * Menu des formes du rail : un seul bouton (dernière forme utilisée) qui ouvre
+ * un petit menu avec toutes les formes de ShapeFactory.
+ */
+const ShapeMenu = {
+  bind() {
+    dom.btnShapes.addEventListener('click', () => {
+      // Forme déjà active : ouvrir / fermer le menu ; sinon activer la dernière forme
+      if (ShapeFactory[state.tool]) this.toggle();
+      else setTool(dom.btnShapes.dataset.tool);
+    });
+    dom.shapeFlyout.querySelectorAll('[data-tool]').forEach((btn) => {
+      btn.addEventListener('click', () => { setTool(btn.dataset.tool); this.toggle(false); });
+    });
+    // Le menu vit dans <body> (le rail peut défiler et le couperait)
+    document.body.appendChild(dom.shapeFlyout);
+    document.addEventListener('pointerdown', (e) => {
+      if (!e.target.closest('.rail-flyout, .flyout')) this.toggle(false);
+    });
+    window.addEventListener('resize', () => this.toggle(false));
+  },
+  toggle(open = dom.shapeFlyout.hidden) {
+    if (open) {
+      const r = dom.btnShapes.getBoundingClientRect();
+      const mobile = window.matchMedia('(max-width: 720px)').matches;
+      dom.shapeFlyout.style.left = `${r.right + 14}px`;
+      dom.shapeFlyout.style.top = `${Math.max(8, r.top - 8)}px`;
+      if (mobile) dom.shapeFlyout.style.left = `${r.right + 8}px`;
+    }
+    dom.shapeFlyout.hidden = !open;
+    dom.btnShapes.setAttribute('aria-expanded', String(open));
+  },
+  /** Le bouton du rail prend l'icône de la forme active */
+  reflect(name) {
+    if (!ShapeFactory[name]) return;
+    const item = dom.shapeFlyout.querySelector(`[data-tool="${name}"] svg`);
+    if (item) dom.btnShapes.querySelector('svg').replaceWith(item.cloneNode(true));
+    dom.btnShapes.dataset.tool = name;
+    dom.btnShapes.title = `${TOOL_LABELS[name]} — cliquez à nouveau pour les autres formes`;
+  },
+};
 
 /** Pinceau : couleur = contour courant (ou remplissage si contour « Aucun ») */
 function updateBrush() {
@@ -693,12 +896,12 @@ const Properties = {
     // En-tête
     dom.selType.textContent = !hasSelection
       ? 'Aucune sélection'
-      : single ? (TYPE_LABELS[ref.type] || 'Objet') : `${objects.length} objets`;
+      : single ? objectLabel(ref) : `${objects.length} objets`;
     dom.panelHint.hidden = hasSelection;
 
     // Couleurs, épaisseur, opacité
-    setColorField(dom.propFill, dom.propFillNone, dom.hexFill, ref ? ref.fill : state.style.fill);
-    setColorField(dom.propStroke, dom.propStrokeNone, dom.hexStroke, ref ? ref.stroke : state.style.stroke);
+    setColorField(dom.propFill, dom.propFillNone, dom.hexFill, ref ? groupColor(ref, 'fill') : state.style.fill);
+    setColorField(dom.propStroke, dom.propStrokeNone, dom.hexStroke, ref ? groupColor(ref, 'stroke') : state.style.stroke);
 
     const strokeWidth = Math.round(ref ? (ref.strokeWidth || 0) : state.style.strokeWidth);
     dom.propStrokeWidth.value = strokeWidth;
@@ -735,6 +938,8 @@ const Properties = {
 
     // Disposition
     [dom.btnFront, dom.btnBack, dom.btnDelete].forEach((btn) => { btn.disabled = !hasSelection; });
+
+    Hooks.emit('sync', { objects, ref, single, hasSelection });
   },
 
   /** Applique une propriété à la sélection (et au style courant) */
@@ -745,6 +950,11 @@ const Properties = {
     objects.forEach((obj) => {
       if (prop === 'fill' && isImage(obj)) return;                 // pas de remplissage sur une image
       if (prop === 'fill' && value === null && isText(obj)) return; // un texte doit rester visible
+      // Groupe (icône, sticker, SVG importé) : la couleur s'applique aux éléments qui en ont une
+      if (obj.type === 'group' && (prop === 'fill' || prop === 'stroke')) {
+        recolorGroup(obj, prop, value);
+        return;
+      }
       obj.set(prop, value);
       obj.setCoords(); // l'épaisseur du contour ou la taille de police changent la boîte englobante
     });
@@ -806,6 +1016,22 @@ const Properties = {
   },
 };
 
+/** Couleur représentative d'un objet ; pour un groupe, celle du premier élément coloré */
+function groupColor(obj, prop) {
+  if (obj.type !== 'group') return obj[prop];
+  const child = obj.getObjects().find((c) => (c.type === 'group' ? groupColor(c, prop) : toHex(c[prop])));
+  return child ? groupColor(child, prop) : null;
+}
+
+/** Recolore les éléments d'un groupe qui ont déjà cette propriété (les « aucun » restent vides) */
+function recolorGroup(group, prop, value) {
+  group.getObjects().forEach((c) => {
+    if (c.type === 'group') recolorGroup(c, prop, value);
+    else if (toHex(c[prop])) c.set(prop, value);
+  });
+  group.dirty = true;
+}
+
 /** Affiche une couleur Fabric dans un sélecteur (ou « Aucun » si absente) */
 function setColorField(colorInput, noneCheckbox, hexLabel, color) {
   const hex = toHex(color);
@@ -844,7 +1070,7 @@ const ImageImporter = {
     for (const [index, file] of files.entries()) {
       try {
         // Data URL (et non blob:) : l'image reste intégrée dans l'export SVG
-        const dataUrl = await readFileAsDataURL(file);
+        const dataUrl = await limitImageSize(await readFileAsDataURL(file), IMAGE_MAX_SIDE);
         const img = await loadFabricImage(dataUrl);
         this.placeImage(img, dropPoint, index);
         lastImage = img;
@@ -1396,7 +1622,7 @@ const History = {
   },
 
   snapshot() {
-    return JSON.stringify(canvas.toJSON());
+    return Doc.serialize();
   },
 
   /** Les états temporaires ne doivent pas créer d'étape */
@@ -1423,7 +1649,7 @@ const History = {
     if (this.stack.length > this.MAX_STEPS) this.stack.shift();
     this.index = this.stack.length - 1;
     this.updateButtons();
-    Autosave.save(snap);
+    Hooks.emit('change', snap);
   },
 
   /** Enregistre immédiatement une demande en attente */
@@ -1452,16 +1678,12 @@ const History = {
     this.restoring = true;
     cancelDrawing();
     canvas.discardActiveObject();
-    // loadFromJSON est asynchrone (les images doivent être rechargées)
-    canvas.loadFromJSON(this.stack[this.index], () => {
-      canvas.backgroundColor = null;
-      refreshFonts();
-      canvas.requestRenderAll();
+    // Le chargement est asynchrone (les images doivent être rechargées)
+    Doc.load(this.stack[this.index], () => {
       this.restoring = false;
-      Autosave.save(this.stack[this.index]);
       Properties.sync();
-      updateStatus();
       this.updateButtons();
+      Hooks.emit('change', this.stack[this.index]);
     });
   },
 
@@ -1472,75 +1694,52 @@ const History = {
 };
 
 /* ============================================================================
-   8c. SAUVEGARDE AUTOMATIQUE
+   8c. DOCUMENT : SÉRIALISATION & CHARGEMENT
    ----------------------------------------------------------------------------
-   Chaque étape de l'historique est aussi enregistrée dans IndexedDB (le
-   localStorage est trop petit pour des images en data URL). Au chargement de
-   la page, le dernier document est restauré. Tout reste dans le navigateur :
-   rien n'est envoyé à un serveur.
+   Un document = le JSON Fabric (avec SERIAL_PROPS) + la taille de la page.
+   La sauvegarde (projets, tableaux, chiffrement) est assurée par js/projects.js,
+   qui écoute Hooks.on('change') et appelle Doc.open() pour ouvrir un projet.
    ========================================================================== */
 
-const Autosave = {
-  DB_NAME: 'studio-chloe',
-  STORE: 'documents',
-  KEY: 'courant',
-  DELAY_MS: 400,
-  timer: null,
-  dbPromise: null,
-
-  db() {
-    if (!this.dbPromise) {
-      this.dbPromise = new Promise((resolve, reject) => {
-        const req = indexedDB.open(this.DB_NAME, 1);
-        req.onupgradeneeded = () => req.result.createObjectStore(this.STORE);
-        req.onsuccess = () => resolve(req.result);
-        req.onerror = () => reject(req.error);
-      });
-    }
-    return this.dbPromise;
+const Doc = {
+  serialize() {
+    const json = canvas.toJSON(SERIAL_PROPS);
+    delete json.background; // la page est dessinée par drawPage()
+    json.page = { ...state.page };
+    return JSON.stringify(json);
   },
 
-  async request(mode, action) {
-    const db = await this.db();
-    return new Promise((resolve, reject) => {
-      const req = action(db.transaction(this.STORE, mode).objectStore(this.STORE));
-      req.onsuccess = () => resolve(req.result);
-      req.onerror = () => reject(req.error);
+  /** Charge un document (chaîne JSON ou objet) dans le canvas */
+  load(json, done) {
+    const data = typeof json === 'string' ? JSON.parse(json) : json;
+    canvas.loadFromJSON(data, () => {
+      canvas.backgroundColor = null;
+      // Anciens documents sans page : la page reprend la taille de la zone de travail d'alors
+      state.page = data.page
+        ? { width: data.page.width, height: data.page.height }
+        : { width: Math.round(canvas.getWidth()), height: Math.round(canvas.getHeight()) };
+      refreshFonts();
+      canvas.requestRenderAll();
+      updateStatus();
+      Hooks.emit('docLoaded');
+      done?.();
     });
   },
 
-  save(json) {
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      this.request('readwrite', (store) => store.put(json, this.KEY))
-        .catch((err) => console.warn('[Sauvegarde auto]', err));
-    }, this.DELAY_MS);
-  },
-
-  async load() {
-    try {
-      return await this.request('readonly', (store) => store.get(this.KEY));
-    } catch (err) {
-      console.warn('[Sauvegarde auto]', err);
-      return null;
-    }
-  },
-
-  /** Recharge le dernier document enregistré (s'il n'est pas vide) */
-  async restore() {
-    const json = await this.load();
-    if (!json || !JSON.parse(json).objects?.length) return false;
-    return new Promise((resolve) => {
-      History.restoring = true; // le chargement ne crée pas d'étapes
-      canvas.loadFromJSON(json, () => {
-        canvas.backgroundColor = null; // la page est dessinée par drawPage()
-        History.restoring = false;
-        refreshFonts();
-        canvas.requestRenderAll();
-        updateStatus();
-        resolve(true);
-      });
-    });
+  /** Ouvre un document : chargement, historique remis à zéro, page ajustée à l'écran */
+  open(json, done) {
+    History.restoring = true; // le chargement ne crée pas d'étapes
+    cancelDrawing();
+    canvas.discardActiveObject();
+    const finish = () => {
+      History.restoring = false;
+      History.init();
+      Viewport.fit();
+      Properties.sync();
+      done?.();
+    };
+    if (json) this.load(json, finish);
+    else { canvas.clear(); state.page = { ...DEFAULT_PAGE }; updateStatus(); finish(); }
   },
 };
 
@@ -1561,7 +1760,7 @@ function clearCanvas() {
   if (state.cropping) Cropper.cancel();
   if (!canvas.getObjects().length) return;
   cancelDrawing();
-  canvas.clear();
+  canvas.clear(); // la page (state.page) est conservée
   canvas.requestRenderAll();
   Properties.sync();
   updateStatus();
@@ -1579,11 +1778,11 @@ function bringForward(toFront) {
 }
 
 const Exporter = {
-  /** Exécute un export en retirant temporairement le fond blanc si demandé */
-  withExportBackground(fn) {
+  /** Exécute un export : vue à 100 % sur la page, fond blanc ou transparent */
+  withPage(fn, transparent = dom.exportTransparent.checked) {
     const vpt = canvas.viewportTransform.slice();
-    canvas.backgroundColor = dom.exportTransparent.checked ? null : CANVAS_BG;
-    canvas.viewportTransform = [1, 0, 0, 1, 0, 0]; // on exporte la page, quel que soit le zoom
+    canvas.backgroundColor = transparent ? null : CANVAS_BG;
+    canvas.viewportTransform = [1, 0, 0, 1, 0, 0];
     state.exporting = true;
     try {
       return fn();
@@ -1595,24 +1794,40 @@ const Exporter = {
     }
   },
 
+  // Compatibilité (anciens appels)
+  withExportBackground(fn) { return this.withPage(fn); },
+
+  pageArea() { return { left: 0, top: 0, width: state.page.width, height: state.page.height }; },
+
   ensureContent() {
     if (state.cropping) Cropper.cancel();
     if (canvas.getObjects().length) return true;
-    toast('Le canvas est vide : rien à exporter.');
+    toast('La page est vide : rien à exporter.');
     return false;
+  },
+
+  /**
+   * Image de la page (ou d'une zone) : format 'png' | 'jpeg' | 'webp'.
+   * Le JPEG n'a pas de transparence : fond blanc forcé.
+   */
+  toDataURL({ format = 'png', multiplier = EXPORT_MULTIPLIER, transparent, area = this.pageArea(), quality = 0.92 } = {}) {
+    const transp = format === 'jpeg' ? false : (transparent ?? dom.exportTransparent.checked);
+    return this.withPage(() => canvas.toDataURL({ format, quality, multiplier, ...area }), transp);
+  },
+
+  toSVG(transparent) {
+    const { width, height } = state.page;
+    return this.withPage(() => canvas.toSVG({ width, height, viewBox: { x: 0, y: 0, width, height } }), transparent);
   },
 
   png() {
     if (!this.ensureContent()) return;
-    const url = this.withExportBackground(() =>
-      canvas.toDataURL({ format: 'png', multiplier: EXPORT_MULTIPLIER }));
-    downloadURL(url, exportFileName('png'));
+    downloadURL(this.toDataURL({ format: 'png' }), exportFileName('png'));
   },
 
   svg() {
     if (!this.ensureContent()) return;
-    const svg = this.withExportBackground(() => canvas.toSVG());
-    const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+    const url = URL.createObjectURL(new Blob([this.toSVG()], { type: 'image/svg+xml;charset=utf-8' }));
     downloadURL(url, exportFileName('svg'));
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   },
@@ -1652,7 +1867,7 @@ function updateStatus() {
   const count = canvas.getObjects().length;
   dom.statusTool.textContent = state.cropping ? 'Rognage' : (TOOL_LABELS[state.tool] || state.tool);
   dom.statusCount.textContent = count;
-  dom.statusSize.textContent = `${canvas.getWidth()} × ${canvas.getHeight()}`;
+  dom.statusSize.textContent = `${state.page.width} × ${state.page.height}`;
   dom.emptyState.hidden = count > 0;
 }
 
@@ -1778,11 +1993,11 @@ const Help = {
    11. RACCOURCIS CLAVIER
    ========================================================================== */
 
-const SHORTCUTS = { v: 'select', r: 'rect', e: 'ellipse', b: 'brush', p: 'brush', t: 'text' };
+const SHORTCUTS = { v: 'select', r: 'rect', e: 'ellipse', l: 'line', b: 'brush', t: 'text' }; // complété par les modules (P = Plume)
 
 function bindKeyboard() {
   document.addEventListener('keydown', (e) => {
-    if (dom.helpDialog.open) return; // la fenêtre d'aide gère Échap elle-même
+    if (document.querySelector('dialog[open]') || document.body.classList.contains('is-overlay')) return; // fenêtre ouverte : elle gère ses touches
 
     const mod = e.metaKey || e.ctrlKey; // ⌘ sur Mac, Ctrl ailleurs
     const key = e.key.toLowerCase();
@@ -1800,7 +2015,8 @@ function bindKeyboard() {
     // Zoom de la zone de travail (remplace le zoom de la page du navigateur)
     if (mod && (key === '=' || key === '+')) { e.preventDefault(); Viewport.zoomBy(ZOOM_STEP); return; }
     if (mod && (key === '-' || key === '_')) { e.preventDefault(); Viewport.zoomBy(1 / ZOOM_STEP); return; }
-    if (mod && key === '0') { e.preventDefault(); Viewport.reset(); return; }
+    if (mod && key === '0') { e.preventDefault(); Viewport.fit(); return; }
+    if (mod && key === '1') { e.preventDefault(); Viewport.actualSize(); return; }
 
     // Espace maintenue : déplacement de la vue
     if (e.code === 'Space') {
@@ -1835,6 +2051,9 @@ function bindKeyboard() {
       if (e.key === 'Escape') { e.preventDefault(); Cropper.cancel(); }
       return;
     }
+
+    // Raccourcis des modules (alignement, groupes, plume…)
+    if (Keys.run(e, { mod, key })) return;
 
     // Suppression de la sélection (Suppr, et Retour arrière pour Mac)
     if (e.key === 'Delete' || e.key === 'Backspace') {
@@ -1898,6 +2117,70 @@ function isTyping(e) {
    ========================================================================== */
 
 const isImage = (obj) => obj?.type === 'image';
+
+/** Nom affiché d'un objet (calques, panneau) */
+function objectLabel(obj) {
+  if (!obj) return '';
+  if (obj.name) return obj.name;
+  return TYPE_LABELS[obj.shapeKind] || TYPE_LABELS[obj.type] || 'Objet';
+}
+
+/** Échappe un texte destiné à innerHTML */
+function escapeHTML(str) {
+  return String(str).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/**
+ * Fenêtre modale (<dialog class="sheet">) construite à la demande par les modules.
+ * Sheet.create({ title, body, foot }) → { el, body, foot, open(), close() }
+ */
+const Sheet = {
+  create({ title, body = '', foot = '', wide = false }) {
+    const el = html(`
+      <dialog class="sheet${wide ? ' sheet-wide' : ''}">
+        <div class="sheet-head">
+          <h2>${escapeHTML(title)}</h2>
+          <button class="chip chip-icon" type="button" data-close aria-label="Fermer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+          </button>
+        </div>
+        <div class="sheet-body">${body}</div>
+        ${foot ? `<div class="sheet-foot">${foot}</div>` : ''}
+      </dialog>`);
+    document.body.appendChild(el);
+    el.addEventListener('click', (e) => {
+      if (e.target === el || e.target.closest('[data-close]')) el.close();
+    });
+    return {
+      el,
+      body: el.querySelector('.sheet-body'),
+      foot: el.querySelector('.sheet-foot'),
+      $: (sel) => el.querySelector(sel),
+      $$: (sel) => [...el.querySelectorAll(sel)],
+      open() { if (!el.open) el.showModal(); },
+      close() { el.close(); },
+    };
+  },
+};
+
+/** Charge un script externe une seule fois (bibliothèques utilisées rarement : PDF, vectorisation) */
+const loadScript = (() => {
+  const cache = {};
+  return (src) => (cache[src] ||= new Promise((resolve, reject) => {
+    const tag = document.createElement('script');
+    tag.src = src;
+    tag.onload = resolve;
+    tag.onerror = () => { delete cache[src]; reject(new Error('Chargement impossible : vérifiez votre connexion.')); };
+    document.head.appendChild(tag);
+  }));
+})();
+
+/** Petit constructeur DOM : html('<div class="x">…</div>') → élément */
+function html(markup) {
+  const tpl = document.createElement('template');
+  tpl.innerHTML = markup.trim();
+  return tpl.content.firstElementChild;
+}
 const isText = (obj) => ['i-text', 'textbox', 'text'].includes(obj?.type);
 const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
@@ -1907,6 +2190,26 @@ function toHex(color) {
   const c = new fabric.Color(color);
   if (c.getAlpha() === 0) return null;
   return `#${c.toHex().toLowerCase()}`;
+}
+
+/**
+ * Réduit une image dont le grand côté dépasse maxSide (les filtres photo WebGL
+ * sont limités à 4096 px). Les images plus petites sont renvoyées telles quelles.
+ */
+async function limitImageSize(dataUrl, maxSide) {
+  const img = await new Promise((resolve, reject) => {
+    const el = new Image();
+    el.onload = () => resolve(el);
+    el.onerror = () => reject(new Error('Image illisible.'));
+    el.src = dataUrl;
+  });
+  const ratio = maxSide / Math.max(img.naturalWidth, img.naturalHeight);
+  if (ratio >= 1) return dataUrl;
+  const off = document.createElement('canvas');
+  off.width = Math.round(img.naturalWidth * ratio);
+  off.height = Math.round(img.naturalHeight * ratio);
+  off.getContext('2d').drawImage(img, 0, 0, off.width, off.height);
+  return off.toDataURL(dataUrl.startsWith('data:image/jpeg') ? 'image/jpeg' : 'image/png', 0.92);
 }
 
 function readFileAsDataURL(fileOrBlob) {
@@ -1956,7 +2259,11 @@ function toast(message, type = 'info', duration = 3200) {
    ========================================================================== */
 
 function bindUI() {
-  dom.toolButtons.forEach((btn) => btn.addEventListener('click', () => setTool(btn.dataset.tool)));
+  dom.toolButtons.forEach((btn) => {
+    if (btn.closest('.rail-flyout')) return; // menu des formes : géré par ShapeMenu
+    btn.addEventListener('click', () => setTool(btn.dataset.tool));
+  });
+  ShapeMenu.bind();
 
   dom.btnImport.addEventListener('click', () => ImageImporter.openFileDialog());
   dom.fileInput.addEventListener('change', (e) => ImageImporter.importFiles(e.target.files));
@@ -1980,7 +2287,7 @@ function bindUI() {
   dom.btnDelete.addEventListener('click', deleteSelection);
 }
 
-async function init() {
+function init() {
   Theme.init();
   resizeCanvasToContainer();
   new ResizeObserver(resizeCanvasToContainer).observe(dom.canvasWrap);
@@ -1996,14 +2303,15 @@ async function init() {
   bindKeyboard();
 
   setTool('select');
+  Hooks.emit('init');
 
-  // Reprend le dernier document enregistré dans ce navigateur
-  const restored = await Autosave.restore();
-  History.init(); // premier instantané : le document restauré, ou le canvas vide
-  if (restored) toast('Votre dernier document a été restauré');
+  // Chargement du document : js/projects.js (galerie, verrouillage) s'en charge
+  if (Hooks.has('boot')) Hooks.emit('boot');
+  else Doc.open(null);
 
   // Les polices Google arrivent après le premier rendu : on redessine une fois chargées
   document.fonts?.ready.then(() => canvas.requestRenderAll());
 }
 
-init();
+// Lancement une fois tous les scripts chargés (les modules js/ s'enregistrent avant)
+document.addEventListener('DOMContentLoaded', init);

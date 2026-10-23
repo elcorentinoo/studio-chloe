@@ -97,11 +97,22 @@
           <button class="rail-btn" data-tool="select" type="button" title="Sélection (V)" aria-label="Sélection">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 3.5 18 11l-5.6 1.7L10 18.5z"/></svg>
           </button>
-          <button class="rail-btn" data-tool="rect" type="button" title="Rectangle (R) — Maj pour un carré" aria-label="Rectangle">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="1.5"/></svg>
-          </button>
-          <button class="rail-btn" data-tool="ellipse" type="button" title="Ellipse (E) — Maj pour un cercle" aria-label="Ellipse">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg>
+          <div class="rail-flyout">
+            <button class="rail-btn has-more" id="btn-shapes" data-tool="rect" type="button" title="Formes — cliquez à nouveau pour les autres formes" aria-label="Formes" aria-haspopup="menu" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="1.5"/></svg>
+            </button>
+            <div class="flyout" id="shape-flyout" role="menu" aria-label="Formes" hidden>
+              <button class="flyout-item" data-tool="rect" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="1.5"/></svg><span>Rectangle</span><kbd>R</kbd></button>
+              <button class="flyout-item" data-tool="ellipse" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/></svg><span>Ellipse</span><kbd>E</kbd></button>
+              <button class="flyout-item" data-tool="line" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5"/></svg><span>Ligne</span><kbd>L</kbd></button>
+              <button class="flyout-item" data-tool="arrow" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M10 5h9v9"/></svg><span>Flèche</span></button>
+              <button class="flyout-item" data-tool="triangle" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4 21 19H3z"/></svg><span>Triangle</span></button>
+              <button class="flyout-item" data-tool="polygon" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/></svg><span>Polygone</span></button>
+              <button class="flyout-item" data-tool="star" type="button" role="menuitem"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg><span>Étoile</span></button>
+            </div>
+          </div>
+          <button class="rail-btn" data-tool="pen" type="button" title="Plume — courbes de Bézier (P)" aria-label="Plume">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19l7-7 3 3-7 7z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="m2 2 7.6 7.6"/><circle cx="11" cy="11" r="2"/></svg>
           </button>
           <button class="rail-btn" data-tool="brush" type="button" title="Pinceau (B)" aria-label="Pinceau">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5l4 4M4 20l1.2-4.6L16 4.6a1.4 1.4 0 0 1 2 0l1.4 1.4a1.4 1.4 0 0 1 0 2L8.6 18.8z"/></svg>
@@ -369,5 +380,13 @@
   <!-- Fabric.js 5.3 (API à callbacks, simple à utiliser en JS vanilla) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
   <script src="app.js"></script>
+  <!-- Modules (même portée globale que app.js, branchés via Hooks / Keys / Tools) -->
+  <script src="js/arrange.js"></script>
+  <script src="js/style-fx.js"></script>
+  <script src="js/formats.js"></script>
+  <script src="js/pen.js"></script>
+  <script src="js/library-data.js"></script>
+  <script src="js/library.js"></script>
+  <script src="js/projects.js"></script>
 </body>
 </html>

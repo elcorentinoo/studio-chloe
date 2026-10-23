@@ -16,7 +16,18 @@ Détourage : fonction Netlify `netlify/functions/remove-bg.mjs` (route `/api/rem
 8. `BackgroundRemover` — détourage via la fonction Netlify ; 8b. `History` — annuler/rétablir par instantanés JSON (debounce) ; 8c. `Autosave` — sauvegarde IndexedDB à chaque étape
 9. Utilitaires (suppression, effacer tout, export PNG/SVG)
 10. Thème clair/sombre (localStorage) & barre d'état ; 10b. `TextStyle` (gras/italique/souligné, `ensureFont`) & `Help` (fenêtre des raccourcis)
-11. Raccourcis clavier ; 12. Helpers ; 13. Démarrage
+11. Raccourcis clavier ; 12. Helpers (`Sheet` fenêtres, `loadScript`, `html`, `escapeHTML`) ; 13. Démarrage (`DOMContentLoaded`)
+
+Points d'extension : `Hooks` (init, boot, sync, change, docLoaded), `Keys.add()`, `Tools`, `ShapeFactory`, `SHORTCUTS`.
+Document = JSON Fabric (`SERIAL_PROPS`) + `page` (`Doc.serialize / load / open`).
+
+## Modules (`js/`, chargés après app.js, même portée globale)
+- `arrange.js` — alignement, groupes, guides magnétiques, grille, règles, panneau Calques
+- `style-fx.js` — pipette, nuanciers, dégradés, arrondis, ombre, filtres photo
+- `formats.js` — formats de page, redimensionnement magique, fenêtre d'export (PDF via jsPDF)
+- `pen.js` — Plume et édition des points
+- `library.js` + `library-data.js` — modèles, icônes Lucide (ISC), stickers, vectorisation (ImageTracer)
+- `projects.js` — IndexedDB (projets, docs, tableaux, meta), galerie Pinterest, coffre chiffré (passkey PRF + code de secours)
 
 ## Identité visuelle
 - Thème « glass » jaune-vert : lime `#d4f04c`, olive `#25300b`, mousse `#7c9425`, crème `#f4f2e4`

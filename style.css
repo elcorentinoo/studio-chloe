@@ -1008,3 +1008,12 @@ body.is-locked .app { visibility: hidden; }
 .artboard-item { flex-wrap: wrap; }
 .artboard-item .slice-name { min-width: 60px; }
 .ab-dims { display: flex; align-items: center; gap: 4px; flex-basis: 100%; padding: 0 0 6px 26px; }
+
+/* Contours avancés (js/stroke-pro.js) */
+.stroke-options { border: 1px solid var(--line); border-radius: 16px; padding: 0 12px; background: var(--chip); }
+.stroke-options summary { padding: 10px 0; font-size: 12px; font-weight: 500; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+.stroke-options summary::after { content: "▾"; color: var(--ink-muted); }
+.stroke-options[open] summary::after { content: "▴"; }
+.stroke-options-body { display: flex; flex-direction: column; gap: 8px; padding-bottom: 12px; }
+.dash-controls, .arrow-controls { display: flex; flex-direction: column; gap: 6px; }
+.input-sm { height: 32px; padding: 0 10px; font-size: 12px; }

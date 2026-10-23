@@ -29,6 +29,9 @@ const ALIGN_ICONS = {
 };
 
 const Arrange = {
+  /** Plan de travail de référence pour aligner un objet seul (remplacé par js/artboards.js) */
+  pageRect() { return { left: 0, top: 0, width: state.page.width, height: state.page.height }; },
+
   /** Boîte englobante absolue d'un objet (hors sélection) */
   rect: (o) => o.getBoundingRect(true, true),
 
@@ -62,7 +65,7 @@ const Arrange = {
       const rects = objs.map(this.rect);
       const ref = objs.length > 1
         ? this.union(rects)
-        : { left: 0, top: 0, width: state.page.width, height: state.page.height };
+        : this.pageRect(objs[0]);
       objs.forEach((o, i) => {
         const r = rects[i];
         let dx = 0;

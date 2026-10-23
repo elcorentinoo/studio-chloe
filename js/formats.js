@@ -273,7 +273,7 @@ const ExportDialog = {
     const { $, $$ } = this.sheet;
     const { format, scale, transparent } = this.opts;
     const hasSel = Boolean(canvas.getActiveObject());
-    if (!hasSel) this.opts.area = 'page';
+    if (!hasSel && this.opts.area === 'selection') this.opts.area = 'page';
     $$('[data-export]').forEach((b) => b.classList.toggle('is-active', b.dataset.export === format));
     $$('[data-scale]').forEach((b) => b.classList.toggle('is-active', Number(b.dataset.scale) === scale));
     $$('[data-area]').forEach((b) => b.classList.toggle('is-active', b.dataset.area === this.opts.area));

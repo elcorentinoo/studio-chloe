@@ -1000,3 +1000,11 @@ body.is-locked .app { visibility: hidden; }
 .pf-btn { display: flex; flex-direction: column; gap: 3px; height: auto; padding: 7px 2px 5px; }
 .pf-btn svg { width: 20px; height: 20px; }
 .pf-btn span { font-size: 9.5px; line-height: 1.1; color: var(--ink-muted); text-align: center; }
+
+/* Plans de travail (js/artboards.js) */
+.artboards { display: flex; flex-direction: column; gap: 8px; }
+.ab-go { border: none; cursor: pointer; background: var(--moss); }
+.ab-size { width: 52px; height: 26px; padding: 0 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--glass-strong); color: var(--ink); font-size: 11px; }
+.artboard-item { flex-wrap: wrap; }
+.artboard-item .slice-name { min-width: 60px; }
+.ab-dims { display: flex; align-items: center; gap: 4px; flex-basis: 100%; padding: 0 0 6px 26px; }

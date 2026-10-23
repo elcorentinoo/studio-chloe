@@ -8,7 +8,15 @@
 - Bouton « i » : fenêtre des raccourcis clavier (aussi avec la touche ?)
 - Sauvegarde automatique dans le navigateur (IndexedDB) : le document est restauré au rechargement
 
-## 📋 À publier — par ordre de priorité suggéré
+## 🔜 Prochaines features (demandées par Corentin)
+| # | Feature | Impact | Effort | Notes d'implémentation |
+| --- | --- | --- | --- | --- |
+| 1 | **Galerie de projets façon Pinterest** : tableaux (collections), mosaïque de miniatures, ouvrir / renommer / dupliquer / supprimer, passer d'un projet à l'autre | fort | M | Étend `Autosave` : un document par projet dans IndexedDB + miniature (`toDataURL` réduit) ; vue galerie en grille masonry CSS (`columns`). Gratuit |
+| 2 | **Verrouillage par empreinte** (Touch ID / Face ID / Windows Hello) : seule la propriétaire ouvre ses projets | fort | M | Passkey WebAuthn. Pour une vraie protection (pas un simple écran) : la clé de chiffrement des projets est dérivée de la passkey (extension PRF) et les projets sont chiffrés (AES-GCM). Verrouillage auto après inactivité |
+| 3 | **Sauvegarde de secours chiffrée** (fichier `.chloe`) | fort | S | Indispensable avec le n°2 : si l'appareil ou la passkey est perdu, les projets restent récupérables |
+| 4 | *(option)* **Synchro entre appareils** (Mac ↔ iPhone) | moyen | L | Fonction Netlify + Netlify Blobs, vérification WebAuthn côté serveur (`@simplewebauthn/server`), inscription fermée après la 1re passkey |
+
+## 📋 À publier ensuite — par ordre de priorité suggéré
 Impact : fort / moyen / faible · Effort : S / M / L
 
 ### Quick wins
@@ -18,7 +26,6 @@ Impact : fort / moyen / faible · Effort : S / M / L
 | Nouvelles formes : ligne, flèche, triangle, étoile, polygone, coins arrondis | moyen | S | Entrées `ShapeFactory` + `createDragShapeTool()` ; `rx/ry` pour les coins |
 | Pipette & nuanciers (palette de marque) | moyen | S | API `EyeDropper`, repli lecture de pixel ; nuanciers en localStorage |
 | Exports JPG / WebP / PDF, 1×–4×, sélection seule | moyen | S | `toDataURL` (zone + multiplicateur) ; PDF via jsPDF (cdnjs) |
-| Fichier projet `.chloe` (exporter / ouvrir) | moyen | S | Le JSON est déjà produit par `History.snapshot()` |
 
 ### Gros morceaux
 | Feature | Impact | Effort | Notes d'implémentation |
@@ -29,7 +36,6 @@ Impact : fort / moyen / faible · Effort : S / M / L
 | Plume (Bézier) + édition des points | fort | L | Squelette déjà en commentaire dans `Tools` |
 | Dégradés, ombres, flou, filtres photo | fort | M | `fabric.Gradient`, `fabric.Shadow`, `fabric.Image.filters` |
 | Modèles, icônes & stickers | fort | M–L | JSON dans `/templates/` + SVG libres (Lucide / Iconify) |
-| Comptes & projets en ligne | fort | L | Supabase ou Netlify Blobs ; données perso (RGPD) |
 | Mobile / tablette : pincer pour zoomer au doigt, panneau en tiroir, PWA hors-ligne | fort | M | Pointer events, `manifest.webmanifest`, service worker |
 
 ### Effet waouh

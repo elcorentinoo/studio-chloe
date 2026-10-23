@@ -965,3 +965,12 @@ body.is-locked .app { visibility: hidden; }
 .flyout-item:not(.is-checked)[role="menuitemcheckbox"]::before { content: ""; width: 14px; }
 .flyout-item:disabled { opacity: .4; cursor: not-allowed; }
 .flyout-note { max-width: 250px; margin: 4px 10px 6px; color: var(--ink-muted); font-size: 11px; line-height: 1.4; }
+
+/* ==========================================================================
+   Flèche noire / flèche blanche (js/direct.js)
+   ========================================================================== */
+.rail-btn-arrow-black svg path { fill: currentColor; }
+.rail-btn-arrow-white svg path { fill: #ffffff; stroke: var(--ink); }
+.rail-btn-arrow-white.is-active svg path { fill: #ffffff; stroke: var(--primary-ink); }
+:root[data-theme="dark"] .rail-btn-arrow-white svg path { fill: transparent; stroke: var(--ink); }
+:root[data-theme="dark"] .rail-btn-arrow-white.is-active svg path { fill: #ffffff; stroke: var(--olive); }

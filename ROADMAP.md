@@ -6,6 +6,7 @@
 - Repères : glisser depuis les règles, déplacer, supprimer sur la règle, aimantation, afficher (⌘;) / verrouiller (⌘⌥;), enregistrés avec le document
 - Miroir horizontal / vertical de la sélection (Maj + H / Maj + V), objets, images, groupes ou sélection multiple
 - Flèche noire (V : objets et groupes) et flèche blanche (A : sélection directe des points et poignées, conversion des formes en tracés) ; double-clic sur toute forme pour éditer ses points
+- Rognage rapide (Maj + C) : tracez un cadre, les éléments touchés (ou la sélection) sont rognés — vrai rognage pour les images droites, masque pour le reste, « Retirer le rognage »
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

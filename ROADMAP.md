@@ -29,6 +29,7 @@
 - Symboles (instances liées, redéfinir l'original met à jour toutes les instances) et couleurs globales (modifier la couleur recolore tous les objets liés) — nouvel onglet Symboles
 - Import / export avancés : ouverture des PDF et .ai compatibles PDF (pdf.js, une page = un plan de travail, vecteurs ou image), import SVG par glisser-déposer, export SVG optimisé
 - Typographie pro : catalogue complet des Google Fonts (recherche, catégories, aperçu, polices récentes), graisse, alignements, interlettrage, interlignage, casse
+- Panneau Aspect : plusieurs fonds et contours empilés sur un même objet (couleur, épaisseur, opacité, ordre), exportés en SVG
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

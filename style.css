@@ -1040,3 +1040,14 @@ body.is-locked .app { visibility: hidden; }
 .font-item:hover, .font-item:focus-visible { border-color: var(--moss); outline: none; }
 .font-sample { font-size: 22px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .font-item small { color: var(--ink-muted); font-size: 11px; }
+
+/* Panneau Aspect (js/appearance.js) */
+.appearance-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ap-item { display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 2px 4px 2px 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--tile); }
+.ap-item input[type="color"] { width: 26px; height: 26px; flex-shrink: 0; }
+.ap-kind { min-width: 48px; font-size: 12px; font-weight: 500; }
+.ap-base small { color: var(--ink-muted); font-size: 11px; }
+.ap-opacity { flex: 1; min-width: 40px; }
+.ap-item .layer-btn { width: 24px; height: 24px; flex-shrink: 0; }
+.ap-item .ab-size { width: 42px; flex-shrink: 0; }
+.ap-item .ap-kind { min-width: 44px; }

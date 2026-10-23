@@ -984,3 +984,4 @@ body.is-locked .app { visibility: hidden; }
 .flyout-item svg { width: 18px; height: 18px; }
 .spray-source { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .spray-source strong { font: 500 13px var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.chart-data { font: 13px/1.5 var(--mono); }

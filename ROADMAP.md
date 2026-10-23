@@ -25,6 +25,7 @@
 - Plans de travail multiples : liste dans la tuile Page, outil Plan de travail (Maj + O, déplacement avec le contenu), alignement sur le plan, export par plan ou de tous les plans (PDF multipage, ZIP)
 - Concepteur de forme (Maj + M) : glisser à travers les zones qui se chevauchent pour les fusionner, Alt pour les effacer
 - Contours avancés : extrémités, jointures, pointillés réglables, pointes de flèche début / fin (flèche, triangle, cercle, barre), vectoriser le contour
+- Décalage du tracé (positif / négatif) : copie agrandie ou rétrécie placée sous l'original, tracés ouverts entourés
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

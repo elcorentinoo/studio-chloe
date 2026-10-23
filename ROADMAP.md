@@ -33,6 +33,7 @@
 - Effets de distorsion : déformation par enveloppe (arc, arche, renflement, drapeau, vague, poisson, montée, gonflement, torsion) avec aperçu, et transformation répétée (copies avec décalage, rotation, échelle, fondu)
 - Motifs : remplissage « Motif » (pois, rayures, damier, vagues ou motif créé depuis la sélection), échelle, espacement, angle
 - Couleurs d'impression : sélecteur CMJN (remplissage et contour) et export PDF avec fonds perdus 3 mm + traits de coupe
+- Pinceaux artistiques (Maj + B) : calligraphique (angle et rondeur de plume), à la vitesse, à motif (la sélection répétée le long du trait)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

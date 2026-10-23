@@ -9,7 +9,8 @@
   <!-- Polices : Outfit (titres, chiffres) + Inter (interface) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- + typographies proposées dans le panneau Texte (les fichiers ne sont téléchargés qu'à l'usage) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Outfit:wght@400;500;600;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&family=Space+Grotesk:wght@400;700&family=Oswald:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lora:ital,wght@0,400;0,700;1,400;1,700&family=DM+Serif+Display:ital@0;1&family=Bebas+Neue&family=Archivo+Black&family=Lobster&family=Pacifico&family=Dancing+Script:wght@400;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
 
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -117,10 +118,13 @@
           <button class="rail-btn" id="btn-crop-tool" type="button" title="Rogner l'image sélectionnée (C ou double-clic)" aria-label="Rogner l'image" disabled>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
           </button>
-          <input type="file" id="file-input" accept="image/png,image/jpeg" multiple hidden>
+          <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" multiple hidden>
         </div>
 
         <div class="rail-group rail-group-end">
+          <button class="rail-btn" id="btn-help" type="button" title="Raccourcis clavier (?)" aria-label="Raccourcis clavier">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".6" fill="currentColor"/></svg>
+          </button>
           <button class="rail-btn" data-theme-set="dark" type="button" title="Thème sombre" aria-label="Thème sombre">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
           </button>
@@ -150,11 +154,22 @@
           </div>
         </div>
 
+        <!-- Zoom de la zone de travail -->
+        <div class="pill zoom-pill" role="group" aria-label="Zoom">
+          <button class="chip chip-icon" id="btn-zoom-out" type="button" title="Zoom arrière (⌘/Ctrl + −)" aria-label="Zoom arrière">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>
+          </button>
+          <button class="chip zoom-value" id="btn-zoom-reset" type="button" title="Revenir à 100 % (⌘/Ctrl + 0)">100 %</button>
+          <button class="chip chip-icon" id="btn-zoom-in" type="button" title="Zoom avant (⌘/Ctrl + +)" aria-label="Zoom avant">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg>
+          </button>
+        </div>
+
         <div class="drop-overlay" aria-hidden="true">
           <span class="drop-icon">
             <svg viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4 18h16"/></svg>
           </span>
-          <span>Déposez votre image (JPG / PNG)</span>
+          <span>Déposez votre image (JPG / PNG / WebP)</span>
         </div>
       </section>
 
@@ -205,17 +220,49 @@
           <div class="field">
             <label class="field-label" for="prop-font-family">Police</label>
             <select class="input" id="prop-font-family">
-              <option value="Outfit">Outfit</option>
-              <option value="Inter">Inter</option>
-              <option value="Arial">Arial</option>
-              <option value="Georgia">Georgia</option>
-              <option value="Courier New">Courier New</option>
-              <option value="Impact">Impact</option>
+              <optgroup label="Sans-serif">
+                <option value="Outfit" style="font-family:'Outfit'">Outfit</option>
+                <option value="Inter" style="font-family:'Inter'">Inter</option>
+                <option value="Montserrat" style="font-family:'Montserrat'">Montserrat</option>
+                <option value="Poppins" style="font-family:'Poppins'">Poppins</option>
+                <option value="Space Grotesk" style="font-family:'Space Grotesk'">Space Grotesk</option>
+                <option value="Oswald" style="font-family:'Oswald'">Oswald</option>
+              </optgroup>
+              <optgroup label="Serif">
+                <option value="Playfair Display" style="font-family:'Playfair Display'">Playfair Display</option>
+                <option value="Lora" style="font-family:'Lora'">Lora</option>
+                <option value="DM Serif Display" style="font-family:'DM Serif Display'">DM Serif Display</option>
+              </optgroup>
+              <optgroup label="Affichage">
+                <option value="Bebas Neue" style="font-family:'Bebas Neue'">Bebas Neue</option>
+                <option value="Archivo Black" style="font-family:'Archivo Black'">Archivo Black</option>
+                <option value="Lobster" style="font-family:'Lobster'">Lobster</option>
+              </optgroup>
+              <optgroup label="Manuscrites">
+                <option value="Pacifico" style="font-family:'Pacifico'">Pacifico</option>
+                <option value="Dancing Script" style="font-family:'Dancing Script'">Dancing Script</option>
+                <option value="Caveat" style="font-family:'Caveat'">Caveat</option>
+              </optgroup>
+              <optgroup label="Système">
+                <option value="Arial" style="font-family:'Arial'">Arial</option>
+                <option value="Georgia" style="font-family:'Georgia'">Georgia</option>
+                <option value="Courier New" style="font-family:'Courier New'">Courier New</option>
+                <option value="Impact" style="font-family:'Impact'">Impact</option>
+              </optgroup>
             </select>
           </div>
           <div class="field">
             <label class="field-label" for="prop-font-size">Taille (px)</label>
             <input class="input" type="number" id="prop-font-size" min="6" max="400" step="1">
+          </div>
+          <div class="field">
+            <span class="field-label">Style</span>
+            <div class="seg" role="group" aria-label="Style du texte">
+              <button class="seg-btn" id="btn-bold" type="button" title="Gras (⌘/Ctrl + B)" aria-label="Gras" aria-pressed="false"><b>G</b></button>
+              <button class="seg-btn" id="btn-italic" type="button" title="Italique (⌘/Ctrl + I)" aria-label="Italique" aria-pressed="false"><i>I</i></button>
+              <button class="seg-btn" id="btn-underline" type="button" title="Souligné (⌘/Ctrl + U)" aria-label="Souligné" aria-pressed="false"><u>S</u></button>
+            </div>
+            <p class="field-note">En édition, le style s'applique aux lettres sélectionnées.</p>
           </div>
         </section>
 
@@ -260,6 +307,61 @@
       </aside>
     </main>
   </div>
+
+  <!-- Aide : raccourcis clavier -->
+  <dialog class="help-dialog" id="help-dialog" aria-labelledby="help-title">
+    <div class="help-head">
+      <h2 id="help-title">Raccourcis clavier</h2>
+      <button class="chip chip-icon" id="btn-help-close" type="button" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="help-grid">
+      <section>
+        <h3>Outils</h3>
+        <dl>
+          <div><dt><kbd>V</kbd></dt><dd>Sélection</dd></div>
+          <div><dt><kbd>R</kbd></dt><dd>Rectangle (Maj : carré)</dd></div>
+          <div><dt><kbd>E</kbd></dt><dd>Ellipse (Maj : cercle)</dd></div>
+          <div><dt><kbd>B</kbd></dt><dd>Pinceau</dd></div>
+          <div><dt><kbd>T</kbd></dt><dd>Texte</dd></div>
+          <div><dt><kbd>I</kbd></dt><dd>Importer une image</dd></div>
+          <div><dt><kbd>C</kbd> ou double-clic</dt><dd>Rogner l'image (Entrée valide, Échap annule)</dd></div>
+        </dl>
+      </section>
+      <section>
+        <h3>Édition</h3>
+        <dl>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>C</kbd></dt><dd>Copier</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>V</kbd></dt><dd>Coller (objet, image ou texte copiés ailleurs)</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>D</kbd></dt><dd>Dupliquer</dd></div>
+          <div><dt><kbd>Suppr</kbd></dt><dd>Supprimer la sélection</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>Z</kbd></dt><dd>Annuler</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>Maj</kbd> + <kbd>Z</kbd></dt><dd>Rétablir</dd></div>
+          <div><dt><kbd>Échap</kbd></dt><dd>Désélectionner</dd></div>
+        </dl>
+      </section>
+      <section>
+        <h3>Texte (en édition)</h3>
+        <dl>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>B</kbd></dt><dd>Gras</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>I</kbd></dt><dd>Italique</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>U</kbd></dt><dd>Souligné</dd></div>
+        </dl>
+      </section>
+      <section>
+        <h3>Vue</h3>
+        <dl>
+          <div><dt><kbd>⌘/Ctrl</kbd> + molette, ou pincer</dt><dd>Zoomer sur la zone de travail</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>+</kbd> / <kbd>−</kbd></dt><dd>Zoom avant / arrière</dd></div>
+          <div><dt><kbd>⌘/Ctrl</kbd> + <kbd>0</kbd></dt><dd>Revenir à 100 %</dd></div>
+          <div><dt><kbd>Espace</kbd> + glisser</dt><dd>Se déplacer</dd></div>
+          <div><dt>Molette</dt><dd>Défiler (Maj : horizontalement)</dd></div>
+          <div><dt><kbd>?</kbd></dt><dd>Afficher cette aide</dd></div>
+        </dl>
+      </section>
+    </div>
+  </dialog>
 
   <!-- Notifications -->
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

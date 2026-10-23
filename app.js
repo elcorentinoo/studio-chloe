@@ -8,15 +8,19 @@
  *    1.  Configuration (clé API Remove.bg, styles par défaut)
  *    2.  État global & références DOM
  *    3.  Initialisation du canvas Fabric + responsive
+ *    3b. Vue : zoom & déplacement (Viewport)
  *    4.  Fabrique de formes (ShapeFactory)      ← ajouter de nouvelles formes ici
  *    5.  Outils (Tools) + routage souris         ← ajouter de nouveaux outils ici (ex : Plume / Bézier)
  *    6.  Panneau de propriétés
  *    7.  Import d'images (bouton + glisser-déposer)
  *    7b. Rognage d'image (Cropper)
+ *    7c. Presse-papiers : copier / coller / dupliquer (Clipboard)
  *    8.  Détourage via l'API Remove.bg
  *    8b. Historique : annuler / rétablir (History)
+ *    8c. Sauvegarde automatique dans le navigateur (Autosave)
  *    9.  Utilitaires : suppression, effacement, export PNG / SVG
  *    10. Thème clair / sombre & barre d'état
+ *    10b. Styles de texte (TextStyle) & aide des raccourcis (Help)
  *    11. Raccourcis clavier
  *    12. Helpers génériques
  *    13. Démarrage
@@ -52,7 +56,13 @@ const UPLOAD_MAX_SIDE = 2000;
  */
 const REMOVE_BG_SIZE = 'preview';
 
-const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg'];
+const ACCEPTED_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
+
+/** Zoom de la zone de travail */
+const ZOOM_MIN = 0.1;
+const ZOOM_MAX = 8;
+const ZOOM_STEP = 1.25;       // facteur des boutons + / − et de ⌘+ / ⌘−
+const PASTE_OFFSET = 20;      // px — décalage d'un objet collé ou dupliqué
 
 /** Style appliqué aux nouveaux objets (modifiable depuis le panneau) */
 const DEFAULT_STYLE = Object.freeze({
@@ -103,6 +113,9 @@ const state = {
   drawing: null,             // forme en cours de tracé : { obj, origin }
   isRemovingBg: false,       // requête Remove.bg en cours
   cropping: null,            // rognage en cours : { img, rect, saved }
+  spaceDown: null,           // Espace maintenue (mode « main ») : réglages Fabric mémorisés
+  panning: null,             // déplacement de la vue en cours : { x, y }
+  exporting: false,          // export en cours : la page n'est pas dessinée par drawPage()
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -162,6 +175,18 @@ const dom = {
   btnBack: $('#btn-back'),
   btnDelete: $('#btn-delete'),
 
+  btnBold: $('#btn-bold'),
+  btnItalic: $('#btn-italic'),
+  btnUnderline: $('#btn-underline'),
+
+  btnZoomIn: $('#btn-zoom-in'),
+  btnZoomOut: $('#btn-zoom-out'),
+  btnZoomReset: $('#btn-zoom-reset'),
+
+  btnHelp: $('#btn-help'),
+  helpDialog: $('#help-dialog'),
+  btnHelpClose: $('#btn-help-close'),
+
   toast: $('#toast'),
 };
 
@@ -169,8 +194,10 @@ const dom = {
    3. CANVAS FABRIC
    ========================================================================== */
 
+// Pas de backgroundColor : Fabric le peindrait sur tout le canvas, même en zoom
+// arrière. La page blanche est dessinée par drawPage() à la bonne échelle, et
+// le fond n'est ajouté qu'au moment de l'export (voir Exporter).
 const canvas = new fabric.Canvas('c', {
-  backgroundColor: CANVAS_BG,
   preserveObjectStacking: true, // l'objet sélectionné ne passe pas automatiquement au premier plan
   selectionColor: 'rgba(212, 240, 76, 0.18)',
   selectionBorderColor: '#7c9425',
@@ -190,6 +217,18 @@ fabric.Object.prototype.set({
   padding: 2,
 });
 
+/** Dessine la page blanche (zone exportée) en tenant compte du zoom */
+function drawPage({ ctx }) {
+  if (state.exporting) return; // l'export gère lui-même son fond (blanc ou transparent)
+  const v = canvas.viewportTransform;
+  ctx.save();
+  ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
+  ctx.fillStyle = CANVAS_BG;
+  ctx.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+  ctx.restore();
+}
+canvas.on('before:render', drawPage);
+
 /** Ajuste la taille du canvas à son conteneur (appelé à chaque redimensionnement) */
 function resizeCanvasToContainer() {
   const { clientWidth, clientHeight } = dom.canvasWrap;
@@ -199,6 +238,135 @@ function resizeCanvasToContainer() {
   canvas.requestRenderAll();
   updateStatus();
 }
+
+/* ============================================================================
+   3b. VUE : ZOOM & DÉPLACEMENT
+   ----------------------------------------------------------------------------
+   Le zoom agit sur la zone de travail seulement (viewportTransform de Fabric),
+   jamais sur la page entière :
+     - ⌘/Ctrl + molette ou pincement du trackpad : zoom centré sur la souris
+     - molette seule : défilement (Maj = horizontal)
+     - Espace + glisser : déplacement (« main »)
+     - ⌘/Ctrl + / − / 0 et la pilule en bas à droite
+   La « page » (fond blanc, zone exportée) reste le rectangle 0,0 → largeur × hauteur
+   du canvas à 100 % : en zoom arrière on voit la table de montage autour.
+   ========================================================================== */
+
+const Viewport = {
+  /** Zoome au facteur `zoom`, en gardant fixe le point `point` (coordonnées écran du canvas) */
+  setZoom(zoom, point = this.screenCenter()) {
+    canvas.zoomToPoint(new fabric.Point(point.x, point.y), clamp(zoom, ZOOM_MIN, ZOOM_MAX));
+    this.afterChange();
+  },
+
+  zoomBy(factor, point) { this.setZoom(canvas.getZoom() * factor, point); },
+
+  /** 100 %, page recadrée */
+  reset() {
+    canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    this.afterChange();
+  },
+
+  pan(dx, dy) {
+    canvas.relativePan(new fabric.Point(dx, dy));
+    this.afterChange();
+  },
+
+  afterChange() {
+    dom.btnZoomReset.textContent = `${Math.round(canvas.getZoom() * 100)} %`;
+    canvas.requestRenderAll();
+  },
+
+  screenCenter() { return { x: canvas.getWidth() / 2, y: canvas.getHeight() / 2 }; },
+
+  /** Point écran → coordonnées du document */
+  toScene(point) {
+    return fabric.util.transformPoint(point, fabric.util.invertTransform(canvas.viewportTransform));
+  },
+
+  /** Zone du document actuellement visible : { left, top, width, height } */
+  visibleBounds() {
+    const tl = this.toScene({ x: 0, y: 0 });
+    const br = this.toScene({ x: canvas.getWidth(), y: canvas.getHeight() });
+    return { left: tl.x, top: tl.y, width: br.x - tl.x, height: br.y - tl.y };
+  },
+
+  /** Centre de la zone visible, en coordonnées du document */
+  center() { return this.toScene(this.screenCenter()); },
+
+  /** Position de la souris relative au canvas (coordonnées écran) */
+  eventPoint(e) {
+    const r = canvas.upperCanvasEl.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  },
+
+  /** Espace maintenue : la souris déplace la vue au lieu d'agir avec l'outil */
+  setSpace(down) {
+    if (down === Boolean(state.spaceDown)) return;
+    if (down) {
+      state.spaceDown = {
+        isDrawingMode: canvas.isDrawingMode,
+        selection: canvas.selection,
+        skipTargetFind: canvas.skipTargetFind,
+      };
+      canvas.isDrawingMode = false;
+      canvas.selection = false;
+      canvas.skipTargetFind = true;
+    } else {
+      Object.assign(canvas, state.spaceDown);
+      state.spaceDown = null;
+      state.panning = null;
+      dom.stage.classList.remove('is-grabbing');
+    }
+    dom.stage.classList.toggle('is-panning', down);
+  },
+
+  /** Renvoie vrai si l'événement souris a été consommé par le déplacement de la vue */
+  handleMouse(type, e) {
+    if (!state.spaceDown) return false;
+    if (type === 'down') {
+      state.panning = { x: e.clientX, y: e.clientY };
+      dom.stage.classList.add('is-grabbing');
+    } else if (type === 'move' && state.panning) {
+      this.pan(e.clientX - state.panning.x, e.clientY - state.panning.y);
+      state.panning = { x: e.clientX, y: e.clientY };
+    } else if (type === 'up') {
+      state.panning = null;
+      dom.stage.classList.remove('is-grabbing');
+    }
+    return true;
+  },
+
+  bind() {
+    // Molette : { passive: false } pour pouvoir bloquer le zoom de la page entière
+    dom.stage.addEventListener('wheel', (e) => {
+      if (e.target.closest('.zoom-pill')) return;
+      e.preventDefault();
+      if (e.ctrlKey || e.metaKey) {
+        // Pincement trackpad = ctrl + molette avec de petits deltas → zoom fluide
+        this.zoomBy(0.99 ** clamp(e.deltaY, -50, 50), this.eventPoint(e));
+      } else {
+        const dx = e.shiftKey ? e.deltaY : e.deltaX;
+        const dy = e.shiftKey ? 0 : e.deltaY;
+        this.pan(-dx, -dy);
+      }
+    }, { passive: false });
+
+    // Safari (macOS) : pincement du trackpad via les « gesture events »
+    let gestureStart = 1;
+    dom.stage.addEventListener('gesturestart', (e) => { e.preventDefault(); gestureStart = canvas.getZoom(); });
+    dom.stage.addEventListener('gesturechange', (e) => {
+      e.preventDefault();
+      this.setZoom(gestureStart * e.scale, this.eventPoint(e));
+    });
+
+    dom.btnZoomIn.addEventListener('click', () => this.zoomBy(ZOOM_STEP));
+    dom.btnZoomOut.addEventListener('click', () => this.zoomBy(1 / ZOOM_STEP));
+    dom.btnZoomReset.addEventListener('click', () => this.reset());
+
+    window.addEventListener('blur', () => this.setSpace(false));
+  },
+};
 
 /* ============================================================================
    4. FABRIQUE DE FORMES
@@ -450,9 +618,13 @@ function routeToTool(handlerName, opt) {
 }
 
 function bindCanvasEvents() {
-  canvas.on('mouse:down', (opt) => routeToTool('onMouseDown', opt));
-  canvas.on('mouse:move', (opt) => routeToTool('onMouseMove', opt));
-  canvas.on('mouse:up', (opt) => routeToTool('onMouseUp', opt));
+  canvas.on('mouse:down', (opt) => Viewport.handleMouse('down', opt.e) || routeToTool('onMouseDown', opt));
+  canvas.on('mouse:move', (opt) => Viewport.handleMouse('move', opt.e) || routeToTool('onMouseMove', opt));
+  canvas.on('mouse:up', (opt) => Viewport.handleMouse('up', opt.e) || routeToTool('onMouseUp', opt));
+
+  // Gras / italique / souligné suivent la sélection de lettres pendant l'édition
+  canvas.on('text:selection:changed', () => TextStyle.sync());
+  canvas.on('text:editing:entered', () => TextStyle.sync());
 
   // Finalisation d'un tracé au pinceau
   canvas.on('path:created', ({ path }) => {
@@ -547,6 +719,7 @@ const Properties = {
     if (textObj) {
       dom.propFontFamily.value = textObj.fontFamily;
       dom.propFontSize.value = Math.round(textObj.fontSize);
+      TextStyle.sync();
     }
 
     // Détourage : actif uniquement si UNE image est sélectionnée
@@ -622,7 +795,10 @@ const Properties = {
     });
 
     // Texte
-    dom.propFontFamily.addEventListener('change', (e) => this.apply('fontFamily', e.target.value));
+    dom.propFontFamily.addEventListener('change', (e) => {
+      this.apply('fontFamily', e.target.value);
+      canvas.getActiveObjects().filter(isText).forEach(ensureFont); // charge la police puis redessine
+    });
     dom.propFontSize.addEventListener('input', (e) => {
       const size = clamp(Number(e.target.value) || 0, 6, 400);
       if (size) this.apply('fontSize', size);
@@ -660,7 +836,7 @@ const ImageImporter = {
   async importFiles(fileList, dropPoint = null) {
     const files = [...fileList].filter((f) => ACCEPTED_IMAGE_TYPES.includes(f.type));
     if (!files.length) {
-      toast('Format non supporté : utilisez des images JPG ou PNG.', 'error');
+      toast('Format non supporté : utilisez des images JPG, PNG ou WebP.', 'error');
       return;
     }
 
@@ -687,10 +863,10 @@ const ImageImporter = {
 
   /** Réduit l'image si nécessaire puis la centre sur le point de dépôt (ou le centre du canvas) */
   placeImage(img, point, index = 0) {
-    const cw = canvas.getWidth();
-    const ch = canvas.getHeight();
-    const scale = Math.min(1, (cw * IMAGE_MAX_RATIO) / img.width, (ch * IMAGE_MAX_RATIO) / img.height);
-    const center = point || { x: cw / 2, y: ch / 2 };
+    // Taille et centre calculés sur la zone VISIBLE (le zoom est pris en compte)
+    const view = Viewport.visibleBounds();
+    const scale = Math.min(1, (view.width * IMAGE_MAX_RATIO) / img.width, (view.height * IMAGE_MAX_RATIO) / img.height);
+    const center = point || Viewport.center();
     const offset = index * 24; // décale les imports multiples
 
     img.set({
@@ -734,11 +910,12 @@ const ImageImporter = {
       dom.stage.classList.remove('is-dragover');
       if (!e.dataTransfer?.files?.length) return;
 
-      // Position du dépôt convertie en coordonnées canvas (bornée à la zone visible)
+      // Position du dépôt convertie en coordonnées du document (bornée à la zone visible)
       const p = canvas.getPointer(e);
+      const view = Viewport.visibleBounds();
       const point = {
-        x: clamp(p.x, 0, canvas.getWidth()),
-        y: clamp(p.y, 0, canvas.getHeight()),
+        x: clamp(p.x, view.left, view.left + view.width),
+        y: clamp(p.y, view.top, view.top + view.height),
       };
       this.importFiles(e.dataTransfer.files, point);
     });
@@ -869,6 +1046,116 @@ const Cropper = {
     updateStatus();
   },
 };
+
+/* ============================================================================
+   7c. PRESSE-PAPIERS : COPIER / COLLER / DUPLIQUER
+   ----------------------------------------------------------------------------
+   On écoute les événements natifs copy / cut / paste du document :
+     - ⌘C / ⌘X : l'objet est cloné en mémoire, et un « marqueur » est écrit
+                 dans le presse-papiers système ;
+     - ⌘V      : une image du presse-papiers (capture d'écran, « Copier l'image »)
+                 est importée ; sinon, si le marqueur est présent, on colle
+                 l'objet copié ; sinon un texte copié ailleurs devient un objet Texte.
+   Pendant la saisie (champ, texte en édition), le navigateur garde la main.
+   ========================================================================== */
+
+const Clipboard = {
+  MARKER: 'studio-chloe:objets',
+  data: null, // clone Fabric de la dernière copie
+
+  copy(e, cut = false) {
+    if (isTyping(e) || state.cropping) return;
+    const active = canvas.getActiveObject();
+    if (!active) return;
+    e.preventDefault();
+    e.clipboardData?.setData('text/plain', this.MARKER);
+    active.clone((clone) => { this.data = clone; });
+    if (cut) deleteSelection();
+  },
+
+  paste(e) {
+    if (isTyping(e) || state.cropping || dom.helpDialog.open) return;
+    const cd = e.clipboardData;
+    if (!cd) return;
+
+    // 1. Image (fichier dans le presse-papiers)
+    const images = [...(cd.files || [])].filter((f) => ACCEPTED_IMAGE_TYPES.includes(f.type));
+    if (images.length) {
+      e.preventDefault();
+      ImageImporter.importFiles(images, Viewport.center());
+      return;
+    }
+
+    // 2. Objets copiés dans Studio Chloé, ou 3. texte copié ailleurs
+    const text = cd.getData('text/plain') || '';
+    if (text === this.MARKER || (!text.trim() && this.data)) {
+      e.preventDefault();
+      this.pasteObject();
+    } else if (text.trim()) {
+      e.preventDefault();
+      this.pasteText(text.trim().slice(0, 2000));
+    }
+  },
+
+  pasteObject() {
+    if (!this.data) return;
+    insertClone(this.data, (pasted) => {
+      // Les collages successifs s'empilent en escalier
+      this.data.set({ left: this.data.left + PASTE_OFFSET, top: this.data.top + PASTE_OFFSET });
+      return pasted;
+    });
+  },
+
+  pasteText(content) {
+    const c = Viewport.center();
+    const text = new fabric.IText(content, {
+      left: c.x,
+      top: c.y,
+      originX: 'center',
+      originY: 'center',
+      fontFamily: TEXT_DEFAULTS.fontFamily,
+      fontSize: TEXT_DEFAULTS.fontSize,
+      fill: TEXT_DEFAULTS.fill,
+      opacity: state.style.opacity,
+    });
+    setTool('select');
+    canvas.add(text);
+    canvas.setActiveObject(text);
+    canvas.requestRenderAll();
+  },
+
+  duplicate() {
+    const active = canvas.getActiveObject();
+    if (!active || state.cropping) return;
+    insertClone(active);
+  },
+
+  bind() {
+    document.addEventListener('copy', (e) => this.copy(e));
+    document.addEventListener('cut', (e) => this.copy(e, true));
+    document.addEventListener('paste', (e) => this.paste(e));
+  },
+};
+
+/** Clone `source` (objet ou sélection multiple), l'ajoute décalé et le sélectionne */
+function insertClone(source, done) {
+  source.clone((clone) => {
+    canvas.discardActiveObject();
+    clone.set({ left: clone.left + PASTE_OFFSET, top: clone.top + PASTE_OFFSET, evented: true });
+    if (clone.type === 'activeSelection') {
+      // Une sélection multiple clonée : on ajoute chacun de ses objets
+      clone.canvas = canvas;
+      clone.forEachObject((obj) => canvas.add(obj));
+      clone.setCoords();
+    } else {
+      canvas.add(clone);
+    }
+    setTool('select');
+    canvas.setActiveObject(clone);
+    canvas.requestRenderAll();
+    done?.(clone);
+  });
+}
 
 /* ============================================================================
    8. DÉTOURAGE — API REMOVE.BG
@@ -1136,6 +1423,7 @@ const History = {
     if (this.stack.length > this.MAX_STEPS) this.stack.shift();
     this.index = this.stack.length - 1;
     this.updateButtons();
+    Autosave.save(snap);
   },
 
   /** Enregistre immédiatement une demande en attente */
@@ -1166,8 +1454,11 @@ const History = {
     canvas.discardActiveObject();
     // loadFromJSON est asynchrone (les images doivent être rechargées)
     canvas.loadFromJSON(this.stack[this.index], () => {
+      canvas.backgroundColor = null;
+      refreshFonts();
       canvas.requestRenderAll();
       this.restoring = false;
+      Autosave.save(this.stack[this.index]);
       Properties.sync();
       updateStatus();
       this.updateButtons();
@@ -1177,6 +1468,79 @@ const History = {
   updateButtons() {
     dom.btnUndo.disabled = this.index <= 0;
     dom.btnRedo.disabled = this.index >= this.stack.length - 1;
+  },
+};
+
+/* ============================================================================
+   8c. SAUVEGARDE AUTOMATIQUE
+   ----------------------------------------------------------------------------
+   Chaque étape de l'historique est aussi enregistrée dans IndexedDB (le
+   localStorage est trop petit pour des images en data URL). Au chargement de
+   la page, le dernier document est restauré. Tout reste dans le navigateur :
+   rien n'est envoyé à un serveur.
+   ========================================================================== */
+
+const Autosave = {
+  DB_NAME: 'studio-chloe',
+  STORE: 'documents',
+  KEY: 'courant',
+  DELAY_MS: 400,
+  timer: null,
+  dbPromise: null,
+
+  db() {
+    if (!this.dbPromise) {
+      this.dbPromise = new Promise((resolve, reject) => {
+        const req = indexedDB.open(this.DB_NAME, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore(this.STORE);
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    return this.dbPromise;
+  },
+
+  async request(mode, action) {
+    const db = await this.db();
+    return new Promise((resolve, reject) => {
+      const req = action(db.transaction(this.STORE, mode).objectStore(this.STORE));
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  },
+
+  save(json) {
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.request('readwrite', (store) => store.put(json, this.KEY))
+        .catch((err) => console.warn('[Sauvegarde auto]', err));
+    }, this.DELAY_MS);
+  },
+
+  async load() {
+    try {
+      return await this.request('readonly', (store) => store.get(this.KEY));
+    } catch (err) {
+      console.warn('[Sauvegarde auto]', err);
+      return null;
+    }
+  },
+
+  /** Recharge le dernier document enregistré (s'il n'est pas vide) */
+  async restore() {
+    const json = await this.load();
+    if (!json || !JSON.parse(json).objects?.length) return false;
+    return new Promise((resolve) => {
+      History.restoring = true; // le chargement ne crée pas d'étapes
+      canvas.loadFromJSON(json, () => {
+        canvas.backgroundColor = null; // la page est dessinée par drawPage()
+        History.restoring = false;
+        refreshFonts();
+        canvas.requestRenderAll();
+        updateStatus();
+        resolve(true);
+      });
+    });
   },
 };
 
@@ -1197,8 +1561,7 @@ function clearCanvas() {
   if (state.cropping) Cropper.cancel();
   if (!canvas.getObjects().length) return;
   cancelDrawing();
-  canvas.clear(); // supprime aussi la couleur de fond…
-  canvas.backgroundColor = CANVAS_BG; // …qu'on remet
+  canvas.clear();
   canvas.requestRenderAll();
   Properties.sync();
   updateStatus();
@@ -1218,12 +1581,16 @@ function bringForward(toFront) {
 const Exporter = {
   /** Exécute un export en retirant temporairement le fond blanc si demandé */
   withExportBackground(fn) {
-    const previous = canvas.backgroundColor;
-    if (dom.exportTransparent.checked) canvas.backgroundColor = null;
+    const vpt = canvas.viewportTransform.slice();
+    canvas.backgroundColor = dom.exportTransparent.checked ? null : CANVAS_BG;
+    canvas.viewportTransform = [1, 0, 0, 1, 0, 0]; // on exporte la page, quel que soit le zoom
+    state.exporting = true;
     try {
       return fn();
     } finally {
-      canvas.backgroundColor = previous;
+      state.exporting = false;
+      canvas.backgroundColor = null;
+      canvas.viewportTransform = vpt;
       canvas.requestRenderAll();
     }
   },
@@ -1290,6 +1657,124 @@ function updateStatus() {
 }
 
 /* ============================================================================
+   10b. STYLES DE TEXTE (GRAS / ITALIQUE / SOULIGNÉ) & AIDE
+   ----------------------------------------------------------------------------
+   - Texte en édition avec des lettres sélectionnées : le style ne s'applique
+     qu'à ces lettres (styles par caractère de Fabric).
+   - Sinon : il s'applique au(x) texte(s) entier(s) sélectionné(s).
+   ========================================================================== */
+
+const TEXT_TOGGLES = {
+  bold: { prop: 'fontWeight', on: 'bold', off: 'normal' },
+  italic: { prop: 'fontStyle', on: 'italic', off: 'normal' },
+  underline: { prop: 'underline', on: true, off: false },
+};
+
+const TextStyle = {
+  buttons() {
+    return { bold: dom.btnBold, italic: dom.btnItalic, underline: dom.btnUnderline };
+  },
+
+  hasLetterSelection(obj) {
+    return obj.isEditing && obj.selectionStart !== obj.selectionEnd;
+  },
+
+  isOn(key, value) {
+    if (key === 'bold') return value === 'bold' || Number(value) >= 600;
+    return value === TEXT_TOGGLES[key].on;
+  },
+
+  isActive(obj, key) {
+    const { prop } = TEXT_TOGGLES[key];
+    if (this.hasLetterSelection(obj)) {
+      const styles = obj.getSelectionStyles(obj.selectionStart, obj.selectionEnd, true);
+      return styles.length > 0 && styles.every((st) => this.isOn(key, st[prop]));
+    }
+    return this.isOn(key, obj[prop]);
+  },
+
+  toggle(key) {
+    const texts = canvas.getActiveObjects().filter(isText);
+    if (!texts.length) return;
+    const { prop, on, off } = TEXT_TOGGLES[key];
+    const value = this.isActive(texts[0], key) ? off : on;
+
+    texts.forEach((obj) => {
+      if (this.hasLetterSelection(obj)) {
+        obj.setSelectionStyles({ [prop]: value });
+      } else {
+        obj.removeStyle?.(prop); // les réglages lettre par lettre cèdent la place au réglage global
+        obj.set(prop, value);
+      }
+      obj.initDimensions?.();
+      obj.setCoords();
+      ensureFont(obj); // la variante grasse / italique d'une police est chargée à la demande
+    });
+
+    canvas.requestRenderAll();
+    History.queue();
+    this.sync();
+  },
+
+  sync() {
+    const obj = canvas.getActiveObject();
+    const text = isText(obj) ? obj : null;
+    Object.entries(this.buttons()).forEach(([key, btn]) => {
+      const active = Boolean(text) && this.isActive(text, key);
+      btn.classList.toggle('is-active', active);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+  },
+
+  bind() {
+    Object.entries(this.buttons()).forEach(([key, btn]) => {
+      // mousedown sans focus : le texte reste en édition et garde sa sélection de lettres
+      btn.addEventListener('mousedown', (e) => e.preventDefault());
+      btn.addEventListener('click', () => this.toggle(key));
+    });
+  },
+};
+
+/**
+ * Les polices Google ne sont téléchargées qu'au premier usage : on attend
+ * la bonne variante (graisse, italique), on vide le cache de mesures de
+ * Fabric, puis on recalcule et redessine le texte.
+ */
+function ensureFont(obj) {
+  if (!isText(obj) || !document.fonts?.load) return;
+  const family = obj.fontFamily;
+  const variants = new Set([`${obj.fontStyle || 'normal'} ${obj.fontWeight || 'normal'}`]);
+  Object.values(obj.styles || {}).forEach((line) => Object.values(line).forEach((st) => {
+    variants.add(`${st.fontStyle || obj.fontStyle || 'normal'} ${st.fontWeight || obj.fontWeight || 'normal'}`);
+  }));
+  Promise.all([...variants].map((v) => document.fonts.load(`${v} 40px "${family}"`)))
+    .then(() => {
+      fabric.util.clearFabricFontCache(family);
+      obj.initDimensions?.();
+      obj.setCoords();
+      canvas.requestRenderAll();
+    })
+    .catch(() => { /* police indisponible : le navigateur utilise une police de secours */ });
+}
+
+/** Après un chargement de document : s'assure que toutes les polices utilisées sont prêtes */
+function refreshFonts() {
+  canvas.getObjects().filter(isText).forEach(ensureFont);
+}
+
+const Help = {
+  open() {
+    if (!dom.helpDialog.open) dom.helpDialog.showModal();
+  },
+  bind() {
+    dom.btnHelp.addEventListener('click', () => this.open());
+    dom.btnHelpClose.addEventListener('click', () => dom.helpDialog.close());
+    // Clic sur le fond assombri : fermeture
+    dom.helpDialog.addEventListener('click', (e) => { if (e.target === dom.helpDialog) dom.helpDialog.close(); });
+  },
+};
+
+/* ============================================================================
    11. RACCOURCIS CLAVIER
    ========================================================================== */
 
@@ -1297,10 +1782,39 @@ const SHORTCUTS = { v: 'select', r: 'rect', e: 'ellipse', b: 'brush', p: 'brush'
 
 function bindKeyboard() {
   document.addEventListener('keydown', (e) => {
-    if (isTyping(e)) return; // on n'intercepte rien pendant la saisie
+    if (dom.helpDialog.open) return; // la fenêtre d'aide gère Échap elle-même
 
     const mod = e.metaKey || e.ctrlKey; // ⌘ sur Mac, Ctrl ailleurs
     const key = e.key.toLowerCase();
+
+    // Gras / italique / souligné : aussi pendant l'édition d'un texte
+    const textToggle = { b: 'bold', i: 'italic', u: 'underline' }[key];
+    if (mod && !e.shiftKey && !e.altKey && textToggle && canvas.getActiveObjects().some(isText)) {
+      e.preventDefault();
+      TextStyle.toggle(textToggle);
+      return;
+    }
+
+    if (isTyping(e)) return; // on n'intercepte rien d'autre pendant la saisie
+
+    // Zoom de la zone de travail (remplace le zoom de la page du navigateur)
+    if (mod && (key === '=' || key === '+')) { e.preventDefault(); Viewport.zoomBy(ZOOM_STEP); return; }
+    if (mod && (key === '-' || key === '_')) { e.preventDefault(); Viewport.zoomBy(1 / ZOOM_STEP); return; }
+    if (mod && key === '0') { e.preventDefault(); Viewport.reset(); return; }
+
+    // Espace maintenue : déplacement de la vue
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (!e.repeat) Viewport.setSpace(true);
+      return;
+    }
+
+    // Dupliquer
+    if (mod && key === 'd') {
+      e.preventDefault();
+      Clipboard.duplicate();
+      return;
+    }
 
     // Annuler / Rétablir : ⌘Z, ⌘⇧Z (ou Ctrl+Y)
     if (mod && key === 'z') {
@@ -1338,6 +1852,12 @@ function bindKeyboard() {
       return;
     }
 
+    if (e.key === '?') {
+      e.preventDefault();
+      Help.open();
+      return;
+    }
+
     if (mod || e.altKey) return;
 
     if (key === 'c') {
@@ -1351,6 +1871,12 @@ function bindKeyboard() {
       e.preventDefault();
       ImageImporter.openFileDialog();
     }
+  });
+
+  document.addEventListener('keyup', (e) => {
+    if (e.code !== 'Space' || !state.spaceDown) return;
+    e.preventDefault(); // évite qu'un bouton ayant le focus soit « cliqué » par Espace
+    Viewport.setSpace(false);
   });
 }
 
@@ -1454,7 +1980,7 @@ function bindUI() {
   dom.btnDelete.addEventListener('click', deleteSelection);
 }
 
-function init() {
+async function init() {
   Theme.init();
   resizeCanvasToContainer();
   new ResizeObserver(resizeCanvasToContainer).observe(dom.canvasWrap);
@@ -1462,15 +1988,22 @@ function init() {
   bindCanvasEvents();
   bindUI();
   Properties.bind();
+  TextStyle.bind();
+  Viewport.bind();
+  Clipboard.bind();
+  Help.bind();
   ImageImporter.bindDragAndDrop();
   bindKeyboard();
 
   setTool('select');
-  History.init(); // premier instantané : le canvas vide
+
+  // Reprend le dernier document enregistré dans ce navigateur
+  const restored = await Autosave.restore();
+  History.init(); // premier instantané : le document restauré, ou le canvas vide
+  if (restored) toast('Votre dernier document a été restauré');
 
   // Les polices Google arrivent après le premier rendu : on redessine une fois chargées
   document.fonts?.ready.then(() => canvas.requestRenderAll());
-
 }
 
 init();

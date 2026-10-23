@@ -21,6 +21,7 @@
 - Pathfinder complet (paper.js) : unir (⌘⇧U), soustraire (⌘⇧-), intersecter, exclure, diviser, soustraire l'arrière-plan, rogner
 - Édition avancée des points : ajouter (+), supprimer (−), convertir angle ↔ lisse (clic ou glisser), ciseaux (C) — sur tracés et formes
 - Masques d'écrêtage : la forme ou le texte du dessus masque les objets du dessous (⌘7), libérer (⌘⌥7), masque inversé
+- Texte avancé : zones de texte (glisser avec T), texte sur tracé (décalage, côté), texte dans une forme, vectoriser le texte (⌘⇧O, opentype.js)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

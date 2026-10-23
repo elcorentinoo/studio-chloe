@@ -1029,3 +1029,14 @@ body.is-locked .app { visibility: hidden; }
 .symbol-actions { display: flex; flex-wrap: wrap; gap: 4px; }
 .symbol-actions .chip { height: 24px; padding: 0 8px; font-size: 11px; }
 .panel-tabs .tab { padding: 0 11px; }
+
+/* Typographie pro (js/typography.js) */
+.typo-pro { display: flex; flex-direction: column; gap: 12px; }
+.seg-4 { grid-template-columns: repeat(4, 1fr); }
+.seg-btn svg { width: 16px; height: 16px; }
+.sheet-wide { width: min(900px, calc(100vw - 32px)); }
+.font-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; max-height: 52vh; overflow-y: auto; }
+.font-item { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--tile); cursor: pointer; }
+.font-item:hover, .font-item:focus-visible { border-color: var(--moss); outline: none; }
+.font-sample { font-size: 22px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.font-item small { color: var(--ink-muted); font-size: 11px; }

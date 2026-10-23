@@ -1,6 +1,9 @@
 # Studio Chloé — feuille de route
 
 ## ✅ Publié
+**Octobre 2026 — vague 3**
+- Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)
+
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)
 - Verrouillage par empreinte (Touch ID / Face ID / Windows Hello) : projets chiffrés (AES-256), code de secours, verrouillage automatique, ⌘⇧L

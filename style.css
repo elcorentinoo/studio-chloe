@@ -363,11 +363,13 @@ kbd {
   padding: 10px;
   border-radius: var(--r-xl);
   overflow-y: auto;
+  overflow-x: hidden; /* jamais de contenu coupé à droite ni de défilement horizontal */
   scrollbar-width: thin;
 }
-.panel-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 0; }
+/* L'en-tête passe à la ligne si le badge (« Aucune sélection », nom d'objet…) ne tient pas à côté des onglets */
+.panel-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 0; min-width: 0; }
 .panel-header h2 { margin: 0; font: 500 19px var(--display); letter-spacing: -.01em; }
-.badge { padding: 4px 10px; border-radius: var(--r-pill); background: var(--chip-hover); font: 500 11px var(--display); white-space: nowrap; }
+.badge { max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; padding: 4px 10px; border-radius: var(--r-pill); background: var(--chip-hover); font: 500 11px var(--display); white-space: nowrap; }
 .panel-hint { margin: 0 8px 2px; color: var(--ink-muted); font-size: 12px; }
 
 .tile {

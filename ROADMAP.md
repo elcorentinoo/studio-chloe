@@ -17,6 +17,7 @@
 - Pot de peinture dynamique (Maj + K) : remplit la zone formée par les formes qui se chevauchent (survol surligné, recoloriage d'un nouveau clic)
 - Pulvérisateur de symboles (Maj + S) : sème des copies de la sélection (taille, variation, rotation, densité), Alt pour effacer
 - Graphiques vectoriels (J) : barres, barres horizontales / empilées, lignes, aires, secteurs, anneau — données collées depuis un tableur, double-clic pour modifier
+- Outil Tranches : zones d'export nommées, déplaçables, découpe en grille, export PNG / JPG 1× à 3× en ZIP
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

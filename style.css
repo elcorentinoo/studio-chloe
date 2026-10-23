@@ -985,3 +985,12 @@ body.is-locked .app { visibility: hidden; }
 .spray-source { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .spray-source strong { font: 500 13px var(--display); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .chart-data { font: 13px/1.5 var(--mono); }
+
+/* Tranches (js/slices.js) */
+.slice-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.slice-item { display: flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 4px 0 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--tile); }
+.slice-item.is-selected { border-color: #e0457b; }
+.slice-num { display: grid; place-items: center; min-width: 20px; height: 20px; border-radius: 6px; background: #e0457b; color: #fff; font: 600 11px var(--font); }
+.slice-name { flex: 1; min-width: 0; height: 28px; padding: 0 6px; border: 1px solid transparent; border-radius: 8px; background: transparent; color: var(--ink); font: inherit; font-size: 12px; }
+.slice-name:focus { border-color: var(--moss); outline: none; background: var(--glass-strong); }
+.slice-item small { color: var(--ink-muted); font-size: 10px; white-space: nowrap; }

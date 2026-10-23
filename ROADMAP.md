@@ -11,6 +11,7 @@
 - Nouvelles formes : arc, spirale, grille rectangulaire, grille polaire (réglages dans le panneau)
 - Outil Courbure (Maj + P) : la courbe passe par chaque clic et se lisse toute seule ; points d'angle (Alt), déplacement des points, fermeture
 - Crayon (N, courbes propres, fermeture auto), Lissage (frotter un tracé) et Gomme (Maj + E : découpe vectorielle des formes et traits, pixels des images ; [ ] pour la taille)
+- Outils de transformation : Rotation (Maj + R), Miroir (O), Mise à l'échelle (S), Inclinaison — point d'origine déplaçable, Maj pour contraindre, Alt pour copier, saisie numérique (Entrée)
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

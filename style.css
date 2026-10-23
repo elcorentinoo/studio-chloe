@@ -1056,3 +1056,9 @@ body.is-locked .app { visibility: hidden; }
 .sheet.sheet-side { width: min(380px, calc(100vw - 32px)); margin: auto 24px auto auto; }
 .sheet.sheet-side::backdrop { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
 .effects-more { margin-top: 4px; }
+
+/* Motifs (js/patterns.js) */
+.pattern-controls { display: flex; flex-direction: column; gap: 8px; }
+.pattern-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.pattern-swatch { width: 34px; height: 34px; border: 1px solid var(--line); border-radius: 10px; background-size: 17px 17px; cursor: pointer; }
+.pattern-swatch.is-active { box-shadow: 0 0 0 2px var(--moss); }

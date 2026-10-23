@@ -27,6 +27,7 @@
 - Contours avancés : extrémités, jointures, pointillés réglables, pointes de flèche début / fin (flèche, triangle, cercle, barre), vectoriser le contour
 - Décalage du tracé (positif / négatif) : copie agrandie ou rétrécie placée sous l'original, tracés ouverts entourés
 - Symboles (instances liées, redéfinir l'original met à jour toutes les instances) et couleurs globales (modifier la couleur recolore tous les objets liés) — nouvel onglet Symboles
+- Import / export avancés : ouverture des PDF et .ai compatibles PDF (pdf.js, une page = un plan de travail, vecteurs ou image), import SVG par glisser-déposer, export SVG optimisé
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

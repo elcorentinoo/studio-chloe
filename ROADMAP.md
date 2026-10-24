@@ -16,6 +16,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 **0.5.0 « Bourgeon » — en cours**
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓
 - Mode isolation : double-clic sur un groupe pour le modifier seul, le reste s'estompe ; Échap pour sortir, fil d'Ariane, imbrication, une seule étape d'annulation
+- Sélection directe dans les groupes : la flèche blanche (A) atteint un élément d'un groupe, même imbriqué, et édite ses points sans dégrouper ; clic dans le vide pour ressortir
 
 **0.4.0 « Feuille » — octobre 2026**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)
@@ -76,7 +77,6 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 | Feature | Impact | Effort | Notes |
 | --- | --- | --- | --- |
 | **IA : assistant de design** (« décris ton visuel ») | fort | L | Nécessite une API payante (Claude) : non retenu tant que l'app reste 100 % gratuite |
-| Sélection directe dans les groupes | moyen | M | Fabric 5 ne permet pas d'entrer dans un groupe : à faire avec Fabric 6 ou un mode « isolation » |
 | Jointures en angle vif pour le décalage du tracé / la vectorisation du contour | faible | M | Actuellement arrondies |
 | Texte sur tracé → vectorisation directe | faible | S | Il faut détacher le texte du tracé avant de le vectoriser |
 

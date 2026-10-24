@@ -7,6 +7,8 @@
  *  inaccessible ; les éléments du groupe se sélectionnent, se déplacent et se
  *  modifient un par un ; ce que l'on dessine pendant l'isolation rejoint le
  *  groupe. On peut isoler un groupe dans le groupe (double-clic encore).
+ *  Flèche blanche (A) : un clic sur un élément d'un groupe (même imbriqué)
+ *  ouvre les niveaux nécessaires et édite directement ses points.
  *  Sortie : Échap (sans sélection), double-clic dans le vide ou le bouton du
  *  bandeau. Toutes les modifications faites dans le groupe forment UNE étape
  *  d'historique (⌘Z dans l'isolation : on sort, puis on annule cette étape).
@@ -90,6 +92,23 @@ const Isolation = {
 
   exitAll() { while (this.stack.length) this.exit(); },
 
+  /** Chaîne [groupe, sous-groupe…, élément] sous le point p (coordonnées du parent du groupe) */
+  pick(group, p) {
+    const local = fabric.util.transformPoint(p, fabric.util.invertTransform(group.calcOwnMatrix()));
+    const pt = new fabric.Point(local.x, local.y);
+    const kids = group.getObjects();
+    for (let i = kids.length - 1; i >= 0; i--) {
+      const k = kids[i];
+      if (!k.visible || !k.containsPoint(pt, null, true, true)) continue;
+      if (k.type === 'group' && !k.chart) {
+        const sub = this.pick(k, pt);
+        return sub.length ? [group, ...sub] : [group, k];
+      }
+      return [group, k];
+    }
+    return [];
+  },
+
   renderBanner() {
     let bar = $('#isolation-bar');
     if (!this.stack.length) { bar?.remove(); dom.stage.classList.remove('is-isolated'); return; }
@@ -116,6 +135,28 @@ const Isolation = {
       if (state.tool !== 'select' || state.cropping) return;
       if (target && this.canIsolate(target)) { this.enter(target); return; }
       if (!target && this.stack.length) this.exit();
+    });
+    // Flèche blanche sur un groupe : on entre (automatiquement) jusqu'à
+    // l'élément visé, qui passe directement en édition des points
+    canvas.on('mouse:down:before', ({ e }) => {
+      if (state.tool !== 'direct' || state.cropping) return;
+      const target = canvas.findTarget(e);
+      if (!target) {
+        // clic dans le vide : on quitte les niveaux ouverts par la flèche blanche
+        while (this.active?.auto) this.exit();
+        return;
+      }
+      if (!this.canIsolate(target)) return;
+      const p = canvas.getPointer(e);
+      const chain = this.pick(target, p);
+      if (!chain.length) return;
+      chain.slice(0, -1).forEach((g) => { const lvl = this.enter(g); if (lvl) lvl.auto = true; });
+      const leaf = chain[chain.length - 1];
+      canvas.setActiveObject(leaf); // la flèche blanche lance l'édition des points (direct.js)
+      if (!PathEditor.obj && canvas.getObjects().includes(leaf)) DirectSelect.edit(leaf);
+      // Fabric a déjà mémorisé le groupe sous le pointeur : on lui indique la nouvelle cible
+      canvas._target = canvas.getActiveObject() || null;
+      canvas.requestRenderAll();
     });
     // Ce que l'on crée pendant l'isolation rejoint le groupe
     canvas.on('object:added', ({ target }) => {

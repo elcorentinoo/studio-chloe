@@ -130,7 +130,7 @@ const Arrange = {
   },
 
   selectAll() {
-    const objs = canvas.getObjects().filter((o) => o.visible && !o.locked);
+    const objs = canvas.getObjects().filter((o) => o.visible && !o.locked && o.selectable !== false && o.evented !== false); // pas les objets estompés de l’isolation
     if (!objs.length) return;
     setTool('select');
     canvas.discardActiveObject();

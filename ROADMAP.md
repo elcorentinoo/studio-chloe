@@ -17,6 +17,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓
 - Mode isolation : double-clic sur un groupe pour le modifier seul, le reste s'estompe ; Échap pour sortir, fil d'Ariane, imbrication, une seule étape d'annulation
 - Sélection directe dans les groupes : la flèche blanche (A) atteint un élément d'un groupe, même imbriqué, et édite ses points sans dégrouper ; clic dans le vide pour ressortir
+- Sélection › Même : bouton « Sélectionner » du panneau — même remplissage, contour, remplissage et contour, épaisseur, opacité, mode de fusion, type d'objet, police, symbole ; inverser, tout désélectionner
 
 **0.4.0 « Feuille » — octobre 2026**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)

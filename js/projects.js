@@ -313,7 +313,8 @@ const Projects = {
     clearTimeout(this.timer);
     this.timer = null;
     if (!this.pendingJSON || !this.current) return;
-    const json = this.pendingJSON;
+    // l'historique référence les images (ImagePool) : on enregistre un document complet
+    const json = ImagePool.expand(this.pendingJSON);
     this.pendingJSON = null;
     await this.persist(json);
   },

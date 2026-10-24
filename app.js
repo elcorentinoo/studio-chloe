@@ -54,7 +54,7 @@
 const REMOVE_BG_ENDPOINT = '/api/remove-bg';
 
 /** Version de l'application (affichée dans l'aide ; voir ROADMAP.md › Versions) */
-const APP_VERSION = Object.freeze({ number: '0.6.0', name: 'Fleur' });
+const APP_VERSION = Object.freeze({ number: '0.6.1', name: 'Fleur' });
 
 /** Au-delà de cette taille, l'image est réduite avant l'envoi (limite des fonctions Netlify ≈ 6 Mo) */
 const UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
@@ -275,6 +275,16 @@ fabric.Object.prototype.set({
   borderScaleFactor: 1.5,
   padding: 2,
 });
+
+/*
+ * Performances : Fabric met chaque objet en cache dans un canvas d'au moins
+ * 256 × 256 px, même un petit carré. Avec des centaines de formes simples,
+ * recopier ces caches coûte bien plus cher que de les redessiner (et chaque
+ * annulation recrée tous les caches). Les formes simples se dessinent donc
+ * directement ; tracés, textes, images et groupes gardent leur cache, plus petit.
+ */
+['Rect', 'Circle', 'Ellipse', 'Triangle', 'Line'].forEach((k) => { fabric[k].prototype.objectCaching = false; });
+fabric.minCacheSideLimit = 64;
 
 /** Dessine la page blanche (zone exportée) en tenant compte du zoom */
 function drawPage({ ctx }) {
@@ -1614,6 +1624,74 @@ function replaceImagePreservingTransform(oldImg, newImg) {
       différences plutôt que des instantanés complets.
    ========================================================================== */
 
+/**
+ * Réserve d'images de la session : l'historique ne garde qu'une référence vers
+ * l'image déjà décodée. Annuler / rétablir réutilise l'image en mémoire (pas
+ * de nouveau décodage) et les instantanés pèsent quelques Ko au lieu de
+ * plusieurs Mo. Ce qui sort de la session (projets, collaboration, exports)
+ * reste un JSON complet : Doc.serialize() hors historique n'est pas touché.
+ */
+const ImagePool = {
+  compact: false,
+  ids: new WeakMap(), // élément → id
+  entries: new Map(), // id → élément
+  next: 1,
+
+  ref(el) {
+    let id = this.ids.get(el);
+    if (!id) {
+      id = this.next++;
+      this.ids.set(el, id);
+    }
+    this.entries.set(id, el); // (de nouveau) disponible, même après un nettoyage
+    return `pool:${id}`;
+  },
+
+  element(url) {
+    return typeof url === 'string' && url.startsWith('pool:') ? this.entries.get(Number(url.slice(5))) || null : null;
+  },
+
+  /** Données réelles d'une image de la réserve */
+  src(url) {
+    const el = this.element(url);
+    if (!el) return url;
+    return el.toDataURL ? el.toDataURL() : el.src;
+  },
+
+  /** Oublie les images qu'aucun instantané ne référence plus */
+  prune(snapshots) {
+    const used = new Set();
+    snapshots.forEach((snap) => { for (const m of String(snap).matchAll(/"pool:(\d+)"/g)) used.add(Number(m[1])); });
+    [...this.entries.keys()].forEach((id) => { if (!used.has(id)) this.entries.delete(id); });
+  },
+
+  /** JSON d'historique → JSON autonome (références remplacées par les données) */
+  expand(json) {
+    if (typeof json !== 'string' || !json.includes('"pool:')) return json;
+    return json.replace(/"pool:(\d+)"/g, (m, id) => JSON.stringify(this.src(`pool:${id}`)));
+  },
+
+  patch() {
+    const self = this;
+    const proto = fabric.Image.prototype;
+    const baseToObject = proto.toObject;
+    proto.toObject = function toObject(props) {
+      const el = this._originalElement || this._element;
+      if (!self.compact || !el) return baseToObject.call(this, props);
+      this.getSrc = () => self.ref(el); // pas de recopie (ni de toDataURL) des pixels
+      try { return baseToObject.call(this, props); } finally { delete this.getSrc; }
+    };
+    const baseLoad = fabric.util.loadImage;
+    fabric.util.loadImage = function loadImage(url, callback, context, crossOrigin) {
+      const el = self.element(url);
+      if (!el) return baseLoad.call(this, url, callback, context, crossOrigin);
+      Promise.resolve().then(() => callback && callback.call(context, el, false));
+      return undefined;
+    };
+  },
+};
+ImagePool.patch();
+
 const History = {
   MAX_STEPS: 60,
   DEBOUNCE_MS: 160,
@@ -1628,8 +1706,13 @@ const History = {
     this.updateButtons();
   },
 
+  /**
+   * Instantané léger : les images sont référencées (« pool:N ») au lieu d'être
+   * recopiées en base64 à chaque étape (des Mo par photo) — voir ImagePool.
+   */
   snapshot() {
-    return Doc.serialize();
+    ImagePool.compact = true;
+    try { return Doc.serialize(); } finally { ImagePool.compact = false; }
   },
 
   /** Les états temporaires ne doivent pas créer d'étape */
@@ -1655,6 +1738,8 @@ const History = {
     this.stack.push(snap);
     if (this.stack.length > this.MAX_STEPS) this.stack.shift();
     this.index = this.stack.length - 1;
+    this.commits = (this.commits || 0) + 1;
+    if (this.commits % 20 === 0) ImagePool.prune(this.stack); // libère les images sorties de l'historique
     this.updateButtons();
     Hooks.emit('change', snap);
   },

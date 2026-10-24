@@ -276,7 +276,7 @@ const PathEditor = {
     obj.objectCaching = false;
     canvas.setActiveObject(obj);
     canvas.requestRenderAll();
-    toast('Édition des points : déplacez les carrés (points) et les ronds (poignées). Échap pour terminer.');
+    toast('Édition des points : cliquez un point (Maj : plusieurs, ou glissez un cadre), puis glissez-le ou utilisez les flèches ; Suppr l’efface. Échap pour terminer.');
   },
 
   makeControl(pt) {

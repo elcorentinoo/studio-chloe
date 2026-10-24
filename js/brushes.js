@@ -16,7 +16,9 @@
  */
 'use strict';
 
-const ARTBRUSH_ICON = '<path d="M3 21c3 0 6-1.5 7-4.5L19.5 7a2.1 2.1 0 0 0-3-3L7 13.5C4 14.5 3 18 3 21z"/><path d="M14 6l4 4"/>';
+/** Pinceau (Lucide « brush », licence ISC) */
+const BRUSH_ICON = '<path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/>';
+const ARTBRUSH_ICON = '<path d="M3 21c3 0 6-1.5 7-4.5L19.5 7a2.1 2.1 0 0 0-3-3L7 13.5C4 14.5 3 18 3 21z"/><path d="M14 6l4 4"/><path d="M16 18c1.5-1 3-1 4.5 0"/>';
 
 const ArtBrush = {
   opts: { kind: 'calligraphy', size: 18, angle: 45, roundness: 25, spacing: 100 },
@@ -227,7 +229,18 @@ Tools.artbrush = {
 TOOL_LABELS.artbrush = 'Pinceau artistique';
 
 Hooks.on('init', () => {
-  RailGroups.add('pencil', { tool: 'artbrush', label: 'Pinceau artistique', icon: ARTBRUSH_ICON, kbd: 'Maj B' });
+  // Les pinceaux ont leur propre menu (et une vraie icône de pinceau) : plus de doublon avec le crayon
+  const brushBtn = $('.rail [data-tool="brush"]');
+  RailGroups.create('brush', {
+    title: 'Pinceaux',
+    after: brushBtn,
+    items: [
+      { tool: 'brush', label: 'Pinceau', icon: BRUSH_ICON, kbd: 'B' },
+      { tool: 'artbrush', label: 'Pinceau artistique', icon: ARTBRUSH_ICON, kbd: 'Maj B' },
+    ],
+  });
+  brushBtn.remove();
+  dom.toolButtons = document.querySelectorAll('[data-tool]');
   Keys.add((e, { mod, key }) => {
     if (!mod && !e.altKey && e.shiftKey && key === 'b') { e.preventDefault(); setTool('artbrush'); return true; }
     return false;

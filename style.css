@@ -1193,3 +1193,19 @@ body.is-locked .app { visibility: hidden; }
 .rc-hex { margin-left: auto; color: var(--ink-muted); font: 500 12px var(--mono); }
 .rc-actions { flex-wrap: wrap; margin: 4px 0; }
 .rc-actions .chip { height: 32px; padding: 0 12px; font-size: 12px; }
+
+/* ---------- Effets modifiables ---------- */
+.livefx-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.livefx-item { border: 1px solid var(--line); border-radius: 12px; background: var(--tile); }
+.livefx-item.is-off .livefx-name { opacity: .45; text-decoration: line-through; }
+.livefx-head { display: flex; align-items: center; gap: 4px; min-height: 36px; padding: 2px 4px; }
+.livefx-head .layer-btn { width: 24px; height: 24px; flex-shrink: 0; }
+.livefx-name { flex: 1; min-width: 0; height: 30px; padding: 0 6px; border: 0; background: none; color: var(--ink); font: 500 13px var(--font); text-align: left; cursor: pointer; }
+.livefx-name::after { content: '▾'; margin-left: 6px; color: var(--ink-muted); font-size: 10px; }
+.livefx-item.is-open .livefx-name::after { content: '▴'; }
+.livefx-params { display: none; flex-direction: column; gap: 10px; padding: 4px 10px 12px; }
+.livefx-item.is-open .livefx-params { display: flex; }
+.livefx-color { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.livefx-color input { width: 34px; height: 26px; }
+#section-livefx .btn-row { display: flex; gap: 6px; }
+#section-livefx .btn-row select { flex: 1; min-width: 0; }

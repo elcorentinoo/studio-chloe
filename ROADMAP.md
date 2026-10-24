@@ -9,11 +9,13 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 | 0.2.0 | Pousse | Zoom, collage, styles de texte, aide, sauvegarde auto |
 | 0.3.0 | Tige | Galerie de projets, coffre chiffré, formats, exports, Plume, calques, bibliothèque |
 | 0.4.0 | Feuille | Les outils d'Illustrator : sélection, dessin, Pathfinder, plans de travail, IA, collaboration, PWA |
-| 0.5.0 | Bourgeon | *(en cours)* Les 8 améliorations du quotidien façon Illustrator |
-| 0.6.0 | Fleur | *(prévue)* Les 8 améliorations fréquentes |
+| 0.5.0 | Bourgeon | Le quotidien façon Illustrator : panneau Transformation, isolation, sélection directe dans les groupes, Sélection › Même, modes de fusion, styles de texte, recoloration, effets modifiables |
+| 0.6.0 | Fleur | *(en cours)* Les 8 améliorations fréquentes |
 
 ## ✅ Publié
-**0.5.0 « Bourgeon » — en cours**
+**0.6.0 « Fleur » — en cours**
+
+**0.5.0 « Bourgeon » — octobre 2026**
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓
 - Mode isolation : double-clic sur un groupe pour le modifier seul, le reste s'estompe ; Échap pour sortir, fil d'Ariane, imbrication, une seule étape d'annulation
 - Sélection directe dans les groupes : la flèche blanche (A) atteint un élément d'un groupe, même imbriqué, et édite ses points sans dégrouper ; clic dans le vide pour ressortir

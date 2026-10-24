@@ -41,3 +41,11 @@ Les projets sont sauvegardés automatiquement dans le navigateur (IndexedDB), ch
 - **Génération d'images** : service gratuit Pollinations (sans clé) ; « Texte → vecteur » vectorise automatiquement le résultat.
 - **Collaboration** : bouton « Collaborer » → lien secret ; échanges pair à pair chiffrés (WebRTC). Seul le projet partagé circule.
 - **PWA** : installable (bouton du rail quand le navigateur le propose), fonctionne hors ligne après la première visite (`sw.js`).
+
+## Le quotidien façon Illustrator (0.5.0 « Bourgeon »)
+- **Panneau Transformation** en tête des propriétés : X / Y / L / H / angle, point de référence, calculs (« 200*2 »).
+- **Mode isolation** : double-clic sur un groupe ; Échap pour sortir. La flèche blanche (A) atteint directement un élément d'un groupe.
+- **Sélectionner › Même** (bouton du panneau) : remplissage, contour, épaisseur, opacité, mode de fusion, type, police, symbole ; inverser.
+- **Modes de fusion**, **styles de paragraphe / caractère**, **Recolorer la composition**, **effets modifiables** (arrondis, zigzag, distorsion, contracter / dilater, lueur).
+
+Versions : voir `ROADMAP.md` (numéro et nom affichés dans l'aide, bouton i).

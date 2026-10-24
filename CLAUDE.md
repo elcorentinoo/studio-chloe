@@ -46,6 +46,9 @@ Pendant un aperçu (fenêtres d'effets), `History.flush()` puis `History.restori
 - `distort.js` — déformation par enveloppe, transformation répétée · `print.js` — CMJN, fonds perdus et traits de coupe
 - `import-export.js` — import SVG / PDF / .ai (pdf.js), SVG optimisé · `typography.js` — catalogue Google Fonts, réglages typographiques
 - `ai.js` — détourage local (@imgly), génération Pollinations, texte → vecteur · `collab.js` — collaboration Yjs + y-webrtc · `pwa.js` — service worker, tactile, tiroir mobile, partage
+- `transform-panel.js` — panneau Transformation (X/Y/L/H/angle, point de référence) · `isolation.js` — mode isolation des groupes + flèche blanche dans les groupes
+- `select-same.js` — Sélection › Même, inverser · `blend.js` — modes de fusion (mix-blend-mode en SVG) · `text-styles.js` — styles de paragraphe / caractère (`Doc.extras.textStyles`)
+- `recolor.js` — Recolorer la composition · `live-fx.js` — effets modifiables (`obj.liveFx`, rendu à l'affichage, `FxGeo`)
 
 ## Identité visuelle
 - Thème « glass » jaune-vert : lime `#d4f04c`, olive `#25300b`, mousse `#7c9425`, crème `#f4f2e4`

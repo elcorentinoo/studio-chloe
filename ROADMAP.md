@@ -20,6 +20,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 - Sélection › Même : bouton « Sélectionner » du panneau — même remplissage, contour, remplissage et contour, épaisseur, opacité, mode de fusion, type d'objet, police, symbole ; inverser, tout désélectionner
 - Modes de fusion (tuile Apparence) : Produit, Écran, Incrustation, Lumière tamisée / crue, Différence, Teinte, Couleur… sur toute la sélection, exportés en SVG (mix-blend-mode)
 - Styles de paragraphe et de caractère (tuile Texte) : créer depuis la sélection, appliquer, redéfinir (tous les textes liés suivent), remplacements locaux signalés « + », renommer, supprimer ; enregistrés avec le document
+- Recolorer la composition (tuile Apparence) : toutes les couleurs de la sélection (dégradés, lettres, groupes, Aspect) remplaçables une à une, teinte / saturation / luminosité, harmonies, mélanger, niveaux de gris, aperçu en direct
 
 **0.4.0 « Feuille » — octobre 2026**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)

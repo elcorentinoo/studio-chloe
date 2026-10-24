@@ -341,7 +341,7 @@ Hooks.on('init', () => {
   dom.btnExportSvg.addEventListener('click', () => ExportDialog.open());
 
   Keys.add((e, { mod, key }) => {
-    if (mod && key === 'e') { e.preventDefault(); ExportDialog.open(); return true; }
+    if (mod && !e.altKey && key === 'e') { e.preventDefault(); ExportDialog.open(); return true; }
     return false;
   });
 });

@@ -1249,3 +1249,15 @@ body.is-locked .app { visibility: hidden; }
 .gs-actions { display: flex; gap: 2px; }
 .gs-actions .layer-btn { width: 24px; height: 24px; }
 .gs-grid > .field-note { grid-column: 1 / -1; }
+
+/* ---------- Exporter les éléments ---------- */
+.asset-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 640px) { .asset-cols { grid-template-columns: 1fr; } }
+.asset-list, .asset-sizes { list-style: none; margin: 8px 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.asset-item { display: flex; align-items: center; gap: 8px; padding: 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--tile); }
+.asset-item img { width: 44px; height: 44px; object-fit: contain; border-radius: 8px; background: repeating-conic-gradient(var(--chip) 0 25%, transparent 0 50%) 0 0 / 10px 10px; flex: none; }
+.asset-item .input { flex: 1; min-width: 0; }
+.asset-size { display: grid; grid-template-columns: 76px 1fr 82px 28px; gap: 6px; align-items: center; }
+.asset-size .layer-btn { width: 28px; height: 28px; }
+#asset-count { margin-right: auto; }
+#export-assets { margin-right: auto; }

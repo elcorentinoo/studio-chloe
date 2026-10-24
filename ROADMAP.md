@@ -36,6 +36,7 @@
 - Pinceaux artistiques (Maj + B) : calligraphique (angle et rondeur de plume), à la vitesse, à motif (la sélection répétée le long du trait)
 - Dégradés avancés : linéaires ou radiaux à plusieurs arrêts, et dégradé de formes entre deux objets en N étapes (contour, couleurs, épaisseur, opacité)
 - IA gratuite : détourage dans le navigateur (@imgly/background-removal, Remove.bg en option), génération d'image Pollinations (sans clé), texte → vecteur (génération + vectorisation automatique)
+- Collaboration en temps réel pair à pair (Yjs + y-webrtc) : salon par lien secret chiffré, curseurs des participants, nouveau « Projet partagé » sans toucher aux autres projets ni au coffre
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

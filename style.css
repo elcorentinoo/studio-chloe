@@ -1084,3 +1084,29 @@ body.is-locked .app { visibility: hidden; }
 [data-ai-pane] { display: flex; flex-direction: column; gap: 12px; }
 [data-ai-pane][hidden] { display: none; }
 #ai-prompt { font: 14px/1.5 var(--font); }
+
+/* Collaboration (js/collab.js) */
+.collab-btn svg { width: 18px; height: 18px; }
+.collab-btn.is-live { background: var(--primary-bg); color: var(--primary-ink); }
+.collab-link { display: flex; gap: 8px; }
+.collab-link .input { flex: 1; min-width: 0; font-size: 12px; }
+.collab-warning { padding: 12px 14px; border-radius: 16px; background: rgba(242, 163, 58, .14); border: 1px solid rgba(242, 163, 58, .35); }
+.collab-warning p { margin: 6px 0 0; font-size: 13px; }
+@media (max-width: 900px) { .collab-btn span { display: none; } }
+/* La barre du haut accueille « Collaborer » : on allège la pilule d'état plus tôt */
+.brand-name, .status-item strong { white-space: nowrap; }
+@media (max-width: 1500px) {
+  .status-item:nth-of-type(3), .status-sep:nth-of-type(2) { display: none; }
+}
+@media (max-width: 1340px) {
+  .collab-btn span, #btn-clear .hide-sm { display: none; }
+  .collab-btn, #btn-clear { padding: 0 14px; }
+}
+@media (max-width: 1120px) {
+  .status-pill { display: none; }
+  .topbar { grid-template-columns: auto 1fr; }
+}
+@media (max-width: 900px) {
+  .brand-name, .export-pill .switch .hide-sm { display: none; }
+}
+@media (max-width: 540px) { .collab-btn { display: none; } }

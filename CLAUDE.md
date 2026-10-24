@@ -52,6 +52,9 @@ Pendant un aperçu (fenêtres d'effets), `History.flush()` puis `History.restori
 - `join.js` — Joindre ⌘J / Moyenne ⌘⌥J · `dynamic-shapes.js` — angles des rectangles (`cornerRadii`, `cornerType`, widgets) · `layer-folders.js` — calques en dossiers (`layerId`, `Doc.extras.layerFolders`)
 - `gradient-tool.js` — outil Dégradé (G) · `graphic-styles.js` — styles graphiques · `asset-export.js` — export des éléments ⌘⌥E (`assetName`)
 - `repeat.js` — répétition radiale / grille / miroir (`group.repeat`) · `text-wrap.js` — habillage du texte (`textWrap`, surcharge du retour à la ligne des Textbox)
+- `direct-pro.js` — flèche blanche : sélection de points (`DirectPro.sel`), cadre, flèches, Suppr
+
+Performances : `ImagePool` (app.js) — l'historique référence les images (`pool:N`) au lieu de les recopier ; `ImagePool.expand()` avant toute sortie (sauvegarde projet). Les formes simples n'ont pas de cache objet (`objectCaching = false`).
 
 ## Identité visuelle
 - Thème « glass » jaune-vert : lime `#d4f04c`, olive `#25300b`, mousse `#7c9425`, crème `#f4f2e4`

@@ -14,6 +14,12 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 | 1.0.0 | Fruit | *(prévue)* Version complète et stable |
 
 ## ✅ Publié
+**0.6.1 « Fleur » — correctifs, octobre 2026**
+- Performances : l'historique ne recopie plus les images à chaque étape (réserve d'images) ; les formes simples ne passent plus par un cache image — annuler, déplacer et afficher sont jusqu'à 50× plus rapides sur les documents lourds, beaucoup moins de mémoire
+- Flèche blanche : sélection de points (clic, Maj + clic, cadre de sélection), déplacement groupé, flèches du clavier, Suppr, ⌘A, poignées des points choisis seulement, clic sur le tracé pour le déplacer
+- Concepteur de forme : fonctionne aussi quand on le prend par le menu du rail ou sans sélection (toutes les formes qui se chevauchent), mode Fusionner / Effacer sans Alt
+- Rail : le Pinceau a sa propre icône et son menu (pinceau, pinceau artistique) — plus deux crayons
+
 **0.6.0 « Fleur » — octobre 2026**
 - Joindre (⌘J) : relie les tracés ouverts par leurs extrémités les plus proches ou ferme un tracé ; Moyenne (⌘⌥J) horizontale / verticale / les deux, et Moyenne + joindre (⌘⌥⇧J)
 - Formes dynamiques : widgets d'angle sur les rectangles (glisser pour arrondir, Alt pour un seul angle), rayon par angle, angles arrondis / inversés / chanfreinés — la forme reste un rectangle

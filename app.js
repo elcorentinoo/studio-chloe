@@ -54,7 +54,7 @@
 const REMOVE_BG_ENDPOINT = '/api/remove-bg';
 
 /** Version de l'application (affichée dans l'aide ; voir ROADMAP.md › Versions) */
-const APP_VERSION = Object.freeze({ number: '0.5.0', name: 'Bourgeon' });
+const APP_VERSION = Object.freeze({ number: '0.6.0', name: 'Fleur' });
 
 /** Au-delà de cette taille, l'image est réduite avant l'envoi (limite des fonctions Netlify ≈ 6 Mo) */
 const UPLOAD_MAX_BYTES = 4 * 1024 * 1024;

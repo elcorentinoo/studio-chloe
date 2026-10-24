@@ -10,10 +10,11 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 | 0.3.0 | Tige | Galerie de projets, coffre chiffré, formats, exports, Plume, calques, bibliothèque |
 | 0.4.0 | Feuille | Les outils d'Illustrator : sélection, dessin, Pathfinder, plans de travail, IA, collaboration, PWA |
 | 0.5.0 | Bourgeon | Le quotidien façon Illustrator : panneau Transformation, isolation, sélection directe dans les groupes, Sélection › Même, modes de fusion, styles de texte, recoloration, effets modifiables |
-| 0.6.0 | Fleur | *(en cours)* Les 8 améliorations fréquentes |
+| 0.6.0 | Fleur | Formes dynamiques, calques en dossiers, Joindre / Moyenne, outil Dégradé, styles graphiques, export des éléments, répétition modifiable, habillage du texte |
+| 1.0.0 | Fruit | *(prévue)* Version complète et stable |
 
 ## ✅ Publié
-**0.6.0 « Fleur » — en cours**
+**0.6.0 « Fleur » — octobre 2026**
 - Joindre (⌘J) : relie les tracés ouverts par leurs extrémités les plus proches ou ferme un tracé ; Moyenne (⌘⌥J) horizontale / verticale / les deux, et Moyenne + joindre (⌘⌥⇧J)
 - Formes dynamiques : widgets d'angle sur les rectangles (glisser pour arrondir, Alt pour un seul angle), rayon par angle, angles arrondis / inversés / chanfreinés — la forme reste un rectangle
 - Calques en dossiers : nouveaux calques, calque actif pour les nouveaux objets, replier / déplier, masquer / verrouiller tout un calque, renommer, réordonner et déplacer les objets par glisser-déposer

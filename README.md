@@ -48,4 +48,10 @@ Les projets sont sauvegardés automatiquement dans le navigateur (IndexedDB), ch
 - **Sélectionner › Même** (bouton du panneau) : remplissage, contour, épaisseur, opacité, mode de fusion, type, police, symbole ; inverser.
 - **Modes de fusion**, **styles de paragraphe / caractère**, **Recolorer la composition**, **effets modifiables** (arrondis, zigzag, distorsion, contracter / dilater, lueur).
 
+## Les outils fréquents (0.6.0 « Fleur »)
+- **Formes dynamiques** : widgets d'angle sur les rectangles (arrondi, inversé, chanfrein, angle par angle).
+- **Calques en dossiers** (onglet Calques), **Joindre** ⌘J / **Moyenne** ⌘⌥J, **outil Dégradé** G sur l'objet.
+- **Styles graphiques** (onglet Symboles), **Exporter les éléments** ⌘⌥E (multi-tailles, ZIP).
+- **Répétition** radiale / grille / miroir modifiable, **habillage du texte** autour des objets.
+
 Versions : voir `ROADMAP.md` (numéro et nom affichés dans l'aide, bouton i).

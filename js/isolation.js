@@ -68,7 +68,7 @@ const Isolation = {
         name: g.name, opacity: g.opacity, shadow: g.shadow, visible: g.visible,
         globalCompositeOperation: g.globalCompositeOperation,
       });
-      ['clipMask', 'appearance', 'symbolSet', 'quickCrop', 'cid'].forEach((k) => { if (g[k] !== undefined) result[k] = g[k]; });
+      ['clipMask', 'appearance', 'symbolSet', 'quickCrop', 'cid', 'repeat', 'layerId', 'liveFx', 'graphicStyle', 'assetName'].forEach((k) => { if (g[k] !== undefined) result[k] = g[k]; });
       // Le masque garde sa place à l'écran dans le nouveau groupe
       if (level.clip) {
         const inv = fabric.util.invertTransform(result.calcTransformMatrix());

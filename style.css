@@ -1261,3 +1261,9 @@ body.is-locked .app { visibility: hidden; }
 .asset-size .layer-btn { width: 28px; height: 28px; }
 #asset-count { margin-right: auto; }
 #export-assets { margin-right: auto; }
+
+/* ---------- Répétition modifiable ---------- */
+.repeat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.repeat-icon { width: 22px; height: 22px; fill: var(--lime-soft); stroke: var(--moss); stroke-width: 1.6; flex: none; }
+#section-repeat .seg-btn { font: 500 12px var(--font); color: var(--ink); }
+#section-repeat .seg-btn.is-active { color: var(--primary-ink); }

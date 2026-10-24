@@ -48,6 +48,7 @@ const ShapeBuilder = {
 
   render(alt = false) {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     if (state.tool !== 'shapebuilder' || !this.faces.length) return;
     const v = canvas.viewportTransform;

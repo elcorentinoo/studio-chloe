@@ -33,6 +33,7 @@ const DrawOpts = {
 /** Trace une polyligne en aperçu sur le calque supérieur */
 function drawStrokePreview(points, { color = PEN_COLOR, width = 1.5, screenWidth = true, alpha = 1 } = {}) {
   const ctx = canvas.contextTop;
+  if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
   canvas.clearContext(ctx);
   if (!points || points.length < 1) return;
   const v = canvas.viewportTransform;
@@ -202,6 +203,7 @@ Tools.smooth = {
 
   cursorRing(p) {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     const v = canvas.viewportTransform;
     ctx.save();
@@ -377,8 +379,9 @@ Tools.eraser = {
   preview(p, ringOnly = false) {
     const size = DrawOpts.eraserSize / canvas.getZoom();
     if (!ringOnly && this.points) drawStrokePreview(this.points, { color: 'rgba(224, 69, 123, 0.35)', width: size, screenWidth: false });
-    else canvas.clearContext(canvas.contextTop);
+    else if (canvas.contextTop) canvas.clearContext(canvas.contextTop);
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     const v = canvas.viewportTransform;
     ctx.save();
     ctx.strokeStyle = '#e0457b';

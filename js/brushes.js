@@ -98,6 +98,7 @@ const ArtBrush = {
 
   preview() {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     const P = this.points;
     if (!P || P.length < 2) return;

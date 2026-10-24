@@ -106,6 +106,7 @@ const LivePaint = {
 
   render() {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     if (!this.hoverItem || state.tool !== 'livepaint') return;
     const v = canvas.viewportTransform;
@@ -258,6 +259,7 @@ Tools.sprayer = {
   onMouseMove(p) {
     if (SymbolSprayer.session) SymbolSprayer.session.cursor = p;
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     const v = canvas.viewportTransform;
     ctx.save();

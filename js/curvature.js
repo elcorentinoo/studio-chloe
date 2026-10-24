@@ -115,6 +115,7 @@ Tools.curvature = {
 
   render() {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     if (!ctx) return;
     canvas.clearContext(ctx);
     if (!this.points.length || state.tool !== 'curvature') return;

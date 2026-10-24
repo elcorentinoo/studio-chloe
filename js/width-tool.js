@@ -279,6 +279,7 @@ const WidthTool = {
 
   render() {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     if (state.tool !== 'width') return;
     const v = canvas.viewportTransform;

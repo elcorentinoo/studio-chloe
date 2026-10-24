@@ -123,6 +123,7 @@ Tools.pen = {
     const P = this.points;
     if (!P.length || state.tool !== 'pen') return;
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     const v = canvas.viewportTransform;
     const zoom = v[0];
     ctx.save();

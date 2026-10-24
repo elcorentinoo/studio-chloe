@@ -194,6 +194,7 @@ const Anchors = {
   // ---------- aperçu
   render(p) {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     if (!ANCHOR_TOOLS.includes(state.tool)) return;
     const hit = p ? this.pick(p, { anchorsOnly: state.tool === 'deleteAnchor' || state.tool === 'convertAnchor' }) : null;

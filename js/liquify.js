@@ -144,6 +144,7 @@ const Liquify = {
 
   ring(p) {
     const ctx = canvas.contextTop;
+    if (!ctx) return; // rendu d’export en cours (toCanvasElement) : pas de calque d’interface
     canvas.clearContext(ctx);
     const v = canvas.viewportTransform;
     ctx.save();

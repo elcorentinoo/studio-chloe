@@ -1127,3 +1127,16 @@ body.is-locked .app { visibility: hidden; }
 .help-grid dl div { grid-template-columns: minmax(118px, auto) 1fr; }
 .app-version { margin-left: 8px; padding: 3px 10px; border-radius: var(--r-pill); background: var(--lime-soft); color: var(--moss); font: 500 12px var(--font); vertical-align: 3px; white-space: nowrap; }
 :root[data-theme="dark"] .app-version { color: var(--lime); }
+
+/* Panneau Transformation (js/transform-panel.js) */
+.tile-transform { padding: 12px; gap: 8px; }
+.tf-grid { display: grid; grid-template-columns: 38px 1fr 64px; gap: 8px; align-items: center; }
+.tf-ref { display: grid; grid-template-columns: repeat(3, 10px); gap: 4px; padding: 4px; border-radius: 10px; background: var(--chip); }
+.tf-ref button { width: 10px; height: 10px; padding: 0; border: 1.5px solid var(--ink-muted); border-radius: 2px; background: transparent; cursor: pointer; }
+.tf-ref button.is-active { background: var(--moss); border-color: var(--moss); }
+.tf-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tf-field { display: flex; align-items: center; gap: 6px; min-width: 0; }
+.tf-field span { width: 12px; color: var(--ink-muted); font: 600 11px var(--font); text-align: center; }
+.tf-field .input { height: 30px; min-width: 0; padding: 0 8px; font-size: 12px; font-variant-numeric: tabular-nums; }
+.tf-side { display: flex; flex-direction: column; gap: 6px; }
+.tf-lock { width: 30px; height: 30px; align-self: center; }

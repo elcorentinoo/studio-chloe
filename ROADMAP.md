@@ -21,6 +21,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 - Styles graphiques (onglet Symboles) : enregistrer toute l'apparence d'un objet (dégradé, contour, pointillés, ombre, fusion, Aspect, effets), l'appliquer en un clic, redéfinir pour mettre à jour tous les objets liés
 - Exporter les éléments (⌘⌥E) : chaque objet choisi exporté seul, recadré, en plusieurs tailles et formats (PNG, JPG, WebP, SVG) avec suffixes, préréglages iOS / Android / Web, ZIP
 - Répétition modifiable (tuile Effets) : radiale (copies, rayon, angle), en grille (colonnes, lignes, espacements) ou en miroir (axe, écart) ; réglages modifiables après coup, double-clic pour modifier l'original, « Libérer »
+- Habillage du texte (tuile Disposition) : un objet repousse les zones de texte placées dessous, écart réglable ; le texte prend la place libre à côté ou reprend sous l'objet, recomposition en direct
 
 **0.5.0 « Bourgeon » — octobre 2026**
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓

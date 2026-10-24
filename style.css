@@ -1209,3 +1209,11 @@ body.is-locked .app { visibility: hidden; }
 .livefx-color input { width: 34px; height: 26px; }
 #section-livefx .btn-row { display: flex; gap: 6px; }
 #section-livefx .btn-row select { flex: 1; min-width: 0; }
+
+/* ---------- Formes dynamiques (angles) ---------- */
+.corner-pro { gap: 8px; }
+.corner-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.corner-grid .tf-field span { width: 14px; }
+.corner-pro .seg { display: grid; grid-template-columns: repeat(3, 1fr); }
+.corner-pro .seg-btn { font: 500 12px var(--font); color: var(--ink); }
+.corner-pro .seg-btn.is-active { color: var(--primary-ink); }

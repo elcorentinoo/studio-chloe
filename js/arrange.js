@@ -496,7 +496,7 @@ const Layers = {
     [...panel.children].filter((c) => c !== header).forEach((c) => props.appendChild(c));
     this.tab = html(`
       <div class="panel-tab" id="tab-layers" hidden>
-        <p class="panel-hint">Double-clic pour renommer · glisser pour réordonner.</p>
+        <p class="panel-hint">Double-clic pour renommer · glisser pour réordonner ou changer de calque.</p>
         <ul class="layer-list" id="layer-list" aria-label="Calques"></ul>
         <p class="panel-hint layer-empty" id="layer-empty">Aucun calque pour l'instant : tracez une forme ou importez une image.</p>
       </div>`);

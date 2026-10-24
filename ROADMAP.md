@@ -16,6 +16,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 **0.6.0 « Fleur » — en cours**
 - Joindre (⌘J) : relie les tracés ouverts par leurs extrémités les plus proches ou ferme un tracé ; Moyenne (⌘⌥J) horizontale / verticale / les deux, et Moyenne + joindre (⌘⌥⇧J)
 - Formes dynamiques : widgets d'angle sur les rectangles (glisser pour arrondir, Alt pour un seul angle), rayon par angle, angles arrondis / inversés / chanfreinés — la forme reste un rectangle
+- Calques en dossiers : nouveaux calques, calque actif pour les nouveaux objets, replier / déplier, masquer / verrouiller tout un calque, renommer, réordonner et déplacer les objets par glisser-déposer
 
 **0.5.0 « Bourgeon » — octobre 2026**
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓

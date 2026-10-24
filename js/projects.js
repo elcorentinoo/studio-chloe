@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Projets, tableaux & verrouillage par empreinte
+ *  Chloe’s Touch — Projets, tableaux & verrouillage par empreinte
  *
  *  1. Store   — IndexedDB : projets (métadonnées + miniature), documents,
  *               tableaux, réglages. Migration de l'ancien document unique.
@@ -156,8 +156,8 @@ const Vault = {
   async registerPasskey(salt) {
     const cred = await navigator.credentials.create({
       publicKey: {
-        rp: { name: 'Studio Chloé' },
-        user: { id: randomBytes(16), name: 'Studio Chloé', displayName: 'Studio Chloé' },
+        rp: { name: 'Chloe’s Touch' },
+        user: { id: randomBytes(16), name: 'Chloe’s Touch', displayName: 'Chloe’s Touch' },
         challenge: randomBytes(32),
         pubKeyCredParams: [{ type: 'public-key', alg: -7 }, { type: 'public-key', alg: -257 }],
         authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', residentKey: 'preferred' },
@@ -433,7 +433,7 @@ const Projects = {
   updateLabel() {
     const btn = $('#btn-project');
     if (btn) btn.querySelector('span').textContent = this.currentName();
-    document.title = `${this.currentName()} — Studio Chloé`;
+    document.title = `${this.currentName()} — Chloe’s Touch`;
   },
 };
 window.Projects = Projects; // utilisé par formats.js et library.js
@@ -744,10 +744,10 @@ function closePopover() {
 const LockScreen = {
   mount() {
     this.el = html(`
-      <section class="lock-screen" id="lock-screen" hidden aria-label="Studio Chloé est verrouillé">
+      <section class="lock-screen" id="lock-screen" hidden aria-label="Chloe’s Touch est verrouillé">
         <div class="lock-card">
           <img src="logo.svg" alt="" width="72" height="72">
-          <h1>Studio Chloé est verrouillé</h1>
+          <h1>Chloe’s Touch est verrouillé</h1>
           <p>Vos projets sont chiffrés sur cet appareil. Seule votre empreinte peut les ouvrir.</p>
           <button class="btn btn-primary btn-block lock-btn" type="button" id="lock-unlock">
             <svg viewBox="0 0 24 24" aria-hidden="true">${FINGERPRINT_ICON}</svg>
@@ -820,7 +820,7 @@ async function lockNow() {
   Vault.lock();
   LockScreen.show();
   Projects.updateLabel();
-  document.title = 'Studio Chloé';
+  document.title = 'Chloe’s Touch';
 }
 
 const AutoLock = {
@@ -931,8 +931,8 @@ const Security = {
     $('#recovery-code').textContent = code;
     $('#code-copy').addEventListener('click', () => navigator.clipboard?.writeText(code).then(() => toast('Code copié', 'success')));
     $('#code-download').addEventListener('click', () => {
-      const url = URL.createObjectURL(new Blob([`Studio Chloé — code de secours\n\n${code}\n\nÀ utiliser si l'empreinte ne fonctionne plus (écran de verrouillage → « J'ai perdu l'accès à mon empreinte »).\n`], { type: 'text/plain' }));
-      downloadURL(url, 'studio-chloe-code-de-secours.txt');
+      const url = URL.createObjectURL(new Blob([`Chloe’s Touch — code de secours\n\n${code}\n\nÀ utiliser si l'empreinte ne fonctionne plus (écran de verrouillage → « J'ai perdu l'accès à mon empreinte »).\n`], { type: 'text/plain' }));
+      downloadURL(url, 'chloes-touch-code-de-secours.txt');
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
     $('#code-ok').addEventListener('change', (e) => { $('#code-done').disabled = !e.target.checked; });

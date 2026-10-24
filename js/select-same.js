@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Sélection › Même
+ *  Chloe’s Touch — Sélection › Même
  *
  *  Comme le menu Sélection › Même d'Illustrator : à partir de la sélection,
  *  sélectionne tous les objets qui partagent exactement le même remplissage,

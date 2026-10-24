@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Recolorer la composition
+ *  Chloe’s Touch — Recolorer la composition
  *
  *  Comme « Recolorer la composition » d'Illustrator : toutes les couleurs de
  *  la sélection (remplissages, contours, arrêts de dégradé, lettres colorées,

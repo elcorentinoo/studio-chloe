@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — MVP d'éditeur vectoriel façon Illustrator
+ *  Chloe’s Touch — MVP d'éditeur vectoriel façon Illustrator
  *  Stack : HTML / CSS / JavaScript vanilla + Fabric.js 5.3
  * ============================================================================
  *
@@ -54,7 +54,7 @@
 const REMOVE_BG_ENDPOINT = '/api/remove-bg';
 
 /** Version de l'application (affichée dans l'aide ; voir ROADMAP.md › Versions) */
-const APP_VERSION = Object.freeze({ number: '0.6.1', name: 'Fleur' });
+const APP_VERSION = Object.freeze({ number: '0.7.0', name: 'Pétale' });
 
 /** Au-delà de cette taille, l'image est réduite avant l'envoi (limite des fonctions Netlify ≈ 6 Mo) */
 const UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
@@ -78,8 +78,8 @@ const PASTE_OFFSET = 20;      // px — décalage d'un objet collé ou dupliqué
 
 /** Style appliqué aux nouveaux objets (modifiable depuis le panneau) */
 const DEFAULT_STYLE = Object.freeze({
-  fill: '#d4f04c',
-  stroke: '#25300b',
+  fill: '#f68a8d',
+  stroke: '#c73527',
   strokeWidth: 2,
   opacity: 1,
 });
@@ -88,7 +88,7 @@ const TEXT_DEFAULTS = Object.freeze({
   text: 'Votre texte',
   fontFamily: 'Outfit',
   fontSize: 40,
-  fill: '#25300b', // couleur de départ lisible sur fond blanc (modifiable ensuite dans le panneau)
+  fill: '#c73527', // couleur de départ lisible sur fond blanc (modifiable ensuite dans le panneau)
 });
 
 const CANVAS_BG = '#ffffff';
@@ -258,8 +258,8 @@ const dom = {
 // le fond n'est ajouté qu'au moment de l'export (voir Exporter).
 const canvas = new fabric.Canvas('c', {
   preserveObjectStacking: true, // l'objet sélectionné ne passe pas automatiquement au premier plan
-  selectionColor: 'rgba(212, 240, 76, 0.18)',
-  selectionBorderColor: '#7c9425',
+  selectionColor: 'rgba(246, 138, 141, 0.18)',
+  selectionBorderColor: '#d9474f',
   selectionLineWidth: 1,
   stopContextMenu: true,
 });
@@ -267,9 +267,9 @@ const canvas = new fabric.Canvas('c', {
 // Apparence des poignées de transformation (appliquée à tous les objets)
 fabric.Object.prototype.set({
   transparentCorners: false,
-  cornerColor: '#d4f04c',
-  cornerStrokeColor: '#25300b',
-  borderColor: '#7c9425',
+  cornerColor: '#f68a8d',
+  cornerStrokeColor: '#c73527',
+  borderColor: '#d9474f',
   cornerSize: 10,
   cornerStyle: 'circle',
   borderScaleFactor: 1.5,
@@ -292,7 +292,7 @@ function drawPage({ ctx }) {
   const v = canvas.viewportTransform;
   ctx.save();
   ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
-  ctx.shadowColor = 'rgba(37, 48, 11, 0.18)';
+  ctx.shadowColor = 'rgba(74, 22, 24, 0.18)';
   ctx.shadowBlur = 24;
   ctx.shadowOffsetY = 6;
   ctx.fillStyle = CANVAS_BG;
@@ -528,7 +528,7 @@ function lineShape(kind, pointsFromEnds) {
       const s = shapeStyle();
       return new fabric.Polyline([{ x: p.x, y: p.y }, { x: p.x, y: p.y }], {
         ...s,
-        stroke: s.stroke || s.fill || '#25300b',
+        stroke: s.stroke || s.fill || '#c73527',
         strokeWidth: Math.max(1, s.strokeWidth),
         fill: null,
         strokeLineCap: 'round',
@@ -825,7 +825,7 @@ function updateBrush() {
     canvas.freeDrawingBrush = new fabric.PencilBrush(canvas);
   }
   const brush = canvas.freeDrawingBrush;
-  brush.color = state.style.stroke || state.style.fill || '#25300b';
+  brush.color = state.style.stroke || state.style.fill || '#c73527';
   brush.width = Math.max(1, state.style.strokeWidth);
   brush.decimate = 1.5; // simplifie légèrement le tracé (moins de points)
 }
@@ -1195,14 +1195,14 @@ const Cropper = {
       width: img.width * Math.abs(img.scaleX),
       height: img.height * Math.abs(img.scaleY),
       angle: img.angle,
-      fill: 'rgba(212, 240, 76, 0.14)',
-      stroke: '#7c9425',
+      fill: 'rgba(246, 138, 141, 0.14)',
+      stroke: '#d9474f',
       strokeWidth: 1.5,
       strokeDashArray: [6, 4],
       strokeUniform: true,
       cornerStyle: 'rect',
-      cornerColor: '#25300b',
-      cornerStrokeColor: '#d4f04c',
+      cornerColor: '#c73527',
+      cornerStrokeColor: '#f68a8d',
       lockRotation: true,
       lockScalingFlip: true,
       excludeFromExport: true,
@@ -1329,7 +1329,7 @@ const Clipboard = {
       return;
     }
 
-    // 2. Objets copiés dans Studio Chloé, ou 3. texte copié ailleurs
+    // 2. Objets copiés dans Chloe’s Touch, ou 3. texte copié ailleurs
     const text = cd.getData('text/plain') || '';
     if (text === this.MARKER || (!text.trim() && this.data)) {
       e.preventDefault();
@@ -2097,7 +2097,7 @@ const Help = {
   showVersion() {
     const title = dom.helpDialog.querySelector('#help-title');
     if (!title || title.querySelector('.app-version')) return;
-    title.insertAdjacentHTML('beforeend', ` <span class="app-version" title="Version de Studio Chloé">v${APP_VERSION.number} · ${APP_VERSION.name}</span>`);
+    title.insertAdjacentHTML('beforeend', ` <span class="app-version" title="Version de Chloe’s Touch">v${APP_VERSION.number} · ${APP_VERSION.name}</span>`);
   },
   bind() {
     this.showVersion();
@@ -2361,7 +2361,7 @@ function downloadURL(url, filename) {
 
 function exportFileName(ext) {
   const stamp = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-  return `studio-chloe-${stamp}.${ext}`;
+  return `chloes-touch-${stamp}.${ext}`;
 }
 
 let toastTimer = null;

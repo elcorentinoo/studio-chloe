@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Collaboration en temps réel (pair à pair, sans serveur payant)
+ *  Chloe’s Touch — Collaboration en temps réel (pair à pair, sans serveur payant)
  *
  *  Yjs + y-webrtc (MIT), chargés à la demande depuis jsDelivr.
  *    - « Collaborer » (barre du haut) → « Créer un salon » : un lien secret
@@ -21,7 +21,7 @@
 const YWEBRTC_URL = 'https://cdn.jsdelivr.net/npm/y-webrtc@10.3.0/+esm';
 const YJS_FALLBACK_URL = 'https://cdn.jsdelivr.net/npm/yjs@13.6.18/+esm';
 const COLLAB_NAME_KEY = 'studio-chloe-collab-name';
-const COLLAB_COLORS = ['#e0457b', '#3d7be0', '#f2a33a', '#9b6bd6', '#2bb3a3', '#7c9425'];
+const COLLAB_COLORS = ['#e0457b', '#3d7be0', '#f2a33a', '#9b6bd6', '#2bb3a3', '#d9474f'];
 const PEOPLE_ICON = '<circle cx="9" cy="8" r="3.2"/><path d="M3 19c.6-3.3 3-5 6-5s5.4 1.7 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.6-.2 4.6 1.3 5.3 4.3"/>';
 
 const Collab = {
@@ -228,7 +228,7 @@ const Collab = {
         : `
         <div class="collab-warning">
           <strong>Avant de partager</strong>
-          <p>Le contenu de <em>ce projet</em> sera envoyé, en direct et chiffré, aux personnes qui ont le lien (connexion pair à pair, sans serveur Studio Chloé). Vos autres projets et votre coffre verrouillé ne sont jamais partagés.</p>
+          <p>Le contenu de <em>ce projet</em> sera envoyé, en direct et chiffré, aux personnes qui ont le lien (connexion pair à pair, sans serveur Chloe’s Touch). Vos autres projets et votre coffre verrouillé ne sont jamais partagés.</p>
         </div>
         <label class="field-label" for="collab-name">Votre nom (affiché à côté de votre curseur)</label>
         <input class="input" type="text" id="collab-name" maxlength="24" placeholder="Ex. : Corentin">`,

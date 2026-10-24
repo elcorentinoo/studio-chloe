@@ -1,4 +1,6 @@
-# Studio Chloé
+# Chloe’s Touch
+
+*(anciennement Studio Chloé)*
 
 Éditeur vectoriel dans le navigateur, façon Illustrator : formes, plume et courbure, crayon, pinceaux artistiques, texte avancé (sur tracé, dans une forme, vectorisation, toutes les Google Fonts), Pathfinder, concepteur de forme, masques, symboles et couleurs globales, motifs, dégradés, effets de déformation, plans de travail multiples, import PDF / .ai / SVG, exports (PNG, JPG, WebP, SVG optimisé, PDF avec fonds perdus), IA gratuite (détourage local, génération d'images), collaboration en direct, application installable (PWA).
 

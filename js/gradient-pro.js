@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Dégradés avancés
+ *  Chloe’s Touch — Dégradés avancés
  *    1. Dégradés de couleur : linéaire OU radial, avec autant d'arrêts
  *       intermédiaires que voulu (couleur + position), dans l'onglet
  *       « Dégradé » du remplissage.

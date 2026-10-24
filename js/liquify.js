@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outils de Fluidité (menu « Largeur & déformation »)
+ *  Chloe’s Touch — Outils de Fluidité (menu « Largeur & déformation »)
  *    Déformer — pousse la matière dans le sens du geste
  *    Tordre   — tourbillon autour du pinceau (maintenir pour accentuer, Alt : sens inverse)
  *    Gonfler  — repousse depuis le centre du pinceau (Alt : contracter)

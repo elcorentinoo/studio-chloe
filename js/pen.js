@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Plume (Bézier) & édition des points
+ *  Chloe’s Touch — Plume (Bézier) & édition des points
  *
  *  Plume (P) — comme dans Illustrator :
  *    clic          → point d'angle
@@ -16,7 +16,7 @@
  */
 'use strict';
 
-const PEN_COLOR = '#7c9425';
+const PEN_COLOR = '#d9474f';
 const PEN_CLOSE_PX = 9; // rayon (écran) pour fermer sur le premier point
 
 /* ============================================================================
@@ -101,7 +101,7 @@ Tools.pen = {
     const path = new fabric.Path(d, {
       ...s,
       fill: close ? s.fill : null,
-      stroke: s.stroke || (close ? null : s.fill) || '#25300b',
+      stroke: s.stroke || (close ? null : s.fill) || '#c73527',
       strokeWidth: close ? s.strokeWidth : Math.max(1, s.strokeWidth),
       strokeLineCap: 'round',
       strokeLineJoin: 'round',
@@ -159,7 +159,7 @@ Tools.pen = {
       [last.hin, last.hout].forEach((h) => {
         ctx.beginPath();
         ctx.arc(h.x, h.y, 3.5 / zoom, 0, Math.PI * 2);
-        ctx.fillStyle = '#d4f04c';
+        ctx.fillStyle = '#f68a8d';
         ctx.fill();
         ctx.stroke();
       });
@@ -323,7 +323,7 @@ const PathEditor = {
           });
           ctx.beginPath();
           ctx.arc(left, top, 4.5, 0, Math.PI * 2);
-          ctx.fillStyle = '#d4f04c';
+          ctx.fillStyle = '#f68a8d';
           ctx.fill();
           ctx.stroke();
         } else {

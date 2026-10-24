@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — IA gratuite (bouton « IA » du rail)
+ *  Chloe’s Touch — IA gratuite (bouton « IA » du rail)
  *
  *  1. Détourage GRATUIT dans le navigateur : @imgly/background-removal
  *     (modèle ONNX exécuté sur l'ordinateur, aucune image envoyée, chargé à

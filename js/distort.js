@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Effets « Distorsion et transformation » (tuile Effets)
+ *  Chloe’s Touch — Effets « Distorsion et transformation » (tuile Effets)
  *
  *  Déformation (enveloppe simple) : arc, arche, renflement, drapeau, vague,
  *    poisson, montée, gonflement, torsion — courbure réglable, horizontale ou

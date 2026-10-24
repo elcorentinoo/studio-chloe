@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Calques en dossiers (onglet Calques)
+ *  Chloe’s Touch — Calques en dossiers (onglet Calques)
  *
  *  Comme les calques d'Illustrator : « + Nouveau calque » crée un dossier ;
  *  le premier dossier reçoit tous les objets existants. Chaque dossier se

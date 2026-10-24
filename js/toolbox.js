@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Boîte à outils : menus d'outils du rail & options d'outil
+ *  Chloe’s Touch — Boîte à outils : menus d'outils du rail & options d'outil
  *
  *  RailGroups.create(id, { title, after, items }) — bouton du rail qui ouvre
  *    un menu de plusieurs outils (comme les formes) ; il prend l'icône du

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Plans de travail multiples
+ *  Chloe’s Touch — Plans de travail multiples
  *
  *  Le plan n° 1 est la page habituelle (state.page, en 0,0 ; son format se
  *  change avec « Changer de format »). On peut en ajouter d'autres :
@@ -84,7 +84,7 @@ const Artboards = {
     const v = canvas.viewportTransform;
     ctx.save();
     ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
-    ctx.shadowColor = 'rgba(37, 48, 11, 0.18)';
+    ctx.shadowColor = 'rgba(74, 22, 24, 0.18)';
     ctx.shadowBlur = 24;
     ctx.shadowOffsetY = 6;
     ctx.fillStyle = CANVAS_BG;
@@ -98,13 +98,13 @@ const Artboards = {
     const dark = document.documentElement.dataset.theme === 'dark';
     ctx.save();
     ctx.font = '500 11px Inter, system-ui, sans-serif';
-    ctx.fillStyle = dark ? 'rgba(238, 243, 220, 0.75)' : 'rgba(30, 37, 13, 0.65)';
+    ctx.fillStyle = dark ? 'rgba(238, 243, 220, 0.75)' : 'rgba(42, 18, 20, 0.65)';
     this.all().forEach((a, i) => {
       const x = a.left * v[0] + v[4];
       const y = a.top * v[3] + v[5] - 8;
       ctx.fillText(`${i + 1} · ${a.name}`, x, y);
       if (this.drag?.board === a || this.hover === a) {
-        ctx.strokeStyle = '#7c9425';
+        ctx.strokeStyle = '#d9474f';
         ctx.lineWidth = 2;
         ctx.strokeRect(x, a.top * v[3] + v[5], a.width * v[0], a.height * v[3]);
       }
@@ -201,7 +201,7 @@ const Artboards = {
       files.forEach((f) => zip.file(f.name, f.data, f.text ? {} : { base64: true }));
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
-      downloadURL(url, exportFileName('zip').replace('studio-chloe', 'plans-de-travail'));
+      downloadURL(url, exportFileName('zip').replace('chloes-touch', 'plans-de-travail'));
       setTimeout(() => URL.revokeObjectURL(url), 2000);
     } catch {
       files.forEach((f, i) => setTimeout(() => {

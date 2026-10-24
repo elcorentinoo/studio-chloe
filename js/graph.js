@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Graphiques vectoriels (J), menu « Données & export »
+ *  Chloe’s Touch — Graphiques vectoriels (J), menu « Données & export »
  *
  *  Tracez un cadre : une fenêtre s'ouvre pour saisir les données (une ligne
  *  par catégorie, colonnes séparées par ; , ou tabulation — un copier-coller
@@ -17,7 +17,7 @@
 const GRAPH_ICONS = {
   graph: '<path d="M3 3v18h18"/><path d="M7 16v-5M11 16V7M15 16v-3M19 16V9"/>',
 };
-const CHART_COLORS = ['#7c9425', '#d4f04c', '#25300b', '#e0457b', '#3d7be0', '#f2a33a', '#9b6bd6', '#2bb3a3'];
+const CHART_COLORS = ['#d9474f', '#f68a8d', '#c73527', '#e0457b', '#3d7be0', '#f2a33a', '#9b6bd6', '#2bb3a3'];
 const CHART_TYPES = {
   bar: 'Barres', hbar: 'Barres horizontales', stack: 'Barres empilées', line: 'Lignes', area: 'Aires', pie: 'Secteurs', donut: 'Anneau',
 };
@@ -44,7 +44,7 @@ const Charts = {
 
   text(str, left, top, opts = {}) {
     return new fabric.Text(String(str), {
-      left, top, fontFamily: 'Inter', fontSize: opts.size || 14, fill: opts.fill || '#25300b',
+      left, top, fontFamily: 'Inter', fontSize: opts.size || 14, fill: opts.fill || '#c73527',
       originX: opts.originX || 'left', originY: opts.originY || 'top', fontWeight: opts.weight || 'normal',
     });
   },
@@ -87,7 +87,7 @@ const Charts = {
         if (spec.values !== false && v / total > 0.04) {
           const mid = a + da / 2;
           const lr = r0 ? (R + r0) / 2 : R * 0.65;
-          objs.push(this.text(`${Math.round((v / total) * 100)} %`, cx + lr * Math.cos(mid), cy + lr * Math.sin(mid), { size: S, fill: i % CHART_COLORS.length === 2 ? '#ffffff' : '#25300b', originX: 'center', originY: 'center', weight: 'bold' }));
+          objs.push(this.text(`${Math.round((v / total) * 100)} %`, cx + lr * Math.cos(mid), cy + lr * Math.sin(mid), { size: S, fill: i % CHART_COLORS.length === 2 ? '#ffffff' : '#c73527', originX: 'center', originY: 'center', weight: 'bold' }));
         }
         a += da;
       });
@@ -111,12 +111,12 @@ const Charts = {
       const label = Number.isInteger(v) ? String(v) : v.toFixed(1);
       if (horizontal) {
         const x = padL + (plotW * i) / ticks;
-        objs.push(new fabric.Line([x, padT, x, padT + plotH], { stroke: i ? 'rgba(37,48,11,0.12)' : '#25300b', strokeWidth: i ? 1 : 1.5 }));
-        objs.push(this.text(label, x, padT + plotH + S * 0.4, { size: S * 0.8, originX: 'center', fill: '#6c7457' }));
+        objs.push(new fabric.Line([x, padT, x, padT + plotH], { stroke: i ? 'rgba(74,22,24,0.12)' : '#c73527', strokeWidth: i ? 1 : 1.5 }));
+        objs.push(this.text(label, x, padT + plotH + S * 0.4, { size: S * 0.8, originX: 'center', fill: '#7a5f60' }));
       } else {
         const y = padT + plotH - (plotH * i) / ticks;
-        objs.push(new fabric.Line([padL, y, padL + plotW, y], { stroke: i ? 'rgba(37,48,11,0.12)' : '#25300b', strokeWidth: i ? 1 : 1.5 }));
-        objs.push(this.text(label, padL - S * 0.4, y, { size: S * 0.8, originX: 'right', originY: 'center', fill: '#6c7457' }));
+        objs.push(new fabric.Line([padL, y, padL + plotW, y], { stroke: i ? 'rgba(74,22,24,0.12)' : '#c73527', strokeWidth: i ? 1 : 1.5 }));
+        objs.push(this.text(label, padL - S * 0.4, y, { size: S * 0.8, originX: 'right', originY: 'center', fill: '#7a5f60' }));
       }
     }
 

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Styles de paragraphe et de caractère (tuile Texte)
+ *  Chloe’s Touch — Styles de paragraphe et de caractère (tuile Texte)
  *
  *  Comme les panneaux Styles de paragraphe / Styles de caractère d'Illustrator :
  *    - « + » crée un style à partir du texte sélectionné ;

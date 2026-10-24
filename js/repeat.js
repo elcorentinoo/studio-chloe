@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Répétition radiale, en grille, en miroir (modifiable)
+ *  Chloe’s Touch — Répétition radiale, en grille, en miroir (modifiable)
  *
  *  Comme Objet › Répétition d'Illustrator : la sélection devient un groupe
  *  « répétition » dont le premier élément est l'original et les autres des

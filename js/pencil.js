@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Crayon, Lissage, Gomme (menu du rail après le Pinceau)
+ *  Chloe’s Touch — Crayon, Lissage, Gomme (menu du rail après le Pinceau)
  *
  *  Crayon (N)   — trait à main levée converti en courbes de Bézier propres
  *                 (simplification paper.js, fidélité réglable) ; se ferme
@@ -70,7 +70,7 @@ Tools.pencil = {
   onMouseMove(p) {
     if (!this.points) return;
     pushPoint(this.points, p);
-    drawStrokePreview(this.points, { color: state.style.stroke || state.style.fill || '#25300b', width: Math.max(1, state.style.strokeWidth), screenWidth: false });
+    drawStrokePreview(this.points, { color: state.style.stroke || state.style.fill || '#c73527', width: Math.max(1, state.style.strokeWidth), screenWidth: false });
   },
   async onMouseUp() {
     const pts = this.points;
@@ -98,7 +98,7 @@ Tools.pencil = {
     const obj = new fabric.Path(d, {
       ...s,
       fill: closed && DrawOpts.fillClosed ? s.fill : null,
-      stroke: s.stroke || s.fill || '#25300b',
+      stroke: s.stroke || s.fill || '#c73527',
       strokeWidth: Math.max(1, s.strokeWidth),
       strokeLineCap: 'round',
       strokeLineJoin: 'round',

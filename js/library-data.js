@@ -1,11 +1,11 @@
 /**
- * Studio Chloé — données de la bibliothèque
+ * Chloe’s Touch — données de la bibliothèque
  *  - ICON_LIBRARY : icônes Lucide (https://lucide.dev), licence ISC
  *    « Copyright (c) Lucide Contributors 2022 — Permission to use, copy, modify,
  *      and/or distribute this software for any purpose with or without fee is
  *      hereby granted… » (texte complet : https://lucide.dev/license)
  *    Format : nom → [mots-clés en français, contenu SVG (viewBox 0 0 24 24, trait)]
- *  - STICKERS et TEMPLATES : créations originales Studio Chloé (voir library.js)
+ *  - STICKERS et TEMPLATES : créations originales Chloe’s Touch (voir library.js)
  */
 'use strict';
 

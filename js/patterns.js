@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Motifs (remplissage « Motif » de la tuile Apparence)
+ *  Chloe’s Touch — Motifs (remplissage « Motif » de la tuile Apparence)
  *
  *  - 4 motifs prêts à l'emploi (pois, rayures, damier, vagues) aux couleurs
  *    de la marque ;
@@ -14,10 +14,10 @@
 'use strict';
 
 const BUILTIN_PATTERNS = [
-  { id: 'dots', name: 'Pois', draw: (c, s) => { c.fillStyle = '#d4f04c'; c.fillRect(0, 0, s, s); c.fillStyle = '#25300b'; c.beginPath(); c.arc(s / 2, s / 2, s * 0.18, 0, Math.PI * 2); c.fill(); } },
-  { id: 'stripes', name: 'Rayures', draw: (c, s) => { c.fillStyle = '#f4f2e4'; c.fillRect(0, 0, s, s); c.fillStyle = '#7c9425'; c.fillRect(0, 0, s, s / 2); } },
-  { id: 'checker', name: 'Damier', draw: (c, s) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, s, s); c.fillStyle = '#25300b'; c.fillRect(0, 0, s / 2, s / 2); c.fillRect(s / 2, s / 2, s / 2, s / 2); } },
-  { id: 'waves', name: 'Vagues', draw: (c, s) => { c.fillStyle = '#e8f6a8'; c.fillRect(0, 0, s, s); c.strokeStyle = '#7c9425'; c.lineWidth = s / 10; c.beginPath(); c.moveTo(0, s / 2); c.bezierCurveTo(s / 4, s * 0.2, s / 4, s * 0.2, s / 2, s / 2); c.bezierCurveTo(s * 0.75, s * 0.8, s * 0.75, s * 0.8, s, s / 2); c.stroke(); } },
+  { id: 'dots', name: 'Pois', draw: (c, s) => { c.fillStyle = '#f68a8d'; c.fillRect(0, 0, s, s); c.fillStyle = '#c73527'; c.beginPath(); c.arc(s / 2, s / 2, s * 0.18, 0, Math.PI * 2); c.fill(); } },
+  { id: 'stripes', name: 'Rayures', draw: (c, s) => { c.fillStyle = '#fbf3f1'; c.fillRect(0, 0, s, s); c.fillStyle = '#d9474f'; c.fillRect(0, 0, s, s / 2); } },
+  { id: 'checker', name: 'Damier', draw: (c, s) => { c.fillStyle = '#ffffff'; c.fillRect(0, 0, s, s); c.fillStyle = '#c73527'; c.fillRect(0, 0, s / 2, s / 2); c.fillRect(s / 2, s / 2, s / 2, s / 2); } },
+  { id: 'waves', name: 'Vagues', draw: (c, s) => { c.fillStyle = '#fcdcdb'; c.fillRect(0, 0, s, s); c.strokeStyle = '#d9474f'; c.lineWidth = s / 10; c.beginPath(); c.moveTo(0, s / 2); c.bezierCurveTo(s / 4, s * 0.2, s / 4, s * 0.2, s / 2, s / 2); c.bezierCurveTo(s * 0.75, s * 0.8, s * 0.75, s * 0.8, s, s / 2); c.stroke(); } },
 ];
 
 const Patterns = {

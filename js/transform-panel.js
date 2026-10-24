@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Panneau Transformation (tuile en tête du panneau)
+ *  Chloe’s Touch — Panneau Transformation (tuile en tête du panneau)
  *
  *  Comme le panneau Transformation d'Illustrator :
  *    - point de référence à 9 positions (coins, milieux, centre) ;

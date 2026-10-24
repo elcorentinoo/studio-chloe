@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Rognage rapide (Maj + C)
+ *  Chloe’s Touch — Rognage rapide (Maj + C)
  *
  *  Tracez un cadre : les éléments qu'il touche sont rognés à ce cadre.
  *    - si des objets étaient sélectionnés avant d'activer l'outil, seuls eux
@@ -106,7 +106,7 @@ Tools.quickcrop = {
   onMouseDown(p) {
     const rect = new fabric.Rect({
       left: p.x, top: p.y, width: 0, height: 0,
-      fill: 'rgba(212, 240, 76, 0.16)', stroke: '#7c9425', strokeWidth: 1.5, strokeDashArray: [6, 4],
+      fill: 'rgba(246, 138, 141, 0.16)', stroke: '#d9474f', strokeWidth: 1.5, strokeDashArray: [6, 4],
       strokeUniform: true, selectable: false, evented: false, excludeFromExport: true,
     });
     state.drawing = { obj: rect, origin: p }; // l'historique ignore le cadre

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Formats de page & exports
+ *  Chloe’s Touch — Formats de page & exports
  *    1. Formats prédéfinis (réseaux sociaux, impression, écran) ou sur mesure
  *    2. Redimensionnement magique : le contenu s'adapte au nouveau format
  *       (sur la page actuelle, ou dans une copie du projet)

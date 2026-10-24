@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Modes de fusion
+ *  Chloe’s Touch — Modes de fusion
  *
  *  Comme le menu « Mode de fusion » du panneau Transparence d'Illustrator :
  *  Normal, Produit, Écran, Incrustation… (globalCompositeOperation de Fabric,

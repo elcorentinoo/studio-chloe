@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Application installable (PWA) & confort tactile
+ *  Chloe’s Touch — Application installable (PWA) & confort tactile
  *    - Service worker (sw.js) : installation sur l'écran d'accueil, hors ligne,
  *      avis « nouvelle version » après une mise à jour.
  *    - Bouton « Installer l'app » (quand le navigateur le propose).
@@ -25,7 +25,7 @@ const Pwa = {
         const sw = reg.installing;
         sw?.addEventListener('statechange', () => {
           if (sw.state === 'activated' && hadController) {
-            toast('Nouvelle version de Studio Chloé prête : rechargez la page pour en profiter.', 'success', 8000);
+            toast('Nouvelle version de Chloe’s Touch prête : rechargez la page pour en profiter.', 'success', 8000);
           }
         });
       });
@@ -38,7 +38,7 @@ const Pwa = {
       this.deferredPrompt = e;
       $('#btn-install').hidden = false;
     });
-    const btn = html(`<button class="rail-btn" id="btn-install" type="button" title="Installer Studio Chloé comme une application" aria-label="Installer l'application" hidden>
+    const btn = html(`<button class="rail-btn" id="btn-install" type="button" title="Installer Chloe’s Touch comme une application" aria-label="Installer l'application" hidden>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5"/><rect x="4" y="17" width="16" height="4" rx="1.5"/></svg></button>`);
     $('#btn-help').before(btn);
     btn.addEventListener('click', async () => {
@@ -48,7 +48,7 @@ const Pwa = {
       this.deferredPrompt = null;
       btn.hidden = true;
     });
-    window.addEventListener('appinstalled', () => { btn.hidden = true; toast('Studio Chloé est installé sur cet appareil.', 'success'); });
+    window.addEventListener('appinstalled', () => { btn.hidden = true; toast('Chloe’s Touch est installé sur cet appareil.', 'success'); });
   },
 
   // ---------- deux doigts : zoom et déplacement
@@ -125,7 +125,7 @@ const Pwa = {
       }
       const file = new File([blob], exportFileName(ext), { type: blob.type });
       if (!navigator.canShare({ files: [file] })) { toast('Ce format ne peut pas être partagé depuis ce navigateur.'); return; }
-      await navigator.share({ files: [file], title: Projects?.currentName?.() || 'Studio Chloé' });
+      await navigator.share({ files: [file], title: Projects?.currentName?.() || 'Chloe’s Touch' });
       ED.sheet.close();
     } catch (err) {
       if (err?.name !== 'AbortError') toast('Partage impossible : utilisez « Télécharger ».', 'error');

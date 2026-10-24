@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Bibliothèque
+ *  Chloe’s Touch — Bibliothèque
  *    1. Modèles prêts à l'emploi (ouverts dans un nouveau projet)
  *    2. Icônes (Lucide, ~200, recherche en français)
  *    3. Stickers (créations originales aux couleurs de la marque)
@@ -10,7 +10,7 @@
 'use strict';
 
 const IMAGETRACER_URL = 'https://cdn.jsdelivr.net/npm/imagetracerjs@1.2.6/imagetracer_v1.2.6.js';
-const LIB = { lime: '#d4f04c', olive: '#25300b', moss: '#7c9425', cream: '#f4f2e4', pink: '#e0457b', ink: '#1e1e1e', white: '#ffffff' };
+const LIB = { rose: '#f68a8d', rouge: '#c73527', corail: '#d9474f', cream: '#fbf3f1', pink: '#e0457b', ink: '#1e1e1e', white: '#ffffff' };
 
 /* ============================================================================
    1. MODÈLES
@@ -28,7 +28,7 @@ const T = (text, left, top, opts = {}) => ({
   fontSize: opts.size || 48,
   fontWeight: opts.weight || 'normal',
   fontStyle: opts.style || 'normal',
-  fill: opts.fill || LIB.olive,
+  fill: opts.fill || LIB.rouge,
   textAlign: opts.align || 'left',
   lineHeight: opts.lineHeight || 1.1,
   charSpacing: opts.spacing || 0,
@@ -47,8 +47,8 @@ const linear = (c1, c2, angle = 90) => {
 };
 /** Zone photo : rectangle en pointillés à remplacer (glisser une image dessus) */
 const photoSlot = (left, top, width, height, label = 'Glissez une photo ici') => ([
-  R(left, top, width, height, 'rgba(37,48,11,0.06)', { stroke: LIB.moss, strokeWidth: 3, strokeDashArray: [14, 10], rx: 24, ry: 24, name: 'Zone photo' }),
-  T(label, left, top + height / 2 - 20, { width, size: Math.max(22, Math.round(width / 22)), fill: LIB.moss, align: 'center', font: 'Inter' }),
+  R(left, top, width, height, 'rgba(74,22,24,0.06)', { stroke: LIB.corail, strokeWidth: 3, strokeDashArray: [14, 10], rx: 24, ry: 24, name: 'Zone photo' }),
+  T(label, left, top + height / 2 - 20, { width, size: Math.max(22, Math.round(width / 22)), fill: LIB.corail, align: 'center', font: 'Inter' }),
 ]);
 
 const TEMPLATES = [
@@ -56,29 +56,29 @@ const TEMPLATES = [
     name: 'Citation', tags: 'post instagram', page: { width: 1080, height: 1080 },
     objects: [
       R(0, 0, 1080, 1080, LIB.cream, { name: 'Fond' }),
-      C(900, 170, 260, LIB.lime),
-      T('“', 110, 150, { font: 'Playfair Display', size: 300, fill: LIB.moss, width: 200 }),
+      C(900, 170, 260, LIB.rose),
+      T('“', 110, 150, { font: 'Playfair Display', size: 300, fill: LIB.corail, width: 200 }),
       T('La simplicité est la sophistication suprême.', 120, 420, { font: 'Playfair Display', style: 'italic', size: 76, width: 840, lineHeight: 1.15 }),
-      R(120, 760, 90, 6, LIB.olive),
-      T('Léonard de Vinci', 120, 795, { font: 'Inter', size: 32, fill: LIB.moss, width: 600 }),
+      R(120, 760, 90, 6, LIB.rouge),
+      T('Léonard de Vinci', 120, 795, { font: 'Inter', size: 32, fill: LIB.corail, width: 600 }),
     ],
   },
   {
     name: 'Soldes', tags: 'promo post instagram', page: { width: 1080, height: 1080 },
     objects: [
-      R(0, 0, 1080, 1080, LIB.olive, { name: 'Fond' }),
-      P(starPoints(540, 470, 420, 330, 18), LIB.lime),
-      T('SOLDES', 140, 250, { font: 'Bebas Neue', size: 230, fill: LIB.olive, width: 800, align: 'center' }),
-      T('-50 %', 140, 470, { font: 'Archivo Black', size: 170, fill: LIB.olive, width: 800, align: 'center' }),
+      R(0, 0, 1080, 1080, LIB.rouge, { name: 'Fond' }),
+      P(starPoints(540, 470, 420, 330, 18), LIB.rose),
+      T('SOLDES', 140, 250, { font: 'Bebas Neue', size: 230, fill: LIB.rouge, width: 800, align: 'center' }),
+      T('-50 %', 140, 470, { font: 'Archivo Black', size: 170, fill: LIB.rouge, width: 800, align: 'center' }),
       T('sur toute la boutique · jusqu\'au 30 novembre', 140, 930, { font: 'Inter', size: 34, fill: LIB.cream, width: 800, align: 'center' }),
     ],
   },
   {
     name: 'Story événement', tags: 'story reel', page: { width: 1080, height: 1920 },
     objects: [
-      R(0, 0, 1080, 1920, linear(LIB.lime, LIB.moss), { name: 'Fond' }),
+      R(0, 0, 1080, 1920, linear(LIB.rose, LIB.corail), { name: 'Fond' }),
       C(980, 220, 300, 'rgba(255,255,255,0.25)'),
-      C(80, 1700, 360, 'rgba(37,48,11,0.18)'),
+      C(80, 1700, 360, 'rgba(74,22,24,0.18)'),
       T('SOIRÉE', 90, 420, { font: 'Bebas Neue', size: 260, width: 900 }),
       T('D\'AUTOMNE', 90, 640, { font: 'Bebas Neue', size: 200, fill: LIB.cream, width: 900 }),
       T('Samedi 15 novembre · 19 h', 90, 900, { font: 'Inter', size: 50, weight: 'bold', width: 900 }),
@@ -91,11 +91,11 @@ const TEMPLATES = [
     objects: [
       R(0, 0, 1080, 1350, LIB.cream, { name: 'Fond' }),
       ...photoSlot(90, 90, 900, 760),
-      R(90, 900, 230, 64, LIB.lime, { rx: 32, ry: 32 }),
+      R(90, 900, 230, 64, LIB.rose, { rx: 32, ry: 32 }),
       T('NOUVEAU', 90, 914, { font: 'Inter', size: 30, weight: 'bold', width: 230, align: 'center', spacing: 120 }),
       T('Collection Printemps', 90, 990, { font: 'Playfair Display', size: 92, width: 900 }),
-      R(90, 1180, 330, 84, LIB.olive, { rx: 42, ry: 42 }),
-      T('Découvrir  →', 90, 1203, { font: 'Outfit', size: 36, fill: LIB.lime, width: 330, align: 'center' }),
+      R(90, 1180, 330, 84, LIB.rouge, { rx: 42, ry: 42 }),
+      T('Découvrir  →', 90, 1203, { font: 'Outfit', size: 36, fill: LIB.rose, width: 330, align: 'center' }),
     ],
   },
   {
@@ -103,8 +103,8 @@ const TEMPLATES = [
     objects: [
       R(0, 0, 1280, 720, LIB.ink, { name: 'Fond' }),
       ...photoSlot(760, 60, 460, 600, 'Votre visage ici'),
-      R(60, 150, 640, 190, LIB.lime, { rx: 20, ry: 20, angle: -3 }),
-      T('5 ASTUCES', 80, 168, { font: 'Archivo Black', size: 130, fill: LIB.olive, width: 640, extra: { angle: -3 } }),
+      R(60, 150, 640, 190, LIB.rose, { rx: 20, ry: 20, angle: -3 }),
+      T('5 ASTUCES', 80, 168, { font: 'Archivo Black', size: 130, fill: LIB.rouge, width: 640, extra: { angle: -3 } }),
       T('pour des visuels pro\nen 10 minutes', 70, 400, { font: 'Outfit', size: 64, weight: 'bold', fill: LIB.white, width: 660 }),
       C(690, 600, 50, LIB.pink),
     ],
@@ -113,21 +113,21 @@ const TEMPLATES = [
     name: 'Carte de visite', tags: 'impression', page: { width: 1004, height: 650, dpi: 300 },
     objects: [
       R(0, 0, 1004, 650, LIB.white, { name: 'Fond' }),
-      R(0, 0, 300, 650, LIB.olive),
-      T('CM', 0, 260, { font: 'Outfit', size: 110, weight: 'bold', fill: LIB.lime, width: 300, align: 'center' }),
+      R(0, 0, 300, 650, LIB.rouge),
+      T('CM', 0, 260, { font: 'Outfit', size: 110, weight: 'bold', fill: LIB.rose, width: 300, align: 'center' }),
       T('Chloé Martin', 360, 150, { font: 'Outfit', size: 70, weight: 'bold', width: 600 }),
-      T('Designer graphique', 360, 240, { font: 'Inter', size: 34, fill: LIB.moss, width: 600 }),
-      R(360, 320, 70, 5, LIB.lime),
-      T('06 12 34 56 78\nbonjour@studio-chloe.fr\nstudio-chloe.fr', 360, 370, { font: 'Inter', size: 30, width: 600, lineHeight: 1.5 }),
+      T('Designer graphique', 360, 240, { font: 'Inter', size: 34, fill: LIB.corail, width: 600 }),
+      R(360, 320, 70, 5, LIB.rose),
+      T('06 12 34 56 78\nbonjour@chloestouch.fr\nchloestouch.fr', 360, 370, { font: 'Inter', size: 30, width: 600, lineHeight: 1.5 }),
     ],
   },
   {
     name: 'Invitation anniversaire', tags: 'impression a5 fête', page: { width: 1748, height: 2480, dpi: 300 },
     objects: [
       R(0, 0, 1748, 2480, LIB.cream, { name: 'Fond' }),
-      ...[[200, 260, 70, LIB.lime], [1500, 380, 50, LIB.pink], [1350, 2150, 90, LIB.lime], [260, 2050, 44, LIB.moss], [1580, 1250, 36, LIB.pink], [140, 1150, 30, LIB.lime]]
+      ...[[200, 260, 70, LIB.rose], [1500, 380, 50, LIB.pink], [1350, 2150, 90, LIB.rose], [260, 2050, 44, LIB.corail], [1580, 1250, 36, LIB.pink], [140, 1150, 30, LIB.rose]]
         .map(([x, y, r, c]) => C(x, y, r, c)),
-      T('Joyeux', 174, 640, { font: 'Pacifico', size: 260, fill: LIB.moss, width: 1400, align: 'center' }),
+      T('Joyeux', 174, 640, { font: 'Pacifico', size: 260, fill: LIB.corail, width: 1400, align: 'center' }),
       T('anniversaire', 174, 930, { font: 'Pacifico', size: 230, width: 1400, align: 'center' }),
       T('Léa fête ses 30 ans !', 174, 1380, { font: 'Playfair Display', style: 'italic', size: 110, width: 1400, align: 'center' }),
       T('Samedi 12 décembre · 20 h\n14 rue des Lilas, Lyon', 174, 1640, { font: 'Inter', size: 72, width: 1400, align: 'center', lineHeight: 1.4 }),
@@ -139,7 +139,7 @@ const TEMPLATES = [
       R(0, 0, 1000, 1500, LIB.white, { name: 'Fond' }),
       ...photoSlot(0, 0, 1000, 900, 'Photo du plat'),
       R(70, 820, 860, 560, LIB.cream, { rx: 36, ry: 36 }),
-      T('RECETTE FACILE', 120, 880, { font: 'Inter', size: 30, weight: 'bold', fill: LIB.moss, width: 760, spacing: 160 }),
+      T('RECETTE FACILE', 120, 880, { font: 'Inter', size: 30, weight: 'bold', fill: LIB.corail, width: 760, spacing: 160 }),
       T('Tarte fine aux pommes & caramel', 120, 940, { font: 'Playfair Display', size: 84, width: 760, lineHeight: 1.1 }),
       T('20 min · 4 personnes', 120, 1260, { font: 'Inter', size: 36, width: 760 }),
     ],
@@ -147,10 +147,10 @@ const TEMPLATES = [
   {
     name: 'Bannière LinkedIn', tags: 'bannière profil', page: { width: 1584, height: 396 },
     objects: [
-      R(0, 0, 1584, 396, LIB.olive, { name: 'Fond' }),
-      P([{ x: 1000, y: 0 }, { x: 1584, y: 0 }, { x: 1584, y: 396 }, { x: 760, y: 396 }], LIB.lime),
+      R(0, 0, 1584, 396, LIB.rouge, { name: 'Fond' }),
+      P([{ x: 1000, y: 0 }, { x: 1584, y: 0 }, { x: 1584, y: 396 }, { x: 760, y: 396 }], LIB.rose),
       T('Design graphique & identité visuelle', 560, 110, { font: 'Outfit', size: 64, weight: 'bold', fill: LIB.cream, width: 560 }),
-      T('studio-chloe.fr', 1080, 290, { font: 'Inter', size: 36, weight: 'bold', fill: LIB.olive, width: 440, align: 'right' }),
+      T('chloestouch.fr', 1080, 290, { font: 'Inter', size: 36, weight: 'bold', fill: LIB.rouge, width: 440, align: 'right' }),
     ],
   },
 ];
@@ -160,18 +160,18 @@ const TEMPLATES = [
    ========================================================================== */
 
 const STICKERS = [
-  { name: 'Forme organique', svg: `<svg viewBox="0 0 200 200"><path fill="${LIB.lime}" d="M156 38c22 20 30 56 18 86s-44 56-78 58-64-20-72-50 4-66 30-86 80-28 102-8z"/></svg>` },
-  { name: 'Badge Nouveau', svg: `<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="92" fill="${LIB.olive}"/><circle cx="100" cy="100" r="80" fill="none" stroke="${LIB.lime}" stroke-width="3" stroke-dasharray="6 6"/><text x="100" y="112" text-anchor="middle" font-family="Outfit" font-weight="bold" font-size="34" fill="${LIB.lime}">NOUVEAU</text></svg>` },
+  { name: 'Forme organique', svg: `<svg viewBox="0 0 200 200"><path fill="${LIB.rose}" d="M156 38c22 20 30 56 18 86s-44 56-78 58-64-20-72-50 4-66 30-86 80-28 102-8z"/></svg>` },
+  { name: 'Badge Nouveau', svg: `<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="92" fill="${LIB.rouge}"/><circle cx="100" cy="100" r="80" fill="none" stroke="${LIB.rose}" stroke-width="3" stroke-dasharray="6 6"/><text x="100" y="112" text-anchor="middle" font-family="Outfit" font-weight="bold" font-size="34" fill="${LIB.rose}">NOUVEAU</text></svg>` },
   { name: 'Étiquette promo', svg: `<svg viewBox="0 0 200 200"><path fill="${LIB.pink}" d="${starPoints(100, 100, 96, 80, 16).map((p, i) => `${i ? 'L' : 'M'}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ')}Z"/><text x="100" y="118" text-anchor="middle" font-family="Archivo Black" font-size="50" fill="${LIB.white}">-30%</text></svg>` },
-  { name: 'Bulle', svg: `<svg viewBox="0 0 220 180"><path fill="${LIB.white}" stroke="${LIB.olive}" stroke-width="6" d="M30 20h160a20 20 0 0 1 20 20v80a20 20 0 0 1-20 20H90l-40 30 6-30H30a20 20 0 0 1-20-20V40a20 20 0 0 1 20-20z"/><text x="110" y="92" text-anchor="middle" font-family="Outfit" font-size="34" fill="${LIB.olive}">Coucou !</text></svg>` },
-  { name: 'Ruban', svg: `<svg viewBox="0 0 300 100"><path fill="${LIB.moss}" d="M0 30h40v50H0l14-25z M300 30h-40v50h40l-14-25z"/><rect x="30" y="18" width="240" height="56" rx="4" fill="${LIB.olive}"/><text x="150" y="56" text-anchor="middle" font-family="Outfit" font-weight="bold" font-size="28" fill="${LIB.lime}">MEILLEURE VENTE</text></svg>` },
-  { name: 'Étincelle', svg: `<svg viewBox="0 0 200 200"><path fill="${LIB.lime}" stroke="${LIB.olive}" stroke-width="5" stroke-linejoin="round" d="M100 10c8 52 38 82 90 90-52 8-82 38-90 90-8-52-38-82-90-90 52-8 82-38 90-90z"/></svg>` },
+  { name: 'Bulle', svg: `<svg viewBox="0 0 220 180"><path fill="${LIB.white}" stroke="${LIB.rouge}" stroke-width="6" d="M30 20h160a20 20 0 0 1 20 20v80a20 20 0 0 1-20 20H90l-40 30 6-30H30a20 20 0 0 1-20-20V40a20 20 0 0 1 20-20z"/><text x="110" y="92" text-anchor="middle" font-family="Outfit" font-size="34" fill="${LIB.rouge}">Coucou !</text></svg>` },
+  { name: 'Ruban', svg: `<svg viewBox="0 0 300 100"><path fill="${LIB.corail}" d="M0 30h40v50H0l14-25z M300 30h-40v50h40l-14-25z"/><rect x="30" y="18" width="240" height="56" rx="4" fill="${LIB.rouge}"/><text x="150" y="56" text-anchor="middle" font-family="Outfit" font-weight="bold" font-size="28" fill="${LIB.rose}">MEILLEURE VENTE</text></svg>` },
+  { name: 'Étincelle', svg: `<svg viewBox="0 0 200 200"><path fill="${LIB.rose}" stroke="${LIB.rouge}" stroke-width="5" stroke-linejoin="round" d="M100 10c8 52 38 82 90 90-52 8-82 38-90 90-8-52-38-82-90-90 52-8 82-38 90-90z"/></svg>` },
   { name: 'Soulignement', svg: `<svg viewBox="0 0 300 60"><path fill="none" stroke="${LIB.pink}" stroke-width="10" stroke-linecap="round" d="M10 40c40-24 70-24 100-6s60 18 90 0 60-20 90-4"/></svg>` },
-  { name: 'Flèche dessinée', svg: `<svg viewBox="0 0 200 160"><path fill="none" stroke="${LIB.olive}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" d="M20 140c10-60 50-100 140-104M130 14l32 22-26 30"/></svg>` },
+  { name: 'Flèche dessinée', svg: `<svg viewBox="0 0 200 160"><path fill="none" stroke="${LIB.rouge}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" d="M20 140c10-60 50-100 140-104M130 14l32 22-26 30"/></svg>` },
   { name: 'Trois cœurs', svg: `<svg viewBox="0 0 220 120"><g fill="${LIB.pink}"><path d="M40 98 12 70a18 18 0 0 1 28-24 18 18 0 0 1 28 24z"/><path d="M110 60 76 26a22 22 0 0 1 34-28 22 22 0 0 1 34 28z" transform="translate(0 40)"/><path d="M180 98l-28-28a18 18 0 0 1 28-24 18 18 0 0 1 28 24z"/></g></svg>` },
-  { name: 'Ticket', svg: `<svg viewBox="0 0 280 120"><path fill="${LIB.lime}" d="M10 10h260v35a15 15 0 0 0 0 30v35H10V75a15 15 0 0 0 0-30z"/><path stroke="${LIB.olive}" stroke-width="3" stroke-dasharray="8 6" d="M200 18v84"/><text x="105" y="72" text-anchor="middle" font-family="Bebas Neue" font-size="46" fill="${LIB.olive}">ENTRÉE</text></svg>` },
-  { name: 'Cadre arrondi', svg: `<svg viewBox="0 0 200 200"><rect x="10" y="10" width="180" height="180" rx="36" fill="none" stroke="${LIB.olive}" stroke-width="8"/><rect x="26" y="26" width="148" height="148" rx="24" fill="none" stroke="${LIB.lime}" stroke-width="4"/></svg>` },
-  { name: 'Pastille', svg: `<svg viewBox="0 0 240 90"><rect x="5" y="5" width="230" height="80" rx="40" fill="${LIB.olive}"/><circle cx="45" cy="45" r="16" fill="${LIB.lime}"/><text x="140" y="56" text-anchor="middle" font-family="Inter" font-weight="bold" font-size="28" fill="${LIB.cream}">EN DIRECT</text></svg>` },
+  { name: 'Ticket', svg: `<svg viewBox="0 0 280 120"><path fill="${LIB.rose}" d="M10 10h260v35a15 15 0 0 0 0 30v35H10V75a15 15 0 0 0 0-30z"/><path stroke="${LIB.rouge}" stroke-width="3" stroke-dasharray="8 6" d="M200 18v84"/><text x="105" y="72" text-anchor="middle" font-family="Bebas Neue" font-size="46" fill="${LIB.rouge}">ENTRÉE</text></svg>` },
+  { name: 'Cadre arrondi', svg: `<svg viewBox="0 0 200 200"><rect x="10" y="10" width="180" height="180" rx="36" fill="none" stroke="${LIB.rouge}" stroke-width="8"/><rect x="26" y="26" width="148" height="148" rx="24" fill="none" stroke="${LIB.rose}" stroke-width="4"/></svg>` },
+  { name: 'Pastille', svg: `<svg viewBox="0 0 240 90"><rect x="5" y="5" width="230" height="80" rx="40" fill="${LIB.rouge}"/><circle cx="45" cy="45" r="16" fill="${LIB.rose}"/><text x="140" y="56" text-anchor="middle" font-family="Inter" font-weight="bold" font-size="28" fill="${LIB.cream}">EN DIRECT</text></svg>` },
 ];
 
 /* ============================================================================
@@ -240,7 +240,7 @@ const Library = {
       const b = e.target.closest('[data-icon]');
       if (!b) return;
       const [, inner] = ICON_LIBRARY[b.dataset.icon];
-      const color = state.style.stroke || state.style.fill || LIB.olive;
+      const color = state.style.stroke || state.style.fill || LIB.rouge;
       insertSVG(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`,
         { size: 160, name: `Icône ${b.title}` });
       this.sheet.close();

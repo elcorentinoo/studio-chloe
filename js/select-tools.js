@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outils de sélection avancés (menu du rail sous la flèche blanche)
+ *  Chloe’s Touch — Outils de sélection avancés (menu du rail sous la flèche blanche)
  *
  *  Baguette magique (Y) : un clic sur un objet sélectionne tous les objets
  *    qui lui ressemblent — même remplissage, contour, épaisseur et/ou opacité,
@@ -151,8 +151,8 @@ const Lasso = {
     ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
     ctx.lineWidth = 1.5 / v[0];
     ctx.setLineDash([5 / v[0], 4 / v[0]]);
-    ctx.strokeStyle = '#7c9425';
-    ctx.fillStyle = 'rgba(212, 240, 76, 0.14)';
+    ctx.strokeStyle = '#d9474f';
+    ctx.fillStyle = 'rgba(246, 138, 141, 0.14)';
     ctx.beginPath();
     P.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
     ctx.closePath();

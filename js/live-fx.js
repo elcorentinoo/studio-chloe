@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Effets modifiables (effets « dynamiques » d'Illustrator)
+ *  Chloe’s Touch — Effets modifiables (effets « dynamiques » d'Illustrator)
  *
  *  Les effets sont rangés dans obj.liveFx = [{ type, on, …réglages }] et
  *  calculés au moment de l'affichage : le tracé d'origine n'est jamais
@@ -23,7 +23,7 @@ const LIVE_FX = {
   zigzag: { label: 'Zigzag', path: true, defaults: { size: 8, ridges: 6, smooth: false }, params: [['size', 'Amplitude', 0, 100, 1, ' px'], ['ridges', 'Crêtes par segment', 1, 40, 1, '']], toggle: ['smooth', 'Ondulé'] },
   roughen: { label: 'Distorsion aléatoire', path: true, defaults: { size: 6, detail: 12, smooth: true, seed: 1 }, params: [['size', 'Amplitude', 0, 80, 1, ' px'], ['detail', 'Détail', 1, 60, 1, ' / 100 px']], toggle: ['smooth', 'Ondulé'], reseed: true },
   pucker: { label: 'Contracter / dilater', path: true, defaults: { amount: 40 }, params: [['amount', 'Intensité', -100, 100, 1, ' %']] },
-  glow: { label: 'Lueur externe', path: false, defaults: { color: '#d4f04c', blur: 24, strength: 2 }, params: [['blur', 'Flou', 0, 120, 1, ' px'], ['strength', 'Intensité', 1, 5, 1, '']], color: true },
+  glow: { label: 'Lueur externe', path: false, defaults: { color: '#f68a8d', blur: 24, strength: 2 }, params: [['blur', 'Flou', 0, 120, 1, ' px'], ['strength', 'Intensité', 1, 5, 1, '']], color: true },
 };
 const FX_PATH_TYPES = ['rect', 'ellipse', 'circle', 'triangle', 'polygon', 'polyline', 'path', 'line'];
 
@@ -327,7 +327,7 @@ const FxGeo = {
           for (let i = 0; i < Math.max(1, Math.min(5, g.strength || 1)); i++) {
             ctx.save();
             ctx.setTransform(t.a, t.b, t.c, t.d, t.e - OFF, t.f);
-            ctx.shadowColor = g.color || '#d4f04c';
+            ctx.shadowColor = g.color || '#f68a8d';
             ctx.shadowBlur = (g.blur ?? 20) * zoom * (this.getObjectScaling?.().scaleX || 1);
             ctx.shadowOffsetX = OFF;
             ctx.shadowOffsetY = 0;
@@ -442,7 +442,7 @@ const LiveFx = {
         <button class="layer-btn" type="button" data-del title="Retirer l'effet" aria-label="Retirer"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
       <div class="livefx-params">
-        ${def?.color ? `<label class="livefx-color"><span class="field-label">Couleur</span><input type="color" data-color value="${toHex(fx.color) || '#d4f04c'}"></label>` : ''}
+        ${def?.color ? `<label class="livefx-color"><span class="field-label">Couleur</span><input type="color" data-color value="${toHex(fx.color) || '#f68a8d'}"></label>` : ''}
         ${(def?.params || []).map(([k, label, min, max, step, unit]) => `<div class="field"><label class="field-label">${label} <output data-out="${k}">${fx[k]}${unit}</output></label><input type="range" data-p="${k}" min="${min}" max="${max}" step="${step}" value="${fx[k]}"></div>`).join('')}
         ${def?.toggle ? `<label class="check"><input type="checkbox" data-t="${def.toggle[0]}" ${fx[def.toggle[0]] ? 'checked' : ''}> ${def.toggle[1]}</label>` : ''}
         ${def?.reseed ? '<button class="btn btn-sm" type="button" data-reseed>Nouveau tirage</button>' : ''}

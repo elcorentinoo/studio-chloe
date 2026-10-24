@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Formes dynamiques (angles modifiables comme dans Illustrator)
+ *  Chloe’s Touch — Formes dynamiques (angles modifiables comme dans Illustrator)
  *
  *  Rectangles : un widget rond apparaît dans chaque angle de la forme
  *  sélectionnée. Glisser un widget vers l'intérieur arrondit les 4 angles ;
@@ -119,11 +119,11 @@ const DynamicShapes = {
         ctx.fillStyle = '#ffffff';
         ctx.fill();
         ctx.lineWidth = 1.5;
-        ctx.strokeStyle = '#7c9425';
+        ctx.strokeStyle = '#d9474f';
         ctx.stroke();
         ctx.beginPath();
         ctx.arc(left, top, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#7c9425';
+        ctx.fillStyle = '#d9474f';
         ctx.fill();
         ctx.restore();
       },

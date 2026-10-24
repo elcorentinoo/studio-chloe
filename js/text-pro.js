@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Texte avancé
+ *  Chloe’s Touch — Texte avancé
  *    1. Zone de texte : avec l'outil Texte (T), GLISSER trace un cadre où le
  *       texte revient à la ligne (fabric.Textbox) ; un simple clic crée un
  *       texte libre comme avant.
@@ -47,7 +47,7 @@ const FONT_SUBSTITUTES = { arial: 'arimo', helvetica: 'arimo', georgia: 'gelasio
   Object.assign(textTool, {
     onMouseDown(p) {
       const rect = new fabric.Rect({
-        left: p.x, top: p.y, width: 0, height: 0, fill: 'rgba(212, 240, 76, 0.10)', stroke: '#7c9425',
+        left: p.x, top: p.y, width: 0, height: 0, fill: 'rgba(246, 138, 141, 0.10)', stroke: '#d9474f',
         strokeWidth: 1, strokeDashArray: [4, 4], strokeUniform: true, selectable: false, evented: false, excludeFromExport: true,
       });
       state.drawing = { obj: rect, origin: p };

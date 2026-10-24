@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outil Courbure (Maj + P), dans le menu de la Plume
+ *  Chloe’s Touch — Outil Courbure (Maj + P), dans le menu de la Plume
  *
  *  Comme dans Illustrator : chaque clic pose un point par lequel la courbe
  *  passe, et la courbe se lisse toute seule (spline de Catmull-Rom convertie
@@ -101,7 +101,7 @@ Tools.curvature = {
     const path = new fabric.Path(d, {
       ...s,
       fill: close ? s.fill : null,
-      stroke: s.stroke || (close ? null : s.fill) || '#25300b',
+      stroke: s.stroke || (close ? null : s.fill) || '#c73527',
       strokeWidth: close ? s.strokeWidth : Math.max(1, s.strokeWidth),
       strokeLineCap: 'round',
       strokeLineJoin: 'round',
@@ -138,7 +138,7 @@ Tools.curvature = {
       ctx.beginPath();
       if (pt.corner) ctx.rect(pt.x - r, pt.y - r, r * 2, r * 2);
       else ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
-      ctx.fillStyle = i === this.dragIndex ? '#d4f04c' : '#ffffff';
+      ctx.fillStyle = i === this.dragIndex ? '#f68a8d' : '#ffffff';
       ctx.fill();
       ctx.stroke();
     });

@@ -1,7 +1,7 @@
-# Studio Chloé — feuille de route
+# Chloe’s Touch — feuille de route
 
 ## 🌱 Versions
-Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom d'une étape de croissance de la plante (thème lime / olive). La 1.0.0 « Fruit » sera la version complète et stable.
+Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom d'une étape de croissance de la plante (d'abord thème lime / olive, rose / rouge depuis la 0.7.0). La 1.0.0 « Fruit » sera la version complète et stable.
 
 | Version | Nom | Contenu |
 | --- | --- | --- |
@@ -11,9 +11,16 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 | 0.4.0 | Feuille | Les outils d'Illustrator : sélection, dessin, Pathfinder, plans de travail, IA, collaboration, PWA |
 | 0.5.0 | Bourgeon | Le quotidien façon Illustrator : panneau Transformation, isolation, sélection directe dans les groupes, Sélection › Même, modes de fusion, styles de texte, recoloration, effets modifiables |
 | 0.6.0 | Fleur | Formes dynamiques, calques en dossiers, Joindre / Moyenne, outil Dégradé, styles graphiques, export des éléments, répétition modifiable, habillage du texte |
+| 0.7.0 | Pétale | Nouvelle identité : Chloe’s Touch, monogramme C·T, palette rose / rouge, Bodoni Moda |
 | 1.0.0 | Fruit | *(prévue)* Version complète et stable |
 
 ## ✅ Publié
+**0.7.0 « Pétale » — octobre 2026**
+- Nouveau nom : Chloe’s Touch (projets, réglages et liens existants conservés)
+- Nouveau logo : monogramme C·T vectorisé (barre du haut, page vide, galerie, icônes de l'application installée, favicon)
+- Nouvelle DA : palette rose `#f68a8d` / rouge `#c73527` (3ᵉ déclinaison de la planche Monogramme), thèmes clair et sombre, Bodoni Moda pour la marque et les grands titres
+- Exports nommés « chloes-touch-… »
+
 **0.6.1 « Fleur » — correctifs, octobre 2026**
 - Performances : l'historique ne recopie plus les images à chaque étape (réserve d'images) ; les formes simples ne passent plus par un cache image — annuler, déplacer et afficher sont jusqu'à 50× plus rapides sur les documents lourds, beaucoup moins de mémoire
 - Flèche blanche : sélection de points (clic, Maj + clic, cadre de sélection), déplacement groupé, flèches du clavier, Suppr, ⌘A, poignées des points choisis seulement, clic sur le tracé pour le déplacer

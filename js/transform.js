@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Transformations
+ *  Chloe’s Touch — Transformations
  *    1. Miroir / symétrie (Maj + H horizontal, Maj + V vertical)
  *       - un objet : retourné sur place (autour de son centre)
  *       - plusieurs objets : la sélection entière est retournée autour de son
@@ -85,7 +85,7 @@ Hooks.on('init', () => {
       Inclinaison — menu du rail
    ----------------------------------------------------------------------------
    Comme dans Illustrator :
-     - le point d'origine (cible lime) est au centre de la sélection ;
+     - le point d'origine (cible rose) est au centre de la sélection ;
        un simple clic le déplace ;
      - glisser transforme la sélection autour de ce point
        (Maj : contrainte 45° / proportions / axe ; Alt au relâchement : copie) ;
@@ -209,8 +209,8 @@ const Transformer = {
     const y = o.y * v[3] + v[5];
     ctx.save();
     ctx.lineWidth = 1.5;
-    ctx.strokeStyle = '#25300b';
-    ctx.fillStyle = '#d4f04c';
+    ctx.strokeStyle = '#c73527';
+    ctx.fillStyle = '#f68a8d';
     ctx.beginPath();
     ctx.arc(x, y, 6, 0, Math.PI * 2);
     ctx.fill();
@@ -237,7 +237,7 @@ const Transformer = {
     };
     const sheet = Sheet.create({
       title: TRANSFORM_LABELS[kind],
-      body: `<div class="field">${fields[kind]}</div><p class="field-note">Autour du point d'origine (cible lime). « Copier » garde l'original.</p>`,
+      body: `<div class="field">${fields[kind]}</div><p class="field-note">Autour du point d'origine (cible rose). « Copier » garde l'original.</p>`,
       foot: '<button class="btn" type="button" data-tf="copy">Copier</button><button class="btn btn-primary" type="button" data-tf="ok">OK</button>',
     });
     const $s = sheet.$;

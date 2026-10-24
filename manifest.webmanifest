@@ -1,14 +1,14 @@
 {
-  "name": "Studio Chloé",
-  "short_name": "Studio Chloé",
+  "name": "Chloe’s Touch",
+  "short_name": "Chloe’s Touch",
   "description": "Éditeur vectoriel dans le navigateur : formes, plume, texte, images, détourage IA, export.",
   "lang": "fr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#eef1dc",
-  "theme_color": "#25300b",
+  "background_color": "#fbefee",
+  "theme_color": "#c73527",
   "categories": ["design", "graphics", "productivity"],
   "icons": [
     { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outil Largeur (Maj + W) : contour d'épaisseur variable
+ *  Chloe’s Touch — Outil Largeur (Maj + W) : contour d'épaisseur variable
  *
  *  Glissez depuis un point du contour d'un tracé (ou d'une forme) pour
  *  l'élargir ou l'affiner à cet endroit, comme dans Illustrator.
@@ -313,16 +313,16 @@ const WidthTool = {
       ctx.moveTo(c.x - h.n.normal.x * half, c.y - h.n.normal.y * half);
       ctx.lineTo(c.x + h.n.normal.x * half, c.y + h.n.normal.y * half);
       ctx.stroke();
-      diamond(c, 4, '#d4f04c');
+      diamond(c, 4, '#f68a8d');
     }
     if (this.drag?.label) {
       const c = S(this.drag.label.at);
       ctx.font = '600 11px Inter, system-ui, sans-serif';
       const txt = `${this.drag.label.w.toFixed(1)} px`;
       const tw = ctx.measureText(txt).width + 12;
-      ctx.fillStyle = '#25300b';
+      ctx.fillStyle = '#c73527';
       ctx.fillRect(c.x + 10, c.y - 24, tw, 20);
-      ctx.fillStyle = '#d4f04c';
+      ctx.fillStyle = '#f68a8d';
       ctx.fillText(txt, c.x + 16, c.y - 10);
     }
     ctx.restore();

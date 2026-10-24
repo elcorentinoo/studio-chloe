@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Contours avancés (tuile Apparence → « Options de contour »)
+ *  Chloe’s Touch — Contours avancés (tuile Apparence → « Options de contour »)
  *    - Extrémités : plate / arrondie / carrée
  *    - Jointures  : angle / arrondie / biseau
  *    - Pointillés : longueur des tirets et des espaces

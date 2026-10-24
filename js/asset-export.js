@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Exporter les éléments (multi-tailles), ⌘⌥E
+ *  Chloe’s Touch — Exporter les éléments (multi-tailles), ⌘⌥E
  *
  *  Comme le panneau Exportation des éléments d'Illustrator :
  *    - « + Ajouter la sélection » : chaque objet sélectionné devient un
@@ -102,7 +102,7 @@ const AssetExport = {
       files.forEach((f) => zip.file(f.name, f.url.split(',')[1], { base64: true }));
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
-      downloadURL(url, exportFileName('zip').replace('studio-chloe', 'elements'));
+      downloadURL(url, exportFileName('zip').replace('chloes-touch', 'elements'));
       setTimeout(() => URL.revokeObjectURL(url), 4000);
     } catch {
       files.forEach((f) => downloadURL(f.url, f.name)); // hors ligne : un fichier par taille

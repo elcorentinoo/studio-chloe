@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Import / export avancés
+ *  Chloe’s Touch — Import / export avancés
  *    - Glisser-déposer (ou bouton Importer) de fichiers SVG : ils arrivent en
  *      vrais vecteurs (groupe de formes modifiables).
  *    - Ouvrir des PDF et des .ai récents (enregistrés « compatibles PDF ») :

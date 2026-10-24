@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Flèche blanche perfectionnée (édition des points)
+ *  Chloe’s Touch — Flèche blanche perfectionnée (édition des points)
  *
  *  Comme la Sélection directe d'Illustrator, pendant l'édition des points
  *  (flèche blanche A, ou double-clic avec la flèche noire) :
@@ -101,8 +101,8 @@ const DirectPro = {
     canvas.clearContext(ctx);
     const { a, b } = this.marquee;
     ctx.save();
-    ctx.fillStyle = 'rgba(212, 240, 76, 0.15)';
-    ctx.strokeStyle = '#7c9425';
+    ctx.fillStyle = 'rgba(246, 138, 141, 0.15)';
+    ctx.strokeStyle = '#d9474f';
     ctx.setLineDash([4, 3]);
     ctx.fillRect(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.abs(b.x - a.x), Math.abs(b.y - a.y));
     ctx.strokeRect(Math.min(a.x, b.x) + 0.5, Math.min(a.y, b.y) + 0.5, Math.abs(b.x - a.x), Math.abs(b.y - a.y));
@@ -158,8 +158,8 @@ const DirectPro = {
         ctrl.render = (ctx, left, top, styleOverride, obj) => {
           if (!self.sel.has(self.key(pt))) { baseRender(ctx, left, top, styleOverride, obj); return; }
           ctx.save();
-          ctx.fillStyle = '#25300b';
-          ctx.strokeStyle = '#d4f04c';
+          ctx.fillStyle = '#c73527';
+          ctx.strokeStyle = '#f68a8d';
           ctx.lineWidth = 1.5;
           ctx.fillRect(left - 5.5, top - 5.5, 11, 11);
           ctx.strokeRect(left - 5.5, top - 5.5, 11, 11);

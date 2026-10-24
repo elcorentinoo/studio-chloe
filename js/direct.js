@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Flèche noire / Flèche blanche
+ *  Chloe’s Touch — Flèche noire / Flèche blanche
  *
  *  Flèche noire (V) — Sélection : objets et groupes entiers (déplacer,
  *    redimensionner, faire pivoter). C'est l'outil « select » d'app.js.

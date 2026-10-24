@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Couleurs & effets
+ *  Chloe’s Touch — Couleurs & effets
  *    1. Pipette (API EyeDropper, ou lecture d'un pixel du canvas)
  *    2. Nuanciers : palette de marque, couleurs du document, couleurs enregistrées
  *    3. Remplissage en dégradé (linéaire, 2 couleurs, angle)
@@ -14,7 +14,7 @@
 // Les filtres WebGL acceptent des images jusqu'à 4096 px (les imports sont limités à cette taille)
 fabric.textureSize = 4096;
 
-const BRAND_SWATCHES = ['#d4f04c', '#7c9425', '#25300b', '#f4f2e4', '#ffffff', '#1e1e1e', '#e0457b', '#3d7be0'];
+const BRAND_SWATCHES = ['#f68a8d', '#d9474f', '#c73527', '#fbf3f1', '#ffffff', '#1e1e1e', '#e0457b', '#3d7be0'];
 const SWATCH_KEY = 'studio-chloe-swatches';
 const PIPETTE_ICON = '<path d="m14.5 4.5 5 5M17 2l5 5-3 3-5-5zM14 7l-9.5 9.5L3 21l4.5-1.5L17 10"/>';
 
@@ -170,8 +170,8 @@ function readGradient(fill) {
   const { x1, y1, x2, y2 } = fill.coords;
   const stops = [...fill.colorStops].sort((a, b) => a.offset - b.offset);
   return {
-    c1: toHex(stops[0]?.color) || '#d4f04c',
-    c2: toHex(stops[stops.length - 1]?.color) || '#25300b',
+    c1: toHex(stops[0]?.color) || '#f68a8d',
+    c2: toHex(stops[stops.length - 1]?.color) || '#c73527',
     angle: Math.round((Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI + 360) % 360,
   };
 }
@@ -188,8 +188,8 @@ const GradientFill = {
           <div class="gradient-preview" id="gradient-preview"></div>
           <div class="color-row">
             <span class="swatch-caption">Vers</span>
-            <input type="color" id="prop-fill-2" aria-label="Seconde couleur du dégradé" value="#25300b">
-            <span class="hex" id="hex-fill-2">#25300B</span>
+            <input type="color" id="prop-fill-2" aria-label="Seconde couleur du dégradé" value="#c73527">
+            <span class="hex" id="hex-fill-2">#C73527</span>
           </div>
           <label class="field-label" for="prop-gradient-angle">Angle <output id="out-gradient-angle">90°</output></label>
           <input type="range" id="prop-gradient-angle" min="0" max="359" step="1" value="90">
@@ -310,8 +310,8 @@ const Effects = {
         <label class="check check-strong"><input type="checkbox" id="prop-shadow"> Ombre portée</label>
         <div class="shadow-controls" hidden>
           <div class="color-row">
-            <input type="color" id="prop-shadow-color" value="#25300b" aria-label="Couleur de l'ombre">
-            <span class="hex" id="hex-shadow">#25300B</span>
+            <input type="color" id="prop-shadow-color" value="#c73527" aria-label="Couleur de l'ombre">
+            <span class="hex" id="hex-shadow">#C73527</span>
           </div>
           <label class="field-label" for="prop-shadow-blur">Flou <output id="out-shadow-blur">20 px</output></label>
           <input type="range" id="prop-shadow-blur" min="0" max="80" step="1" value="20">

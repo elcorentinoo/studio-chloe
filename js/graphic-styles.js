@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Styles graphiques (onglet Symboles)
+ *  Chloe’s Touch — Styles graphiques (onglet Symboles)
  *
  *  Comme le panneau Styles graphiques d'Illustrator : « + Depuis la sélection »
  *  enregistre toute l'apparence de l'objet sélectionné — remplissage (couleur
@@ -127,7 +127,7 @@ const GraphicStyles = {
     const sc = new fabric.StaticCanvas(el, { width: 56, height: 56, enableRetinaScaling: false, renderOnAddRemove: false });
     const live = this.live(style.props);
     const sw = Math.min(8, live.strokeWidth || 0);
-    const r = new fabric.Rect({ width: 30, height: 30, rx: 6, ry: 6, left: 28, top: 28, originX: 'center', originY: 'center', fill: '#d4f04c' });
+    const r = new fabric.Rect({ width: 30, height: 30, rx: 6, ry: 6, left: 28, top: 28, originX: 'center', originY: 'center', fill: '#f68a8d' });
     Object.entries(live).forEach(([k, v]) => { if (v !== undefined) r[k] = v; });
     r.strokeWidth = sw;
     if (live.liveFx) r.liveFx = live.liveFx.map((f) => ({ ...f, size: Math.min(f.size ?? 0, 5), radius: Math.min(f.radius ?? 0, 8), blur: Math.min(f.blur ?? 0, 10) }));

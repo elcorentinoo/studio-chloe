@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Pinceaux artistiques (Maj + B), menu « Crayon & gomme »
+ *  Chloe’s Touch — Pinceaux artistiques (Maj + B), menu « Crayon & gomme »
  *
  *  Trois pinceaux, dessinés à main levée, qui produisent de vraies formes
  *  vectorielles (modifiables, exportables) :
@@ -25,7 +25,7 @@ const ArtBrush = {
   points: null,  // [{ x, y, t }]
   source: null,  // objet du pinceau motif
 
-  color() { return state.style.stroke || state.style.fill || '#25300b'; },
+  color() { return state.style.stroke || state.style.fill || '#c73527'; },
 
   /** Largeur (px du document) en chaque point du trait */
   widths(pts) {

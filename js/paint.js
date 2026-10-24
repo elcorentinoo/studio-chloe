@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Remplissage & symboles (menu « Peinture » du rail)
+ *  Chloe’s Touch — Remplissage & symboles (menu « Peinture » du rail)
  *
  *  Pot de peinture dynamique (Maj + K) — comme la Peinture dynamique
  *    d'Illustrator : les formes qui se chevauchent découpent la page en
@@ -73,7 +73,7 @@ const LivePaint = {
     const hit = this.regionAt(p);
     if (!hit) { toast('Cliquez dans une zone fermée formée par vos formes.'); return; }
     const { region, inside } = hit;
-    const color = state.style.fill || '#d4f04c';
+    const color = state.style.fill || '#f68a8d';
     const area = Math.abs(region.area);
     // Zone déjà peinte, ou forme entière non recouverte : on la recolore
     const same = inside.find(({ item }) => Math.abs(Math.abs(item.area) - area) < Math.max(1, area * 0.002));
@@ -113,7 +113,7 @@ const LivePaint = {
     ctx.save();
     ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
     const p2d = new Path2D(this.hoverItem.pathData);
-    ctx.fillStyle = 'rgba(212, 240, 76, 0.25)';
+    ctx.fillStyle = 'rgba(246, 138, 141, 0.25)';
     ctx.fill(p2d, 'evenodd');
     ctx.lineWidth = 3 / v[0];
     ctx.strokeStyle = '#e0457b';
@@ -154,7 +154,7 @@ const SymbolSprayer = {
 
   defaultSymbol() {
     return new fabric.Polygon(radialPoints({ left: -50, top: -50, width: 100, height: 100 }, 10, (i) => (i % 2 ? 0.45 : 1)), {
-      fill: '#d4f04c', stroke: '#25300b', strokeWidth: 2, strokeUniform: true, strokeLineJoin: 'round',
+      fill: '#f68a8d', stroke: '#c73527', strokeWidth: 2, strokeUniform: true, strokeLineJoin: 'round',
     });
   },
 

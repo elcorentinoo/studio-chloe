@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Couleurs d'impression
+ *  Chloe’s Touch — Couleurs d'impression
  *    - Sélecteur CMJN sous le remplissage et le contour (bouton « CMJN ») :
  *      4 curseurs C, M, J, N en %. Conversion approximative vers le RVB de
  *      l'écran (sans profil ICC) — suffisant pour viser une teinte.
@@ -123,7 +123,7 @@ const PrintMarks = {
         });
         doc.setFontSize(6);
         doc.setTextColor(80);
-        doc.text(`Studio Chloé · ${Math.round((area.width / dpi) * 25.4)} × ${Math.round((area.height / dpi) * 25.4)} mm${bleed ? ' · fonds perdus 3 mm' : ''}`, pt(x0), pt(margin / 2));
+        doc.text(`Chloe’s Touch · ${Math.round((area.width / dpi) * 25.4)} × ${Math.round((area.height / dpi) * 25.4)} mm${bleed ? ' · fonds perdus 3 mm' : ''}`, pt(x0), pt(margin / 2));
       }
       doc.save(exportFileName('pdf'));
     };

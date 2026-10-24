@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Décalage du tracé (Offset Path)
+ *  Chloe’s Touch — Décalage du tracé (Offset Path)
  *
  *  Tuile Disposition → « Décalage du tracé… » : crée une copie agrandie
  *  (distance positive) ou rétrécie (négative) de chaque forme sélectionnée,

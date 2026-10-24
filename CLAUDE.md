@@ -1,4 +1,4 @@
-# Studio Chloé — notes pour Claude
+# Chloe’s Touch — notes pour Claude
 
 ## Projet
 App web d'édition vectorielle façon Adobe Illustrator, pour Corentin (francophone : réponds en français).
@@ -57,13 +57,14 @@ Pendant un aperçu (fenêtres d'effets), `History.flush()` puis `History.restori
 Performances : `ImagePool` (app.js) — l'historique référence les images (`pool:N`) au lieu de les recopier ; `ImagePool.expand()` avant toute sortie (sauvegarde projet). Les formes simples n'ont pas de cache objet (`objectCaching = false`).
 
 ## Identité visuelle
-- Thème « glass » jaune-vert : lime `#d4f04c`, olive `#25300b`, mousse `#7c9425`, crème `#f4f2e4`
-- Polices : Outfit (titres) + Inter (interface)
-- Logo : monogramme SC entrelacé, trait constant, fins coupées droites (`logo.svg`)
+- Nom : **Chloe’s Touch** (anciennement Studio Chloé). Les clés de stockage (IndexedDB `studio-chloe`, localStorage `studio-chloe-*`) gardent l'ancien nom : ne pas les renommer (projets existants).
+- Thème « glass » rose / rouge (3ᵉ déclinaison de la planche Monogramme) : rose `#f68a8d` (`--rose`), rouge `#c73527` (`--rouge`), corail `#d9474f` (`--corail`), crème `#fbf3f1`
+- Polices : Bodoni Moda (`--brand` : marque, grands titres), Outfit (`--display` : titres d'interface) + Inter (interface)
+- Logo : monogramme C·T entrelacé (gouttes), vectorisé depuis le dessin de Corentin — `logo.svg` (tuile rose, monogramme rouge), `logo-mark.svg` (monogramme seul), icônes PWA dans `icons/`
 
 ## Feuille de route & versions
 Features publiées et liste « à publier » priorisée : `ROADMAP.md`.
-Versions nommées d'après la croissance d'une plante (0.1.0 Graine, 0.2.0 Pousse, 0.3.0 Tige, 0.4.0 Feuille, 0.5.0 Bourgeon, 0.6.0 Fleur… 1.0.0 Fruit).
+Versions nommées d'après la croissance d'une plante (0.1.0 Graine, 0.2.0 Pousse, 0.3.0 Tige, 0.4.0 Feuille, 0.5.0 Bourgeon, 0.6.0 Fleur, 0.7.0 Pétale… 1.0.0 Fruit).
 À chaque nouvelle version : `APP_VERSION` (app.js), `CACHE_VERSION` (sw.js), tableau de `ROADMAP.md`, tag git `vX.Y.Z`.
 
 ## Règles de travail

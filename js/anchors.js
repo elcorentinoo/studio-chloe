@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Édition avancée des points (menu de la Plume)
+ *  Chloe’s Touch — Édition avancée des points (menu de la Plume)
  *
  *    Ajouter un point (+)      — clic sur un segment
  *    Supprimer un point (−)    — clic sur un point d'ancrage
@@ -209,7 +209,7 @@ const Anchors = {
       const c = toS(a.p);
       const on = hit?.anchor && hit.anchor.si === si && hit.anchor.k === k;
       const r = on ? 6 : 4;
-      ctx.fillStyle = on ? (state.tool === 'deleteAnchor' ? '#e0457b' : '#d4f04c') : '#ffffff';
+      ctx.fillStyle = on ? (state.tool === 'deleteAnchor' ? '#e0457b' : '#f68a8d') : '#ffffff';
       ctx.fillRect(c.x - r, c.y - r, r * 2, r * 2);
       ctx.strokeRect(c.x - r, c.y - r, r * 2, r * 2);
     }));
@@ -217,7 +217,7 @@ const Anchors = {
       const c = toS(hit.seg.point);
       ctx.beginPath();
       ctx.arc(c.x, c.y, 5, 0, Math.PI * 2);
-      ctx.fillStyle = state.tool === 'scissors' ? '#e0457b' : '#d4f04c';
+      ctx.fillStyle = state.tool === 'scissors' ? '#e0457b' : '#f68a8d';
       ctx.fill();
       ctx.stroke();
     }

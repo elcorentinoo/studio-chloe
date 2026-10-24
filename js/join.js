@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Joindre (⌘J) et Moyenne (⌘⌥J)
+ *  Chloe’s Touch — Joindre (⌘J) et Moyenne (⌘⌥J)
  *
  *  Joindre : un tracé ouvert sélectionné se ferme ; plusieurs tracés ouverts
  *    (tracés, polylignes, lignes) sont reliés par leurs extrémités les plus

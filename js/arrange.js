@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Disposition
+ *  Chloe’s Touch — Disposition
  *    1. Alignement, répartition, groupes, ordre des plans
  *    2. Guides magnétiques, grille, règles (bascules dans la pilule de zoom)
  *    3. Panneau Calques (onglet du panneau de droite)
@@ -320,7 +320,7 @@ const Guides = {
       ctx.moveTo(v[4], sy);
       ctx.lineTo(state.page.width * zoom + v[4], sy);
     }
-    ctx.strokeStyle = 'rgba(37, 48, 11, 0.08)';
+    ctx.strokeStyle = 'rgba(74, 22, 24, 0.08)';
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.restore();
@@ -361,11 +361,11 @@ const Guides = {
     const step = steps.find((s) => s * zoom >= 50) || 5000;
     const dark = document.documentElement.dataset.theme === 'dark';
     ctx.save();
-    ctx.fillStyle = dark ? 'rgba(28, 34, 17, 0.92)' : 'rgba(250, 251, 244, 0.94)';
+    ctx.fillStyle = dark ? 'rgba(36, 18, 20, 0.92)' : 'rgba(250, 251, 244, 0.94)';
     ctx.fillRect(0, 0, w, RULER_PX);
     ctx.fillRect(0, 0, RULER_PX, h);
-    ctx.strokeStyle = dark ? 'rgba(238, 243, 220, 0.35)' : 'rgba(30, 37, 13, 0.35)';
-    ctx.fillStyle = dark ? 'rgba(238, 243, 220, 0.7)' : 'rgba(30, 37, 13, 0.7)';
+    ctx.strokeStyle = dark ? 'rgba(238, 243, 220, 0.35)' : 'rgba(42, 18, 20, 0.35)';
+    ctx.fillStyle = dark ? 'rgba(238, 243, 220, 0.7)' : 'rgba(42, 18, 20, 0.7)';
     ctx.font = '9px Inter, system-ui, sans-serif';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -375,7 +375,7 @@ const Guides = {
     if (sel) {
       const b = sel.getBoundingRect(true, true);
       ctx.save();
-      ctx.fillStyle = 'rgba(212, 240, 76, 0.55)';
+      ctx.fillStyle = 'rgba(246, 138, 141, 0.55)';
       ctx.fillRect(b.left * zoom + v[4], 0, b.width * zoom, RULER_PX);
       ctx.fillRect(0, b.top * zoom + v[5], RULER_PX, b.height * zoom);
       ctx.restore();

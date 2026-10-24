@@ -1,11 +1,11 @@
 /**
  * ============================================================================
- *  Studio Chloé — Panneau Aspect : plusieurs fonds et contours empilés
+ *  Chloe’s Touch — Panneau Aspect : plusieurs fonds et contours empilés
  *
  *  Comme le panneau Aspect d'Illustrator : un même objet peut avoir, en plus
  *  de son remplissage et de son contour habituels, des couches
- *  supplémentaires dessinées DESSOUS (ex. un gros contour lime sous un fin
- *  contour olive = double contour ; un 2e fond décalé par l'opacité…).
+ *  supplémentaires dessinées DESSOUS (ex. un gros contour rose sous un fin
+ *  contour rouge = double contour ; un 2e fond décalé par l'opacité…).
  *  L'objet reste un seul objet (sélection, export SVG, historique).
  *  Modèle : obj.appearance = [{ kind: 'fill' | 'stroke', color, width, opacity }]
  *  (index 0 = couche la plus basse).
@@ -88,8 +88,8 @@ const AppearancePanel = {
     const list = obj.appearance ? obj.appearance.map((l) => ({ ...l })) : [];
     // Nouvelle couche : sous les autres, visible tout de suite
     const base = kind === 'stroke'
-      ? { kind, color: '#d4f04c', width: Math.max(8, (obj.strokeWidth || 2) * 3), opacity: 1 }
-      : { kind, color: '#25300b', opacity: 0.35 };
+      ? { kind, color: '#f68a8d', width: Math.max(8, (obj.strokeWidth || 2) * 3), opacity: 1 }
+      : { kind, color: '#c73527', opacity: 0.35 };
     list.unshift(base);
     obj.appearance = list;
     this.changed(obj);

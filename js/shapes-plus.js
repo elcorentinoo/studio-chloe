@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Lignes & formes particulières (menu des formes)
+ *  Chloe’s Touch — Lignes & formes particulières (menu des formes)
  *    Arc            — quart d'ellipse tracé du point de départ à la souris
  *                     (Alt : courbure inversée, Maj : arc de cercle)
  *    Spirale        — depuis le centre ; nombre de segments et décroissance
@@ -36,7 +36,7 @@ function pathShape(kind, dFromDrag, { open = false } = {}) {
       const s = shapeStyle();
       return new fabric.Path(`M ${p.x} ${p.y} L ${p.x + 0.01} ${p.y + 0.01}`, {
         ...s,
-        stroke: s.stroke || s.fill || '#25300b',
+        stroke: s.stroke || s.fill || '#c73527',
         strokeWidth: Math.max(1, s.strokeWidth),
         fill: open ? null : s.fill,
         strokeLineCap: 'round',

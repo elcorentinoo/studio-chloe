@@ -1,12 +1,12 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outil Dégradé (G), directement sur l'objet
+ *  Chloe’s Touch — Outil Dégradé (G), directement sur l'objet
  *
  *  Comme l'annotateur de dégradé d'Illustrator :
  *    - glisser sur l'objet sélectionné trace la direction du dégradé
  *      (linéaire : du début à la fin ; radial : centre puis rayon) ;
  *      Maj contraint à 45° ; un objet sans dégradé en reçoit un
- *      (couleur de remplissage → olive) ;
+ *      (couleur de remplissage → rouge) ;
  *    - l'annotateur montre la barre, ses extrémités et les arrêts de couleur :
  *      glisser une extrémité la déplace, glisser un arrêt change sa position ;
  *    - un clic sur un autre objet le sélectionne.
@@ -60,12 +60,12 @@ const GradientTool = {
 
   ensureGradient(o) {
     if (this.isGrad(o)) return;
-    const c1 = toHex(o.fill) || '#d4f04c';
+    const c1 = toHex(o.fill) || '#f68a8d';
     o.set('fill', new fabric.Gradient({
       type: GradientPro.type === 'radial' ? 'radial' : 'linear',
       gradientUnits: 'percentage',
       coords: GradientPro.type === 'radial' ? { x1: 0.5, y1: 0.5, r1: 0, x2: 0.5, y2: 0.5, r2: 0.5 } : { x1: 0, y1: 0.5, x2: 1, y2: 0.5 },
-      colorStops: [{ offset: 0, color: c1 }, { offset: 1, color: '#25300b' }],
+      colorStops: [{ offset: 0, color: c1 }, { offset: 1, color: '#c73527' }],
     }));
   },
 
@@ -124,19 +124,19 @@ const GradientTool = {
     ctx.save();
     if (o.fill.type === 'radial') {
       ctx.setLineDash([5, 4]);
-      ctx.strokeStyle = 'rgba(37, 48, 11, .55)';
+      ctx.strokeStyle = 'rgba(74, 22, 24, .55)';
       ctx.beginPath();
       ctx.arc(S.x, S.y, Math.hypot(E.x - S.x, E.y - S.y), 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
     }
     // barre : trait sombre + liseré clair (lisible sur tous les fonds)
-    [['#ffffff', 5], ['#25300b', 2]].forEach(([c, w]) => {
+    [['#ffffff', 5], ['#c73527', 2]].forEach(([c, w]) => {
       ctx.strokeStyle = c; ctx.lineWidth = w;
       ctx.beginPath(); ctx.moveTo(S.x, S.y); ctx.lineTo(E.x, E.y); ctx.stroke();
     });
     // extrémités
-    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#25300b'; ctx.lineWidth = 1.5;
+    ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#c73527'; ctx.lineWidth = 1.5;
     ctx.beginPath(); ctx.arc(S.x, S.y, 6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     ctx.fillRect(E.x - 5, E.y - 5, 10, 10); ctx.strokeRect(E.x - 5, E.y - 5, 10, 10);
     // arrêts de couleur
@@ -146,7 +146,7 @@ const GradientTool = {
       ctx.beginPath(); ctx.arc(x, y, s.offset <= 0 || s.offset >= 1 ? 3.5 : 6.5, 0, Math.PI * 2);
       ctx.fillStyle = s.color; ctx.fill();
       ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.strokeStyle = '#25300b'; ctx.lineWidth = 1; ctx.stroke();
+      ctx.strokeStyle = '#c73527'; ctx.lineWidth = 1; ctx.stroke();
     });
     ctx.restore();
   },

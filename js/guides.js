@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Repères (lignes de guidage posées à la main)
+ *  Chloe’s Touch — Repères (lignes de guidage posées à la main)
  *
  *  Comme dans Illustrator :
  *    - glisser depuis la règle du haut  → repère horizontal
@@ -160,11 +160,11 @@ const UserGuides = {
         const tw = ctx.measureText(label).width + 12;
         const bx = g.axis === 'x' ? s + 8 : 28;
         const by = g.axis === 'x' ? 28 : s + 8;
-        ctx.fillStyle = '#25300b';
+        ctx.fillStyle = '#c73527';
         ctx.beginPath();
         ctx.roundRect ? ctx.roundRect(bx, by, tw, 20, 10) : ctx.rect(bx, by, tw, 20);
         ctx.fill();
-        ctx.fillStyle = '#d4f04c';
+        ctx.fillStyle = '#f68a8d';
         ctx.fillText(label, bx + 6, by + 14);
       }
     });

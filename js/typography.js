@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Typographie pro (tuile Texte)
+ *  Chloe’s Touch — Typographie pro (tuile Texte)
  *    - « Toutes les polices… » : catalogue complet Google Fonts (liste
  *      Fontsource, chargée à la demande), recherche, catégories, aperçu ;
  *      la police choisie est téléchargée depuis Google Fonts et ajoutée aux

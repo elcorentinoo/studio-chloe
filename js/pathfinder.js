@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Pathfinder (tuile du panneau, 2 objets ou plus)
+ *  Chloe’s Touch — Pathfinder (tuile du panneau, 2 objets ou plus)
  *
  *  Opérations booléennes avec paper.js (chargé à la demande) :
  *    Unir · Soustraire le premier plan · Intersecter · Exclure

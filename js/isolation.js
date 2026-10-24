@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Mode isolation
+ *  Chloe’s Touch — Mode isolation
  *
  *  Comme dans Illustrator : double-clic sur un groupe (flèche noire) pour
  *  travailler à l'intérieur. Le reste du document s'estompe et devient

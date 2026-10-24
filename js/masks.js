@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Masques d'écrêtage
+ *  Chloe’s Touch — Masques d'écrêtage
  *
  *  ⌘/Ctrl + 7       Créer le masque : l'objet du DESSUS (forme, tracé ou
  *                   texte) découpe les objets sélectionnés en dessous.

@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Outil Tranches (menu « Graphiques & tranches »)
+ *  Chloe’s Touch — Outil Tranches (menu « Graphiques & tranches »)
  *
  *  Découpez la page en zones d'export, comme les tranches d'Illustrator :
  *    - tracez un cadre = une tranche (numérotée, nommable) ;
@@ -122,7 +122,7 @@ const Slices = {
       files.forEach((f) => zip.file(f.name, f.url.split(',')[1], { base64: true }));
       const blob = await zip.generateAsync({ type: 'blob' });
       const url = URL.createObjectURL(blob);
-      downloadURL(url, exportFileName('zip').replace('studio-chloe', 'tranches'));
+      downloadURL(url, exportFileName('zip').replace('chloes-touch', 'tranches'));
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       toast(`${files.length} tranche${files.length > 1 ? 's' : ''} exportée${files.length > 1 ? 's' : ''} (ZIP)`, 'success');
     } catch {

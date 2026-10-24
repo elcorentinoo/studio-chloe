@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Habillage du texte
+ *  Chloe’s Touch — Habillage du texte
  *
  *  Comme Objet › Habillage du texte d'Illustrator : un objet marqué
  *  « Habillage » (case de la tuile Disposition, avec un écart réglable)

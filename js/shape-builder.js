@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Concepteur de forme (Maj + M), menu Pathfinder du rail
+ *  Chloe’s Touch — Concepteur de forme (Maj + M), menu Pathfinder du rail
  *
  *  Comme le Shape Builder d'Illustrator :
  *    1. sélectionnez des formes qui se chevauchent, prenez l'outil ;
@@ -75,16 +75,16 @@ const ShapeBuilder = {
     ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5]);
     ctx.lineWidth = 1 / v[0];
     ctx.setLineDash([4 / v[0], 3 / v[0]]);
-    ctx.strokeStyle = 'rgba(37, 48, 11, 0.5)';
+    ctx.strokeStyle = 'rgba(74, 22, 24, 0.5)';
     this.faces.forEach((f) => ctx.stroke(f.p2d));
     ctx.setLineDash([]);
     const marked = new Set(this.touched);
     if (this.hover) marked.add(this.hover);
     marked.forEach((f) => {
-      ctx.fillStyle = alt ? 'rgba(224, 69, 123, 0.35)' : 'rgba(212, 240, 76, 0.45)';
+      ctx.fillStyle = alt ? 'rgba(224, 69, 123, 0.35)' : 'rgba(246, 138, 141, 0.45)';
       ctx.fill(f.p2d, 'evenodd');
       ctx.lineWidth = 2.5 / v[0];
-      ctx.strokeStyle = alt ? '#e0457b' : '#7c9425';
+      ctx.strokeStyle = alt ? '#e0457b' : '#d9474f';
       ctx.stroke(f.p2d);
     });
     ctx.restore();

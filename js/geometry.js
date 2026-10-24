@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Géométrie partagée (utilisée par la sélection directe,
+ *  Chloe’s Touch — Géométrie partagée (utilisée par la sélection directe,
  *  le Pathfinder, le décalage de tracé, les outils de déformation…)
  *
  *    Geo.commands(obj)   → commandes absolues [['M',x,y],['L',x,y],['C',…],['Q',…],['Z']]

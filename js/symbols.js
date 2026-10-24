@@ -1,6 +1,6 @@
 /**
  * ============================================================================
- *  Studio Chloé — Symboles & couleurs globales (onglet « Symboles » du panneau)
+ *  Chloe’s Touch — Symboles & couleurs globales (onglet « Symboles » du panneau)
  *
  *  Couleurs globales : une couleur nommée, liée aux objets qui l'utilisent.
  *    Modifier la couleur globale recolore aussitôt tous ces objets.
@@ -27,7 +27,7 @@ const GlobalColors = {
   },
 
   add() {
-    const color = toHex(canvas.getActiveObject()?.fill) || dom.propFill.value || state.style.fill || '#d4f04c';
+    const color = toHex(canvas.getActiveObject()?.fill) || dom.propFill.value || state.style.fill || '#f68a8d';
     const g = { id: uid(), name: `Couleur ${this.list.length + 1}`, color };
     this.list.push(g);
     this.changed();

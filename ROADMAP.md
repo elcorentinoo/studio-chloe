@@ -1,7 +1,21 @@
 # Studio Chloé — feuille de route
 
+## 🌱 Versions
+Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom d'une étape de croissance de la plante (thème lime / olive). La 1.0.0 « Fruit » sera la version complète et stable.
+
+| Version | Nom | Contenu |
+| --- | --- | --- |
+| 0.1.0 | Graine | Premier éditeur : formes, pinceau, texte, images, détourage, export |
+| 0.2.0 | Pousse | Zoom, collage, styles de texte, aide, sauvegarde auto |
+| 0.3.0 | Tige | Galerie de projets, coffre chiffré, formats, exports, Plume, calques, bibliothèque |
+| 0.4.0 | Feuille | Les outils d'Illustrator : sélection, dessin, Pathfinder, plans de travail, IA, collaboration, PWA |
+| 0.5.0 | Bourgeon | *(en cours)* Les 8 améliorations du quotidien façon Illustrator |
+| 0.6.0 | Fleur | *(prévue)* Les 8 améliorations fréquentes |
+
 ## ✅ Publié
-**Octobre 2026 — vague 3**
+**0.5.0 « Bourgeon » — en cours**
+
+**0.4.0 « Feuille » — octobre 2026**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)
 - Repères : glisser depuis les règles, déplacer, supprimer sur la règle, aimantation, afficher (⌘;) / verrouiller (⌘⌥;), enregistrés avec le document
 - Miroir horizontal / vertical de la sélection (Maj + H / Maj + V), objets, images, groupes ou sélection multiple
@@ -39,7 +53,7 @@
 - Collaboration en temps réel pair à pair (Yjs + y-webrtc) : salon par lien secret chiffré, curseurs des participants, nouveau « Projet partagé » sans toucher aux autres projets ni au coffre
 - PWA installable : manifeste, icônes 192 / 512 (et masquable), service worker hors ligne (réseau pour /api), pincer pour zoomer, panneau en tiroir sur mobile, partage natif de l'export
 
-**Octobre 2026 — vague 2**
+**0.3.0 « Tige » — octobre 2026**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)
 - Verrouillage par empreinte (Touch ID / Face ID / Windows Hello) : projets chiffrés (AES-256), code de secours, verrouillage automatique, ⌘⇧L
 - Formats de page (réseaux sociaux, impression 300 dpi, écran, sur mesure) + redimensionnement magique (sur place ou en copie)
@@ -51,7 +65,7 @@
 - Plume (P) + édition des points (double-clic sur un tracé)
 - Bibliothèque (K) : 9 modèles, ~200 icônes, 12 stickers ; vectorisation d'image
 
-**Octobre 2026 — vague 1**
+**0.2.0 « Pousse » — octobre 2026**
 - Coller une image / un texte (⌘V), copier / couper / dupliquer
 - Texte : 18 typographies, gras / italique / souligné
 - Zoom de la zone de travail, déplacement (Espace), aide des raccourcis (bouton i)

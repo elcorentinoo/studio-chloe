@@ -8,7 +8,7 @@
  *  - /api/… (détourage Remove.bg) et toute requête non GET : toujours le réseau.
  *  Changer CACHE_VERSION force le renouvellement complet du cache.
  */
-const CACHE_VERSION = 'studio-chloe-v3-2026-10';
+const CACHE_VERSION = 'studio-chloe-0.4.0';
 const CORE = ['./', './index.html', './style.css', './app.js', './logo.svg', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './apple-touch-icon.png'];
 const RUNTIME_HOSTS = ['cdnjs.cloudflare.com', 'cdn.jsdelivr.net', 'fonts.googleapis.com', 'fonts.gstatic.com'];

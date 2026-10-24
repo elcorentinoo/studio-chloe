@@ -52,8 +52,10 @@ Pendant un aperçu (fenêtres d'effets), `History.flush()` puis `History.restori
 - Polices : Outfit (titres) + Inter (interface)
 - Logo : monogramme SC entrelacé, trait constant, fins coupées droites (`logo.svg`)
 
-## Feuille de route
+## Feuille de route & versions
 Features publiées et liste « à publier » priorisée : `ROADMAP.md`.
+Versions nommées d'après la croissance d'une plante (0.1.0 Graine, 0.2.0 Pousse, 0.3.0 Tige, 0.4.0 Feuille, 0.5.0 Bourgeon, 0.6.0 Fleur… 1.0.0 Fruit).
+À chaque nouvelle version : `APP_VERSION` (app.js), `CACHE_VERSION` (sw.js), tableau de `ROADMAP.md`, tag git `vX.Y.Z`.
 
 ## Règles de travail
 - Toujours **proposer avant de coder** et attendre le feu vert de Corentin.

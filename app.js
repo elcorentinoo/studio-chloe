@@ -53,6 +53,9 @@
  */
 const REMOVE_BG_ENDPOINT = '/api/remove-bg';
 
+/** Version de l'application (affichée dans l'aide ; voir ROADMAP.md › Versions) */
+const APP_VERSION = Object.freeze({ number: '0.4.0', name: 'Feuille' });
+
 /** Au-delà de cette taille, l'image est réduite avant l'envoi (limite des fonctions Netlify ≈ 6 Mo) */
 const UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
 const UPLOAD_MAX_SIDE = 2000;
@@ -2005,7 +2008,14 @@ const Help = {
   open() {
     if (!dom.helpDialog.open) dom.helpDialog.showModal();
   },
+  /** Numéro et nom de version dans l'en-tête de l'aide */
+  showVersion() {
+    const title = dom.helpDialog.querySelector('#help-title');
+    if (!title || title.querySelector('.app-version')) return;
+    title.insertAdjacentHTML('beforeend', ` <span class="app-version" title="Version de Studio Chloé">v${APP_VERSION.number} · ${APP_VERSION.name}</span>`);
+  },
   bind() {
+    this.showVersion();
     dom.btnHelp.addEventListener('click', () => this.open());
     dom.btnHelpClose.addEventListener('click', () => dom.helpDialog.close());
     // Clic sur le fond assombri : fermeture

@@ -1125,3 +1125,5 @@ body.is-locked .app { visibility: hidden; }
 .help-dialog { width: min(1040px, calc(100vw - 32px)); overflow-y: auto; }
 .help-grid dd { font-size: 13px; }
 .help-grid dl div { grid-template-columns: minmax(118px, auto) 1fr; }
+.app-version { margin-left: 8px; padding: 3px 10px; border-radius: var(--r-pill); background: var(--lime-soft); color: var(--moss); font: 500 12px var(--font); vertical-align: 3px; white-space: nowrap; }
+:root[data-theme="dark"] .app-version { color: var(--lime); }

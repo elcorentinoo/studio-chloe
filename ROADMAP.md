@@ -37,6 +37,7 @@
 - Dégradés avancés : linéaires ou radiaux à plusieurs arrêts, et dégradé de formes entre deux objets en N étapes (contour, couleurs, épaisseur, opacité)
 - IA gratuite : détourage dans le navigateur (@imgly/background-removal, Remove.bg en option), génération d'image Pollinations (sans clé), texte → vecteur (génération + vectorisation automatique)
 - Collaboration en temps réel pair à pair (Yjs + y-webrtc) : salon par lien secret chiffré, curseurs des participants, nouveau « Projet partagé » sans toucher aux autres projets ni au coffre
+- PWA installable : manifeste, icônes 192 / 512 (et masquable), service worker hors ligne (réseau pour /api), pincer pour zoomer, panneau en tiroir sur mobile, partage natif de l'export
 
 **Octobre 2026 — vague 2**
 - Galerie de projets façon Pinterest : mosaïque, tableaux, bouton « Enregistrer », recherche, renommer / dupliquer / supprimer (⌘O)

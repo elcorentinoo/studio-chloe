@@ -2,7 +2,7 @@
 <html lang="fr" data-theme="light">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Studio Chloé</title>
   <meta name="description" content="Studio Chloé — éditeur vectoriel dans le navigateur : formes, pinceau, texte, images et détourage.">
 
@@ -15,6 +15,12 @@
   <link rel="icon" type="image/svg+xml" href="logo.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="theme-color" content="#25300b">
+  <!-- Application installable (PWA) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Studio Chloé">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -421,6 +427,7 @@
   <script src="js/library.js"></script>
   <script src="js/ai.js"></script>
   <script src="js/collab.js"></script>
+  <script src="js/pwa.js"></script>
   <script src="js/projects.js"></script>
 </body>
 </html>

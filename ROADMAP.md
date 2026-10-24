@@ -15,6 +15,7 @@ Numérotation `majeure.mineure.correctif` ; chaque version mineure porte le nom 
 ## ✅ Publié
 **0.5.0 « Bourgeon » — en cours**
 - Panneau Transformation : point de référence à 9 positions, X / Y, largeur / hauteur (proportions liées), angle, calculs simples (« 200*2 »), ↑ / ↓
+- Mode isolation : double-clic sur un groupe pour le modifier seul, le reste s'estompe ; Échap pour sortir, fil d'Ariane, imbrication, une seule étape d'annulation
 
 **0.4.0 « Feuille » — octobre 2026**
 - Correctif : le badge « Aucune sélection » n'est plus coupé en haut du panneau (passage à la ligne, points de suspension)

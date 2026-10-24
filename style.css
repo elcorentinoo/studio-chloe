@@ -1140,3 +1140,21 @@ body.is-locked .app { visibility: hidden; }
 .tf-field .input { height: 30px; min-width: 0; padding: 0 8px; font-size: 12px; font-variant-numeric: tabular-nums; }
 .tf-side { display: flex; flex-direction: column; gap: 6px; }
 .tf-lock { width: 30px; height: 30px; align-self: center; }
+
+/* ---------- Mode isolation ---------- */
+.isolation-bar {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%); z-index: 6;
+  display: flex; align-items: center; gap: 6px; max-width: calc(100% - 32px);
+  padding: 5px 6px 5px 12px; border-radius: var(--r-pill);
+  background: var(--glass-strong); border: 1px solid var(--glass-border); box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(18px) saturate(1.4); -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  font: 500 12px var(--font); color: var(--ink-muted); white-space: nowrap; overflow: hidden;
+}
+.isolation-bar svg { width: 16px; height: 16px; flex: none; fill: var(--lime-soft); stroke: var(--moss); stroke-width: 1.8; }
+.isolation-bar button:not(.chip) { border: 0; background: none; padding: 2px 4px; border-radius: 6px; color: var(--ink-muted); font: inherit; cursor: pointer; }
+.isolation-bar button:not(.chip):hover { color: var(--ink); background: var(--chip-hover); }
+.isolation-bar strong { color: var(--ink); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.isolation-bar .chip { margin-left: 6px; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border: 0; border-radius: var(--r-pill); background: var(--primary-bg); color: var(--primary-ink); font: 600 12px var(--font); cursor: pointer; }
+.isolation-bar .chip:hover { background: var(--primary-hover); }
+.isolation-bar kbd { font: 500 10px var(--mono); opacity: .75; }
+.stage.is-isolated { box-shadow: inset 0 0 0 2px var(--lime-soft); }

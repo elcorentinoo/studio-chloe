@@ -56,16 +56,16 @@
 - Texte : 18 typographies, gras / italique / souligné
 - Zoom de la zone de travail, déplacement (Espace), aide des raccourcis (bouton i)
 
-## 🔜 Prochaines (cochées, pas encore codées)
+## 🔜 Prochaines (idées, pas encore codées)
 | Feature | Impact | Effort | Notes |
 | --- | --- | --- | --- |
-| **IA : génération d'image** | fort | M | Fonction Netlify `/api/generate-image` → Replicate (FLUX schnell, rapide, ~0,3 centime/image), clé `REPLICATE_API_TOKEN`. Protégée par un code d'accès (`AI_ACCESS_CODE`) |
-| **IA : assistant de design** (« décris ton visuel ») | fort | L | Fonction Netlify → API Claude (modèle rapide), clé `ANTHROPIC_API_KEY`, sortie JSON validée puis chargée comme document |
-| **Mobile / PWA** | fort | M | Pincer pour zoomer au doigt, panneau en tiroir, installable (manifest + service worker), hors ligne |
+| **IA : assistant de design** (« décris ton visuel ») | fort | L | Nécessite une API payante (Claude) : non retenu tant que l'app reste 100 % gratuite |
+| Sélection directe dans les groupes | moyen | M | Fabric 5 ne permet pas d'entrer dans un groupe : à faire avec Fabric 6 ou un mode « isolation » |
+| Jointures en angle vif pour le décalage du tracé / la vectorisation du contour | faible | M | Actuellement arrondies |
+| Texte sur tracé → vectorisation directe | faible | S | Il faut détacher le texte du tracé avant de le vectoriser |
 
 ## 📋 Non retenues pour l'instant
 | Feature | Notes |
 | --- | --- |
 | Sauvegarde de secours (fichier) | Recommandée : les projets vivent dans le navigateur ; vider ses données de navigation les efface |
 | Synchro entre appareils & lien de partage | Netlify Functions + Netlify Blobs ; vérification de la passkey côté serveur |
-| Collaboration temps réel | Yjs + Liveblocks / PartyKit |

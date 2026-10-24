@@ -1120,3 +1120,8 @@ body.is-locked .app { visibility: hidden; }
   .drawer-handle span { width: 44px; height: 5px; border-radius: 3px; background: var(--ink-muted); opacity: .5; }
   .app { padding-bottom: max(8px, env(safe-area-inset-bottom)); }
 }
+
+/* Aide des raccourcis : plus de rubriques depuis la vague 3 */
+.help-dialog { width: min(1040px, calc(100vw - 32px)); overflow-y: auto; }
+.help-grid dd { font-size: 13px; }
+.help-grid dl div { grid-template-columns: minmax(118px, auto) 1fr; }

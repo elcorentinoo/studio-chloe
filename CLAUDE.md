@@ -2,7 +2,8 @@
 
 ## Projet
 App web d'édition vectorielle façon Adobe Illustrator, pour Corentin (francophone : réponds en français).
-Site statique déployé sur Netlify (branché sur ce dépôt GitHub), sans build : `index.html`, `style.css`, `app.js`, `logo.svg`.
+Site statique déployé sur Netlify (branché sur ce dépôt GitHub), sans build : `index.html`, `style.css`, `app.js`, `logo.svg`, `js/*.js`.
+PWA : `manifest.webmanifest`, `sw.js` (stale-while-revalidate, réseau pour `/api/`), icônes dans `icons/`.
 Détourage : fonction Netlify `netlify/functions/remove-bg.mjs` (route `/api/remove-bg`), clé dans la variable d'env `REMOVE_BG_API_KEY`. **Ne jamais écrire de clé API dans le code.**
 
 ## Architecture de `app.js` (sections numérotées dans le fichier)
@@ -18,8 +19,10 @@ Détourage : fonction Netlify `netlify/functions/remove-bg.mjs` (route `/api/rem
 10. Thème clair/sombre (localStorage) & barre d'état ; 10b. `TextStyle` (gras/italique/souligné, `ensureFont`) & `Help` (fenêtre des raccourcis)
 11. Raccourcis clavier ; 12. Helpers (`Sheet` fenêtres, `loadScript`, `html`, `escapeHTML`) ; 13. Démarrage (`DOMContentLoaded`)
 
-Points d'extension : `Hooks` (init, boot, sync, change, docLoaded), `Keys.add()`, `Tools`, `ShapeFactory`, `SHORTCUTS`.
-Document = JSON Fabric (`SERIAL_PROPS`) + `page` (`Doc.serialize / load / open`).
+Points d'extension : `Hooks` (init, boot, sync, change, docLoaded, tool, snapTargets, panelTab), `Keys.add()`, `Tools`, `ShapeFactory`, `SHORTCUTS`, `TOOL_LABELS`, `TYPE_LABELS`.
+Document = JSON Fabric (`SERIAL_PROPS`, que les modules complètent) + `page` + `Doc.extras` (données de module : repères, plans, tranches, symboles, couleurs globales, motifs) — `Doc.serialize / load / open`.
+Outils : `RailGroups.create/add` (menus d'outils du rail), `tool.options()` (tuile d'options dans le panneau), `PaperKit.ready()` (paper.js à la demande), `Geo` (formes → commandes de tracé en coordonnées du document).
+Pendant un aperçu (fenêtres d'effets), `History.flush()` puis `History.restoring = true` pour ne pas créer d'étapes.
 
 ## Modules (`js/`, chargés après app.js, même portée globale)
 - `arrange.js` — alignement, groupes, guides magnétiques, grille, règles, panneau Calques
@@ -28,6 +31,21 @@ Document = JSON Fabric (`SERIAL_PROPS`) + `page` (`Doc.serialize / load / open`)
 - `pen.js` — Plume et édition des points
 - `library.js` + `library-data.js` — modèles, icônes Lucide (ISC), stickers, vectorisation (ImageTracer)
 - `projects.js` — IndexedDB (projets, docs, tableaux, meta), galerie Pinterest, coffre chiffré (passkey PRF + code de secours)
+- `geometry.js` — `Geo` : commandes de tracé, conversion en `fabric.Path`, remplacement d'objet
+- `toolbox.js` — `RailGroups`, `ToolOptions`, `PaperKit`, `optionRange`
+- `guides.js` — repères posés depuis les règles · `transform.js` — miroir (Maj H/V), outils rotation / miroir / échelle / inclinaison
+- `direct.js` — flèche blanche · `select-tools.js` — baguette magique, lasso · `quickcrop.js` — rognage rapide
+- `shapes-plus.js` — arc, spirale, grilles · `curvature.js` — Courbure · `anchors.js` — ajout / suppression / conversion de points, ciseaux
+- `pencil.js` — crayon, lissage, gomme · `brushes.js` — pinceaux artistiques · `width-tool.js` — outil Largeur (profils de contour)
+- `liquify.js` — déformer / tordre / gonfler · `paint.js` — pot de peinture dynamique, pulvérisateur de symboles
+- `graph.js` — graphiques · `slices.js` — tranches · `artboards.js` — plans de travail multiples (exports par plan, PDF multipage)
+- `pathfinder.js` — opérations booléennes · `shape-builder.js` — concepteur de forme · `offset.js` — décalage du tracé
+- `masks.js` — masques d'écrêtage · `text-pro.js` — zone de texte, texte sur tracé / dans une forme, vectorisation (opentype.js + Fontsource)
+- `stroke-pro.js` — extrémités, jointures, pointillés, pointes de flèche, vectoriser le contour · `appearance.js` — panneau Aspect
+- `symbols.js` — symboles liés, couleurs globales (onglet Symboles) · `patterns.js` — motifs · `gradient-pro.js` — dégradés radiaux / multi-arrêts, dégradé de formes
+- `distort.js` — déformation par enveloppe, transformation répétée · `print.js` — CMJN, fonds perdus et traits de coupe
+- `import-export.js` — import SVG / PDF / .ai (pdf.js), SVG optimisé · `typography.js` — catalogue Google Fonts, réglages typographiques
+- `ai.js` — détourage local (@imgly), génération Pollinations, texte → vecteur · `collab.js` — collaboration Yjs + y-webrtc · `pwa.js` — service worker, tactile, tiroir mobile, partage
 
 ## Identité visuelle
 - Thème « glass » jaune-vert : lime `#d4f04c`, olive `#25300b`, mousse `#7c9425`, crème `#f4f2e4`

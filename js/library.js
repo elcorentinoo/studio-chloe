@@ -402,12 +402,17 @@ const Vectorizer = {
               return !(near && o.width * o.height > w * h * 0.25);
             });
           }
-          resolve(fabric.util.groupSVGElements(objs, { ...options, width: w, height: h }));
+          // Une seule forme : groupSVGElements renvoie la forme seule → on la groupe quand même
+          const g = fabric.util.groupSVGElements(objs, { ...options, width: w, height: h });
+          resolve(g.type === 'group' ? g : new fabric.Group([g]));
         });
       });
 
-      // Même place, même taille affichée, même rotation que l'image
-      const center = img.getCenterPoint();
+      // Même place, même taille affichée, même rotation que l'image :
+      // le centre du contenu (coordonnées du SVG, 0…w × 0…h) est reporté sur l'image
+      const bb = group.getBoundingRect(true, true);
+      const local = { x: ((bb.left + bb.width / 2) / w - 0.5) * img.width, y: ((bb.top + bb.height / 2) / h - 0.5) * img.height };
+      const center = fabric.util.transformPoint(local, img.calcTransformMatrix());
       group.set({
         scaleX: (img.width * img.scaleX) / w,
         scaleY: (img.height * img.scaleY) / h,

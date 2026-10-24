@@ -1074,3 +1074,13 @@ body.is-locked .app { visibility: hidden; }
 /* Dégradés avancés (js/gradient-pro.js) */
 .gradient-pro { display: flex; flex-direction: column; gap: 6px; }
 .stop-pos { min-width: 34px; color: var(--ink-muted); font-size: 11px; text-align: right; }
+
+/* IA (js/ai.js) */
+.rail-btn-ai { background: linear-gradient(140deg, var(--lime), #b8e0ff); color: var(--olive); }
+.btn-ghost { background: transparent; border: 1px dashed var(--line); color: var(--ink-muted); }
+.ai-row { display: flex; flex-direction: column; gap: 6px; }
+.ai-preview { display: grid; place-items: center; padding: 10px; border-radius: 18px; background: var(--chip); }
+.ai-preview img { max-width: 100%; max-height: 42vh; border-radius: 12px; }
+[data-ai-pane] { display: flex; flex-direction: column; gap: 12px; }
+[data-ai-pane][hidden] { display: none; }
+#ai-prompt { font: 14px/1.5 var(--font); }

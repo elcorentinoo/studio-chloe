@@ -22,11 +22,28 @@ const ShapeBuilder = {
   dragging: false,
   hover: null,
 
+  mode: 'merge', // 'merge' | 'erase' (Alt inverse le mode)
+  lastSelection: [], // dernière sélection, si un autre outil l'a vidée avant (menu du rail)
+
+  usable(o) { return o && !o.locked && o.visible && o.selectable !== false && Pathfinder.usable(o) && (o.type === 'group' || LivePaint.isClosed(o)); },
+
+  /** Formes de travail : la sélection, sinon la dernière sélection, sinon toutes les formes qui se chevauchent */
+  pickSources() {
+    const all = canvas.getObjects();
+    let list = canvas.getActiveObjects().filter((o) => this.usable(o));
+    if (list.length < 2) list = this.lastSelection.filter((o) => all.includes(o) && this.usable(o));
+    if (list.length < 2) {
+      const shapes = all.filter((o) => this.usable(o));
+      list = shapes.filter((o) => shapes.some((x) => x !== o && o.intersectsWithObject(x, true, true)));
+    }
+    return list;
+  },
+
   async prepare() {
     this.faces = [];
-    this.sources = canvas.getActiveObjects().filter((o) => !o.locked && Pathfinder.usable(o) && (o.type === 'group' || LivePaint.isClosed(o)));
+    this.sources = this.pickSources();
     if (this.sources.length < 2) {
-      toast('Sélectionnez au moins deux formes fermées qui se chevauchent, puis reprenez le Concepteur de forme.');
+      toast('Le Concepteur de forme travaille sur au moins deux formes fermées qui se chevauchent.');
       return false;
     }
     try { await PaperKit.ready(); } catch { toast('Concepteur de forme indisponible : paper.js n\'a pas pu être chargé.', 'error'); return false; }
@@ -36,6 +53,8 @@ const ShapeBuilder = {
     const faces = Pathfinder.divideFaces(list.map((o) => ({ item: Pathfinder.item(o), style: Pathfinder.styleOf(o) })))
       .flatMap((f) => Pathfinder.islands(f.item).map((item) => ({ item, style: f.style })));
     this.faces = faces.map((f) => ({ ...f, p2d: new Path2D(f.item.pathData) }));
+    // les formes de travail restent visibles comme sélection
+    if (canvas.getActiveObjects().length < 2) { Arrange.reselect(this.sources); canvas.requestRenderAll(); }
     return true;
   },
 
@@ -70,6 +89,8 @@ const ShapeBuilder = {
     });
     ctx.restore();
   },
+
+  erasing(e) { return (this.mode === 'erase') !== Boolean(e?.altKey); },
 
   commit(remove) {
     if (!this.touched.size) return;
@@ -108,40 +129,54 @@ Tools.shapebuilder = {
     ShapeBuilder.hover = null;
     canvas.clearContext(canvas.contextTop);
   },
-  onMouseDown(p, e) {
-    if (!ShapeBuilder.faces.length) return;
+  async onMouseDown(p, e) {
+    if (!ShapeBuilder.faces.length && !(await ShapeBuilder.prepare())) return;
     ShapeBuilder.dragging = true;
     ShapeBuilder.touched.clear();
     const f = ShapeBuilder.faceAt(p);
     if (f) ShapeBuilder.touched.add(f);
-    ShapeBuilder.render(e.altKey);
+    ShapeBuilder.render(ShapeBuilder.erasing(e));
   },
   onMouseMove(p, e) {
     if (!ShapeBuilder.faces.length || !PaperKit.scope) return;
     const f = ShapeBuilder.faceAt(p);
     if (ShapeBuilder.dragging && f) ShapeBuilder.touched.add(f);
     ShapeBuilder.hover = f;
-    ShapeBuilder.render(e.altKey);
+    ShapeBuilder.render(ShapeBuilder.erasing(e));
   },
   onMouseUp(p, e) {
     if (!ShapeBuilder.dragging) return;
     ShapeBuilder.dragging = false;
-    ShapeBuilder.commit(e.altKey);
+    ShapeBuilder.commit(ShapeBuilder.erasing(e));
   },
   options() {
-    return html('<p class="field-note">Sélectionnez des formes qui se chevauchent puis prenez l\'outil. Glissez à travers les zones pour les fusionner, cliquez une zone pour la détacher. Alt : effacer les zones touchées.</p>');
+    const el = html(`<div class="sb-options">
+      <div class="seg seg-2" role="group" aria-label="Mode du concepteur de forme">
+        <button class="seg-btn" type="button" data-sb-mode="merge">Fusionner</button>
+        <button class="seg-btn" type="button" data-sb-mode="erase">Effacer</button>
+      </div>
+      <p class="field-note">Glissez à travers les zones qui se chevauchent pour les <b>fusionner</b> (un clic détache une zone), ou en mode <b>Effacer</b> pour les supprimer. Alt inverse le mode. Sans sélection, l'outil prend toutes les formes qui se chevauchent.</p>
+    </div>`);
+    const sync = () => el.querySelectorAll('[data-sb-mode]').forEach((b) => b.classList.toggle('is-active', b.dataset.sbMode === ShapeBuilder.mode));
+    el.querySelectorAll('[data-sb-mode]').forEach((b) => b.addEventListener('click', () => { ShapeBuilder.mode = b.dataset.sbMode; sync(); ShapeBuilder.render(ShapeBuilder.mode === 'erase'); }));
+    sync();
+    return el;
   },
 };
 
 TOOL_LABELS.shapebuilder = 'Concepteur de forme';
 
 Hooks.on('init', () => {
+  // Mémorise la dernière sélection : prendre l'outil par le menu du rail passe parfois par un autre outil qui la vide
+  const remember = () => { const objs = canvas.getActiveObjects(); if (objs.length >= 2) ShapeBuilder.lastSelection = objs.slice(); };
+  canvas.on('selection:created', remember);
+  canvas.on('selection:updated', remember);
   // Rangé avec le pot de peinture (zones formées par les chevauchements)
   RailGroups.add('paint', { tool: 'shapebuilder', label: 'Concepteur de forme', icon: SHAPE_BUILDER_ICON, kbd: 'Maj M' });
   // Les objets sélectionnés à la flèche restent la source quand on prend l'outil
   Keys.add((e, { mod, key }) => {
     if (!mod && !e.altKey && e.shiftKey && key === 'm') { e.preventDefault(); setTool('shapebuilder'); return true; }
-    if (state.tool === 'shapebuilder' && e.key === 'Alt') { ShapeBuilder.render(true); return false; }
+    if (state.tool === 'shapebuilder' && e.key === 'Alt') { ShapeBuilder.render(ShapeBuilder.mode !== 'erase'); return false; }
     return false;
   });
 });
